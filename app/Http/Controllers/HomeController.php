@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Inertia\Response;
 
 class HomeController extends Controller
 {
-  public function __invoke(Request $request): Response
+  public function __invoke(Request $request): array
   {
-    return inertia('home');
+    return [
+      'message' => 'Hello World'
+    ];
   }
 }

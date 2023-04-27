@@ -1,34 +1,38 @@
 {
   "private": true,
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=8"
+  },
   "scripts": {
     "format": "prettier --write resources",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "messages:extract": "lingui extract"
   },
   "devDependencies": {
-    "@types/react": "^18.0.37",
-    "@types/react-dom": "^18.0.11",
-    "@types/ziggy-js": "^1.3.2",
-    "@vitejs/plugin-react-swc": "^3.3.0",
-    "laravel-vite-plugin": "^0.7.4",
-    "postcss": "^8.4.22",
-    "prettier": "^2.8.7",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "ts-loader": "^9.4.2",
-    "typescript": "^4.9.5",
-    "vite": "^4.2.2"
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.1",
+    "@vitejs/plugin-react-swc": "^3.3.0"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@inertiajs/react": "^1.0.3",
     "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.12.1",
-    "clsx": "^1.2.1",
+    "@mui/material": "^5.12.2",
     "katex": "^0.16.6",
-    "mathlive": "^0.92.0",
-    "ziggy-js": "^1.5.0"
+    "ky": "^0.33.3",
+    "mathlive": "^0.92.1",
+    "postcss": "^8.4.23",
+    "prettier": "^2.8.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-intl": "^6.4.1",
+    "react-router-dom": "^6.10.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.3",
+    "vite-plugin-inspect": "^0.7.24"
   }
 }

@@ -1,13 +1,17 @@
 import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
 import react from '@vitejs/plugin-react-swc'
+import inspect from 'vite-plugin-inspect'
 
 export default defineConfig({
+  root: './frontend',
+  envDir: '../',
+  resolve: {
+    alias: {
+      '@/': '/src/',
+    },
+  },
   plugins: [
-    laravel({
-      input: 'resources/js/app.tsx',
-      refresh: true,
-    }),
     react(),
+    inspect(),
   ],
 })
