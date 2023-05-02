@@ -16,6 +16,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null)
 
   function handleLogin(token: string) {
+    // TODO: save token to local storage or somewhere
     setToken(token)
   }
 

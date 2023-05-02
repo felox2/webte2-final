@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -8,10 +8,35 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { Form } from 'react-router-dom'
+import { Form, useNavigate } from 'react-router-dom'
 import Copyright from '@/components/Copyright'
+import { AuthContext } from '@/components/AuthProvider'
+import ky from '@/utils/ky'
+import SnackbarContext from '@/components/SnackbarProvider'
 
 export default function SignUp() {
+  const auth = useContext(AuthContext)
+  const navigate = useNavigate()
+  const { triggerSnackbar } = useContext(SnackbarContext)
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    const data = new FormData(event.currentTarget)
+
+    try {
+      const res: any = await ky.post('auth/register', { body: data }).json()
+      auth.handleLogin(res.access_token)
+      navigate('/')
+      triggerSnackbar('Registered successfully', 'success')
+    }
+    catch (err) {
+      console.log(err)
+      triggerSnackbar('Couldn\'t register', 'error')
+    }
+
+  }
+
   return (
     <Container component='main' maxWidth='xs'>
       <Box
@@ -28,12 +53,12 @@ export default function SignUp() {
         <Typography component='h1' variant='h5'>
           Sign up
         </Typography>
-        <Box component={Form} noValidate sx={{ mt: 3 }}>
+        <Box component={Form} onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete='given-name'
-                name='firstName'
+                name='first_name'
                 required
                 fullWidth
                 label='First Name'
@@ -45,7 +70,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 label='Last Name'
-                name='lastName'
+                name='last_name'
                 autoComplete='family-name'
               />
             </Grid>
@@ -72,7 +97,7 @@ export default function SignUp() {
               <TextField
                 required
                 fullWidth
-                name='passwordRepeat'
+                name='password_confirmation'
                 label='Password Repeat'
                 type='password'
                 autoComplete='new-password'

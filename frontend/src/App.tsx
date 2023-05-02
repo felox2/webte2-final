@@ -7,6 +7,7 @@ import IconTranslate from '@mui/icons-material/Translate'
 import router from '@/router'
 import theme from '@/theme'
 import messages from '@/locales'
+import { SnackbarProvider } from './components/SnackbarProvider'
 
 export default function App() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -31,28 +32,30 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <IntlProvider defaultLocale='en' locale={locale} messages={currentMessages}>
-        <AuthProvider>
-          <Box sx={{ position: 'fixed', right: 0, top: 0, mt: 2, mr: 2 }}>
-            <IconButton onClick={handleClick}>
-              <IconTranslate />
-            </IconButton>
+        <SnackbarProvider>
+          <AuthProvider>
+            <Box sx={{ position: 'fixed', right: 0, top: 0, mt: 2, mr: 2 }}>
+              <IconButton onClick={handleClick}>
+                <IconTranslate />
+              </IconButton>
 
-            <Menu
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-            >
-              {locales.map((locale) => (
-                <MenuItem key={locale} onClick={() => changeLocale(locale)}>
-                  {locale}
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+              <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+              >
+                {locales.map((locale) => (
+                  <MenuItem key={locale} onClick={() => changeLocale(locale)}>
+                    {locale}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
 
-          <CssBaseline />
-          <RouterProvider router={router} />
-        </AuthProvider>
+            <CssBaseline />
+            <RouterProvider router={router} />
+          </AuthProvider>
+        </SnackbarProvider>
       </IntlProvider>
     </ThemeProvider>
   )

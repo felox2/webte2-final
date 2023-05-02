@@ -12,25 +12,31 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Copyright from '@/components/Copyright'
 import { FormattedMessage } from 'react-intl'
-import ky from 'ky'
+import ky from '@/utils/ky'
 import { AuthContext } from '@/components/AuthProvider'
 import { useNavigate } from 'react-router-dom'
+import SnackbarContext from '@/components/SnackbarProvider'
 
 export default function SignIn() {
   const auth = useContext(AuthContext)
   const navigate = useNavigate()
+  const { triggerSnackbar } = useContext(SnackbarContext)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const data = new FormData(event.currentTarget)
-    // TODO: create global ky instance
-    const res: any = await ky.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
-      body: data,
-    }).json()
+    
+    try {
+      const res: any = await ky.post('auth/login', { body: data }).json()
+      auth.handleLogin(res.access_token)
+      navigate('/')
+      triggerSnackbar('Logged in successfully', 'success')
+    }
+    catch (err) {
+      triggerSnackbar('Couldn\'t log in', 'error')
+    }
 
-    auth.handleLogin(res.access_token)
-    navigate('/')
   }
 
   return (
