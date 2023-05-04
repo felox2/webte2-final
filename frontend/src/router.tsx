@@ -22,7 +22,9 @@ const router = createBrowserRouter(
         </Route>
       </Route>
     </>,
-  ),
+  ), {
+    basename: '/final',
+  },
 )
 
 export default router
