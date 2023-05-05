@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -12,31 +12,26 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Copyright from '@/components/Copyright'
 import { FormattedMessage } from 'react-intl'
-import ky from '@/utils/ky'
+import { ky } from '@/utils/ky'
 import { AuthContext } from '@/components/AuthProvider'
-import { useNavigate } from 'react-router-dom'
 import SnackbarContext from '@/components/SnackbarProvider'
 
 export default function SignIn() {
   const auth = useContext(AuthContext)
-  const navigate = useNavigate()
   const { triggerSnackbar } = useContext(SnackbarContext)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const data = new FormData(event.currentTarget)
-    
+
     try {
-      const res: any = await ky.post('auth/login', { body: data }).json()
+      const res: any = await ky.post('auth/login', { body: data, credentials: 'include' }).json()
       auth.handleLogin(res.access_token)
-      navigate('/')
       triggerSnackbar('Logged in successfully', 'success')
-    }
-    catch (err) {
+    } catch (err) {
       triggerSnackbar('Couldn\'t log in', 'error')
     }
-
   }
 
   return (
@@ -76,7 +71,7 @@ export default function SignIn() {
             autoComplete='current-password'
           />
           <FormControlLabel
-            control={<Checkbox value='remember' name='remember' color='primary' />}
+            control={<Checkbox value='remember' name='remember' color='primary' defaultChecked={true} />}
             label='Remember me'
           />
           <Button

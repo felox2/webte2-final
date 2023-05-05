@@ -1,7 +1,14 @@
-import kyclient from 'ky'
+import kyclient, { Options } from 'ky'
 
-const ky = kyclient.create({
-    prefixUrl: import.meta.env.VITE_API_URL,
-})
+const defaultOptions = {
+  prefixUrl: import.meta.env.VITE_API_URL,
+  headers: {
+    accept: 'application/json',
+  },
+}
 
-export default ky
+export let ky = kyclient.create({ ...defaultOptions })
+
+export function setDefaults(options: Options) {
+  ky = ky.extend(options)
+}

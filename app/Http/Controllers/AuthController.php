@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RefreshToken;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+  private float $refreshTokenExpireDays;
+
   /**
    * Create a new AuthController instance.
    *
-   * @return void
    */
   public function __construct()
   {
-    $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    $this->middleware('auth:api', ['except' => ['login', 'register', 'restore']]);
+    $this->refreshTokenExpireDays = floatval(env('REFRESH_TOKEN_EXPIRE_DAYS', 30));
   }
 
-  public function register(Request $request)
+  public function register(Request $request): JsonResponse
   {
     $validatedData = $request->validate([
       'first_name' => 'required|max:55',
@@ -36,65 +41,114 @@ class AuthController extends Controller
 
   /**
    * Get a JWT via given credentials.
-   *
-   * @return \Illuminate\Http\JsonResponse
    */
-  public function login()
+  public function login(): JsonResponse
   {
     $credentials = request(['email', 'password']);
+    $remember = request('remember') != null;
 
     if (!$token = auth()->attempt($credentials)) {
       return response()->json(['error' => 'Unauthorized'], 401);
     }
 
-    return $this->respondWithToken($token);
+    $refreshToken = null;
+    if ($remember) {
+      $refreshToken = new RefreshToken([
+        'refresh_token' => Str::random(),
+        'expires_at' => now()->addDays($this->refreshTokenExpireDays),
+        'user_id' => auth()->user()->id,
+      ]);
+      $refreshToken->save();
+    }
+
+    return $this->respondWithToken($token, $refreshToken?->refresh_token);
+  }
+
+  public function restore(): JsonResponse
+  {
+    $refreshToken = request()->cookie('refresh_token');
+
+    if (!$refreshToken) {
+      return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    $dbRefreshToken = RefreshToken::where('refresh_token', $refreshToken)->first();
+
+    if (!$dbRefreshToken) {
+      return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    if ($dbRefreshToken->expires_at < now() || $dbRefreshToken->revoked_at != null) {
+      return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    $accessToken = auth()->login($dbRefreshToken->user);
+
+    $dbRefreshToken->refresh_token = Str::random();
+    $dbRefreshToken->expires_at = now()->addDays($this->refreshTokenExpireDays);
+    $dbRefreshToken->save();
+
+    return $this->respondWithToken($accessToken, $dbRefreshToken->refresh_token);
   }
 
   /**
    * Get the authenticated User.
-   *
-   * @return \Illuminate\Http\JsonResponse
    */
-  public function me()
+  public function me(): JsonResponse
   {
     return response()->json(auth()->user());
   }
 
   /**
    * Log the user out (Invalidate the token).
-   *
-   * @return \Illuminate\Http\JsonResponse
    */
-  public function logout()
+  public function logout(): JsonResponse
   {
+    $refreshToken = request()->cookie('refresh_token');
+
+    if ($refreshToken) {
+      $dbRefreshToken = RefreshToken::where('refresh_token', $refreshToken)->first();
+      $dbRefreshToken->revoked_at = now();
+      $dbRefreshToken->save();
+    }
+
     auth()->logout();
 
-    return response()->json(['message' => 'Successfully logged out']);
+    return response()
+      ->json(['message' => 'Successfully logged out'])
+      ->withoutCookie('refresh_token');
   }
 
   /**
    * Refresh a token.
-   *
-   * @return \Illuminate\Http\JsonResponse
    */
-  public function refresh()
+  public function refresh(): JsonResponse
   {
     return $this->respondWithToken(auth()->refresh());
   }
 
   /**
    * Get the token array structure.
-   *
-   * @param string $token
-   *
-   * @return \Illuminate\Http\JsonResponse
    */
-  protected function respondWithToken($token)
+  protected function respondWithToken(string $token, string|null $refreshToken = null): JsonResponse
   {
-    return response()->json([
+    $response = response()->json([
       'access_token' => $token,
       'token_type' => 'bearer',
       'expires_in' => auth()->factory()->getTTL() * 60
     ]);
+
+    if ($refreshToken) {
+      $cookie = cookie('refresh_token',
+        $refreshToken,
+        $this->refreshTokenExpireDays * 24 * 60,
+        null,
+        null,
+        request()->secure()
+      );
+      $response->cookie($cookie);
+    }
+
+    return $response;
   }
 }

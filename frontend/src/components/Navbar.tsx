@@ -10,9 +10,10 @@ import {
   Button,
   Avatar, SwipeableDrawer, List, Divider, ListItem, ListItemButton, ListItemText,
 } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Link } from 'react-router-dom'
+import { AuthContext } from '@/components/AuthProvider'
 
 const links = [
   {
@@ -29,16 +30,13 @@ const settings = [
 ]
 
 export default function Navbar() {
-  // const { auth } = usePage().props
-  // const user = (auth as any)?.user
-  const user = false
+  const { user, handleLogout } = useContext(AuthContext)
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
   }
-
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
@@ -48,6 +46,11 @@ export default function Navbar() {
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState)
+  }
+
+  const handleLogoutClick = () => {
+    handleLogout()
+    handleCloseUserMenu()
   }
 
   const drawer = (
@@ -135,7 +138,7 @@ export default function Navbar() {
               user ?
                 (<Box sx={{ flexGrow: 0 }}>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+                    <Avatar>{user.first_name[0] + user.last_name[0]}</Avatar>
                   </IconButton>
 
                   <Menu
@@ -161,14 +164,13 @@ export default function Navbar() {
                         <Typography textAlign='center'>{setting.label}</Typography>
                       </MenuItem>
                     ))}
+                    <Divider />
+                    <MenuItem onClick={handleLogoutClick}>
+                      <Typography textAlign='center'>Logout</Typography>
+                    </MenuItem>
                   </Menu>
-                </Box>) :
-                (<Box>
-
-                </Box>)
+                </Box>) : null
             }
-
-
           </Toolbar>
         </Container>
       </AppBar>

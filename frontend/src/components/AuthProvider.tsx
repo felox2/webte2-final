@@ -1,31 +1,77 @@
 import { createContext, ReactNode, useState } from 'react'
+import { ky, setDefaults } from '@/utils/ky'
+import { useEffectOnce } from '@/hooks/useEffectOnce'
 
 export interface AuthContextType {
-  token: string | null
+  user: User | null
+  initializing: boolean
   handleLogin: (token: string) => void
   handleLogout: () => void
 }
 
-export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
+export type Role = 'admin' | 'user' | 'teacher'
 
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+export interface User {
+  id: number
+  email: string
+  first_name: string
+  last_name: string
+  role: Role
 }
 
+export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState<string | null>(null)
+  const [user, setUser] = useState<User | null>(null)
+  const [initializing, setInitializing] = useState(true)
+
+  useEffectOnce(() => {
+    ky.post('auth/restore', { credentials: 'include' })
+      .json()
+      .then(async (data: any) => {
+        handleLogin(data.access_token)
+      })
+      .catch(() => {
+      })
+      .finally(() => {
+        setInitializing(false)
+      })
+  })
 
   function handleLogin(token: string) {
-    // TODO: save token to local storage or somewhere
-    setToken(token)
+    const parts = token.split('.')
+    const payload = JSON.parse(atob(parts[1]))
+
+    setDefaults({
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    })
+
+    setUser({
+      id: payload.sub,
+      email: payload.email,
+      first_name: payload.first_name,
+      last_name: payload.last_name,
+      role: payload.role,
+    })
   }
 
   function handleLogout() {
-    setToken(null)
+    ky.post('auth/logout', { credentials: 'include' })
+      .then(() => {
+        setUser(null)
+        setDefaults({
+          headers: {
+            authorization: undefined,
+          },
+        })
+      })
   }
 
   const value = {
-    token,
+    initializing,
+    user,
     handleLogin,
     handleLogout,
   }

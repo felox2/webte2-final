@@ -46,13 +46,23 @@ class User extends Authenticatable implements JWTSubject
     return $this->getKey();
   }
 
-  public function getJWTCustomClaims()
+  public function getJWTCustomClaims(): array
   {
-    return [];
+    return [
+      'role' => $this->role,
+      'first_name' => $this->first_name,
+      'last_name' => $this->last_name,
+      'email' => $this->email,
+    ];
   }
 
-  public function assignments()
+  public function assignments(): \Illuminate\Database\Eloquent\Relations\HasMany
   {
     return $this->hasMany(Assignment::class);
+  }
+
+  public function refreshTokens(): \Illuminate\Database\Eloquent\Relations\HasMany
+  {
+    return $this->hasMany(RefreshToken::class);
   }
 }

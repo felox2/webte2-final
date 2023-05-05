@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { IntlProvider } from 'react-intl'
-import { AuthProvider } from '@/components/AuthProvider'
+import { AuthContext, AuthProvider } from '@/components/AuthProvider'
 import { Box, CssBaseline, IconButton, Menu, MenuItem, ThemeProvider } from '@mui/material'
 import { RouterProvider } from 'react-router-dom'
 import IconTranslate from '@mui/icons-material/Translate'
@@ -15,6 +15,7 @@ export default function App() {
   const currentMessages = useMemo(() => messages[locale], [locale])
   const open = Boolean(anchorEl)
   const locales = Object.keys(messages) as Array<keyof typeof messages>
+  const { initializing } = useContext(AuthContext)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -54,6 +55,18 @@ export default function App() {
 
             <CssBaseline />
             <RouterProvider router={router} />
+
+            {/* TODO: maybe add a loader */}
+            {initializing ? (
+              <Box sx={{
+                position: 'fixed',
+                left: 0,
+                top: 0,
+                width: '100%',
+                height: '100%',
+                bgcolor: 'rgba(0, 0, 0, 0.5)',
+              }} />
+            ) : null}
           </AuthProvider>
         </SnackbarProvider>
       </IntlProvider>

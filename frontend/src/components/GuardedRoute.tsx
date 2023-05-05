@@ -32,7 +32,7 @@ interface GuardedRouteProps {
  */
 function GuardedRoute({ guest, redirectRoute }: GuardedRouteProps) {
   const auth = useContext(AuthContext)
-  const isAccessible = guest ? !auth.token : !!auth.token
+  const isAccessible = guest ? !auth.user : !!auth.user
 
   return isAccessible ? <Outlet /> : <Navigate to={redirectRoute || '/'} replace={true} />
 }

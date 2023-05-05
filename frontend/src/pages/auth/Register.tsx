@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -8,15 +8,13 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { Form, useNavigate } from 'react-router-dom'
 import Copyright from '@/components/Copyright'
 import { AuthContext } from '@/components/AuthProvider'
-import ky from '@/utils/ky'
+import { ky } from '@/utils/ky'
 import SnackbarContext from '@/components/SnackbarProvider'
 
 export default function SignUp() {
   const auth = useContext(AuthContext)
-  const navigate = useNavigate()
   const { triggerSnackbar } = useContext(SnackbarContext)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -27,7 +25,6 @@ export default function SignUp() {
     try {
       const res: any = await ky.post('auth/register', { body: data }).json()
       auth.handleLogin(res.access_token)
-      navigate('/')
       triggerSnackbar('Registered successfully', 'success')
     }
     catch (err) {
@@ -53,7 +50,7 @@ export default function SignUp() {
         <Typography component='h1' variant='h5'>
           Sign up
         </Typography>
-        <Box component={Form} onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+        <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
