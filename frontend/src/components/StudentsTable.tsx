@@ -10,9 +10,10 @@ import {
   TableSortLabel,
 } from '@mui/material'
 import Table from '@mui/material/Table'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
+import { ky } from '@/utils/ky'
 
 interface Data {
   id: number
@@ -74,50 +75,32 @@ const headCells: readonly HeadCell[] = [
   },
 ]
 
-const fakeData: Data[] = [
-  {
-    id: 1,
-    firstname: 'Janko',
-    lastname: 'Hraško',
-    generatedAssignmentCount: 3,
-    handedInAssignmentCount: 5,
-    earnedPointCount: 20,
-    totalPointCount: 30,
-    successRate: 0.66,
-  },
-  {
-    id: 2,
-    firstname: 'Samko',
-    lastname: 'Rozko',
-    generatedAssignmentCount: 10,
-    handedInAssignmentCount: 5,
-    earnedPointCount: 20,
-    totalPointCount: 30,
-    successRate: 0.66,
-  },
-  {
-    id: 3,
-    firstname: 'Zuzka',
-    lastname: 'Ferko',
-    generatedAssignmentCount: 33,
-    handedInAssignmentCount: 5,
-    earnedPointCount: 20,
-    totalPointCount: 30,
-    successRate: 0.66,
-  },
-]
-
 export default function StudentsTable() {
   const navigate = useNavigate()
+
+  const [data, setData] = useState<Data[]>([])
   const [order, setOrder] = useState<'asc' | 'desc'>('asc')
   const [orderBy, setOrderBy] = useState<keyof Data>('id')
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(5)
+
+  useEffect(() => {
+    ky.get('students', { searchParams: { page, size: rowsPerPage, sort: orderBy, order } })
+      .json<Data[]>()
+      .then((data) => setData(data))
+      .catch((error) => console.error('Ky error: ', error))
+  }, [])
+
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
+
+    ky.get('students', { searchParams: { page, size: rowsPerPage, sort: orderBy, order } })
+      .json<Data[]>()
+      .then((data) => setData(data))
+      .catch((error) => console.error('Ky error: ', error))
   }
 
   return (
@@ -144,7 +127,7 @@ export default function StudentsTable() {
             </TableHead>
 
             <TableBody>
-              {fakeData.map((row) => (
+              {data.map((row) => (
                 <TableRow
                   hover
                   key={row.id}
@@ -168,7 +151,7 @@ export default function StudentsTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component='div'
-          count={fakeData.length}
+          count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={(event, newPage) => setPage(newPage)}
