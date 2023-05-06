@@ -35,6 +35,7 @@ export default function App() {
       <IntlProvider defaultLocale='en' locale={locale} messages={currentMessages}>
         <SnackbarProvider>
           <AuthProvider>
+            {/* TODO: fix language icon's position for smaller screens (avatar overlapts it) */}
             <Box sx={{ position: 'fixed', right: 0, top: 0, mt: 2, mr: 2 }}>
               <IconButton onClick={handleClick}>
                 <IconTranslate />
