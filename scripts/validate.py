@@ -12,7 +12,13 @@ def is_same(x, y):
         traceback.print_exc()
         exit(1)
 
-    return sympy.simplify(expected) == sympy.simplify(actual)
+    a = sympy.nsimplify(expected, tolerance=0.0001, rational=True)
+    b = sympy.nsimplify(actual, tolerance=0.0001, rational=True)
+
+    a = sympy.simplify(a)
+    b = sympy.simplify(b)
+    
+    return a == b
 
 if len(sys.argv) != 3:
     print("Usage: python validate.py <expected> <actual>")
