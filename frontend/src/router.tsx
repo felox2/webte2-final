@@ -30,7 +30,7 @@ const router = createBrowserRouter(
       </Route>
     </>,
   ), {
-    basename: '/final',
+    basename: import.meta.env.BASE_URL,
   },
 )
 
