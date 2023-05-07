@@ -5,12 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Assignment extends Model
 {
-  use HasFactory;
+  protected $table = 'assignment_info';
 
   protected $fillable = [
+    'teacher_id',
+    'title',
+    'description',
+    'exercise_set_id',
     'max_points',
     'start_date',
     'end_date',
@@ -21,18 +26,13 @@ class Assignment extends Model
     return $this->belongsTo(User::class, 'teacher_id');
   }
 
-  public function student(): BelongsTo
-  {
-    return $this->belongsTo(User::class, 'student_id');
-  }
-
   public function exerciseSet(): BelongsTo
   {
-    return $this->belongsTo(ExerciseSet::class);
+    return $this->belongsTo(ExerciseSet::class, 'exercise_set_id');
   }
 
-  public function exercise(): BelongsTo
+  public function submissions(): HasMany
   {
-    return $this->belongsTo(Exercise::class);
+    return $this->hasMany(Submission::class, 'submission_id');
   }
 }

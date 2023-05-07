@@ -19,8 +19,8 @@ return new class extends Migration {
 
     Schema::create('exercises', function (Blueprint $table) {
       $table->id();
-      $table->string('task');
-      $table->string('solution');
+      $table->string('task', 2048);
+      $table->string('solution', 2048);
       $table->foreignId('exercise_set_id')->constrained();
       $table->timestamps();
     });
@@ -28,13 +28,22 @@ return new class extends Migration {
     Schema::create('assignments', function (Blueprint $table) {
       $table->id();
       $table->foreignId('teacher_id')->constrained('users');
-      $table->foreignId('student_id')->constrained('users');
+      $table->string('title');
+      $table->string('description');
       $table->foreignId('exercise_set_id')->constrained();
-      $table->foreignId('exercise_id')->nullable()->constrained();
       $table->float('max_points', 8, 3);
-      $table->float('points', 8, 3)->nullable();
       $table->timestamp('start_date')->nullable();
       $table->timestamp('end_date')->nullable();
+      $table->timestamps();
+    });
+
+    Schema::create('submissions', function (Blueprint $table) {
+      $table->id();
+      $table->foreignId('assignment_id')->constrained();
+      $table->foreignId('student_id')->constrained('users');
+      $table->foreignId('exercise_id')->nullable()->constrained();
+      $table->float('points', 8, 3)->nullable();
+      $table->string('provided_solution', 2048)->nullable();
       $table->timestamps();
     });
   }
@@ -44,10 +53,10 @@ return new class extends Migration {
    */
   public function down(): void
   {
+    Schema::dropIfExists('submissions');
     Schema::dropIfExists('assignments');
 
     Schema::dropIfExists('exercises');
-
     Schema::dropIfExists('exercise_sets');
   }
 };

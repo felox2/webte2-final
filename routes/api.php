@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StudentController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,12 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 require __DIR__ . '/auth.php';
-
-Route::get('/', HomeController::class)->name('home');
-
-Route::middleware('auth')->get('/user', function (Request $request) {
-  return $request->user();
-});
 
 // TODO: secure routes (auth and roles) (maybe https://laravel.com/docs/10.x/authorization#creating-policies)
 Route::controller(StudentController::class)->group(function () {

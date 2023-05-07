@@ -2,12 +2,12 @@
 
 namespace App\Latex;
 
-use App\Models\Assignment;
+use App\Models\Submission;
 use App\Models\Exercise;
 
 class ExerciseValidation
 {
-  public static function validate(Exercise $exercise, Assignment $assignment): bool
+  public static function validate(Exercise $exercise, Submission $assignment): bool
   {
     $expected = $exercise->solution;
     $actual = $assignment->provided_solution;
@@ -16,7 +16,7 @@ class ExerciseValidation
       return false;
     }
 
-    $result = exec('python ../scripts/validate.py "' . $expected . '" "' . $actual . '"', $output);
+    $result = exec("python ../scripts/validate.py \"$expected\" \"$actual\"");
 
     if ($result === 'True') {
       return true;

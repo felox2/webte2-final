@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ExerciseSet extends Model
 {
-  use HasFactory;
-
   protected $fillable = [
     'file_path',
     'hash',
