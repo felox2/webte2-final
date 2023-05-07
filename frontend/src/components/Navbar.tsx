@@ -14,12 +14,21 @@ import React, { useContext, useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '@/components/AuthProvider'
+import { FormattedMessage } from 'react-intl'
+import { Roles } from '@/utils/roles'
+import PermissionGate from './PermissionGate'
 
 const links = [
   {
-    label: 'Home',
+    label: 'navbar.home',
     href: '/',
+    roles: [Roles.Student, Roles.Teacher, Roles.Admin],
   },
+  {
+    label: 'navbar.assigning',
+    href: '/assigning',
+    roles: [Roles.Teacher, Roles.Admin],
+  }
 ]
 
 const settings = [
@@ -61,11 +70,15 @@ export default function Navbar() {
       <Divider />
       <List>
         {links.map((item) => (
-          <ListItem key={item.href} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item.label} />
-            </ListItemButton>
-          </ListItem>
+          <PermissionGate key={item.href} roles={item.roles}>
+            <ListItem disablePadding>
+              <ListItemButton sx={{ textAlign: 'center' }}>
+                <ListItemText>
+                  <FormattedMessage id={item.label} />
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
+          </PermissionGate>
         ))}
       </List>
     </Box>
@@ -125,12 +138,13 @@ export default function Navbar() {
 
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {links.map((link) => (
-                <Button
-                  key={link.href}
-                  href={link.href}
-                  sx={{ my: 2, color: 'white', display: 'block' }}>
-                  {link.label}
-                </Button>
+                <PermissionGate key={link.href} roles={link.roles}>
+                  <Button
+                    href={link.href}
+                    sx={{ my: 2, color: 'white', display: 'block' }}>
+                    <FormattedMessage id={link.label} />
+                  </Button>
+                </PermissionGate>
               ))}
             </Box>
 

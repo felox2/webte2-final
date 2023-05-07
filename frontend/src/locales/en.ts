@@ -1,11 +1,15 @@
 export default {
   'auth.login': 'Sign in',
+
+  'navbar.home': 'Home',
+  'navbar.assigning': 'Assigning',
+
   'tables.headers.students.studentid': 'Student ID',
   'tables.headers.students.lastname': 'Last name',
   'tables.headers.students.firstname': 'First name',
-  'tables.headers.students.generatedAssignmentCount': 'en:Počet vygenerovaných úloh',
-  'tables.headers.students.handedInAssignmentCount': 'en:Počet odovzdaných úloh',
-  'tables.headers.students.earnedPointCount': 'en:Počet získaných bodov',
-  'tables.headers.students.totalPointCount': 'en:Počet bodov za všetky úlohy',
-  'tables.headers.students.successRate': 'en:Úspešnosť',
+  'tables.headers.students.generatedAssignmentCount': 'Generated assignments count',
+  'tables.headers.students.handedInAssignmentCount': 'Handed in assignments count',
+  'tables.headers.students.earnedPointCount': 'Earned points',
+  'tables.headers.students.totalPointCount': 'Max. possible points',
+  'tables.headers.students.successRate': 'Success rate',
 }

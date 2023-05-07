@@ -67,6 +67,13 @@ class User extends Authenticatable implements JWTSubject
     return $this->hasMany(Submission::class, 'student_id');
   }
 
+  public function submissionsWithPointsSum()
+  {
+    return $this->submissions()
+      ->selectRaw('student_id, COALESCE(SUM(points),0) as points_sum')
+      ->groupBy('student_id');
+  }
+
   public function refreshTokens(): HasMany
   {
     return $this->hasMany(RefreshToken::class);
