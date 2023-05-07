@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Assignment extends Model
 {
-  protected $table = 'assignment_info';
-
   protected $fillable = [
     'teacher_id',
     'title',
@@ -33,6 +32,6 @@ class Assignment extends Model
 
   public function submissions(): HasMany
   {
-    return $this->hasMany(Submission::class, 'submission_id');
+    return $this->hasMany(Submission::class);
   }
 }

@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Submission extends Model
 {
+  protected $fillable = ['student_id', 'assignment_id'];
+
   public function exercise(): BelongsTo
   {
     return $this->belongsTo(Exercise::class);

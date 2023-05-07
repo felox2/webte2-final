@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
@@ -25,4 +26,8 @@ Route::controller(StudentController::class)->group(function () {
 Route::group(['prefix' => 'exercises'], function () {
   Route::get('/', [ExerciseController::class, 'index']);
   Route::get('/{exercise_set}', [ExerciseController::class, 'show']);
+});
+
+Route::group(['prefix' => 'assignments', 'middleware' => 'auth'], function () {
+  Route::post('/', [AssignmentController::class, 'create']);
 });
