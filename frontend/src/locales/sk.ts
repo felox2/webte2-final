@@ -1,5 +1,9 @@
 export default {
   'auth.login': 'Prihlásiť sa',
+
+  'navbar.home': 'Domov',
+  'navbar.assigning': 'Priraďovanie',
+
   'tables.headers.students.studentid': 'ID študenta',
   'tables.headers.students.lastname': 'Priezvisko',
   'tables.headers.students.firstname': 'Meno',

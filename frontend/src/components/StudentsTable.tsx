@@ -15,19 +15,22 @@ import { useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { ky } from '@/utils/ky'
 
-interface Data {
+interface Items {
   id: number
-  firstname: string
-  lastname: string
-  generatedAssignmentCount: number
-  handedInAssignmentCount: number
-  earnedPointCount: number
-  totalPointCount: number
-  successRate: number
+  first_name: string
+  last_name: string
+  submissions_count: number
+  submissions_count_provided_solution: number
+  submissions_points_sum: number
+}
+
+interface Data {
+  items: Items[],
+  total: number
 }
 
 interface HeadCell {
-  id: keyof Data
+  id: keyof Items
   label: string
   numeric: boolean
 }
@@ -39,68 +42,61 @@ const headCells: readonly HeadCell[] = [
     label: 'tables.headers.students.studentid',
   },
   {
-    id: 'lastname',
+    id: 'last_name',
     numeric: false,
     label: 'tables.headers.students.lastname',
   },
   {
-    id: 'firstname',
+    id: 'first_name',
     numeric: false,
     label: 'tables.headers.students.firstname',
   },
   {
-    id: 'generatedAssignmentCount',
+    id: 'submissions_count',
     numeric: true,
     label: 'tables.headers.students.generatedAssignmentCount',
   },
   {
-    id: 'handedInAssignmentCount',
+    id: 'submissions_count_provided_solution',
     numeric: true,
     label: 'tables.headers.students.handedInAssignmentCount',
   },
   {
-    id: 'earnedPointCount',
+    id: 'submissions_points_sum',
     numeric: true,
     label: 'tables.headers.students.earnedPointCount',
   },
-  {
-    id: 'totalPointCount',
-    numeric: true,
-    label: 'tables.headers.students.totalPointCount',
-  },
-  {
-    id: 'successRate',
-    numeric: true,
-    label: 'tables.headers.students.successRate',
-  },
 ]
+
+const fetchStudents = async (page: number, rowsPerPage: number, sort: keyof Items, order: 'asc' | 'desc'): Promise<Data> => {
+  const response = await ky.get('students', { searchParams: { page: page + 1, size: rowsPerPage, sort, order } })
+  return await response.json()
+}
 
 export default function StudentsTable() {
   const navigate = useNavigate()
 
-  const [data, setData] = useState<Data[]>([])
+  const [data, setData] = useState<Data>({ items: [], total: 0 })
   const [order, setOrder] = useState<'asc' | 'desc'>('asc')
-  const [orderBy, setOrderBy] = useState<keyof Data>('id')
-  const [page, setPage] = useState(1)
+  const [orderBy, setOrderBy] = useState<keyof Items>('id')
+  const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
   useEffect(() => {
-    ky.get('students', { searchParams: { page, size: rowsPerPage, sort: orderBy, order } })
-      .json<Data[]>()
+    fetchStudents(page, rowsPerPage, orderBy, order)
       .then((data) => setData(data))
-      .catch((error) => console.error('Ky error: ', error))
+      .catch((error) => console.error('Fetch error: ', error))
   }, [])
 
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Items) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
 
-    ky.get('students', { searchParams: { page, size: rowsPerPage, sort: orderBy, order } })
-      .json<Data[]>()
+    fetchStudents(page, rowsPerPage, orderBy, order)
       .then((data) => setData(data))
-      .catch((error) => console.error('Ky error: ', error))
+      .catch((error) => console.error('Fetch error: ', error))
   }
 
   return (
@@ -127,7 +123,7 @@ export default function StudentsTable() {
             </TableHead>
 
             <TableBody>
-              {data.map((row) => (
+              {data.items.map((row) => (
                 <TableRow
                   hover
                   key={row.id}
@@ -136,28 +132,36 @@ export default function StudentsTable() {
                   <TableCell component='th' scope='row'>
                     {row.id}
                   </TableCell>
-                  <TableCell>{row.lastname}</TableCell>
-                  <TableCell>{row.firstname}</TableCell>
-                  <TableCell align='right'>{row.generatedAssignmentCount}</TableCell>
-                  <TableCell align='right'>{row.handedInAssignmentCount}</TableCell>
-                  <TableCell align='right'>{row.earnedPointCount}</TableCell>
-                  <TableCell align='right'>{row.totalPointCount}</TableCell>
-                  <TableCell align='right'>{row.successRate}</TableCell>
+                  <TableCell>{row.last_name}</TableCell>
+                  <TableCell>{row.first_name}</TableCell>
+                  <TableCell align='right'>{row.submissions_count}</TableCell>
+                  <TableCell align='right'>{row.submissions_count_provided_solution}</TableCell>
+                  <TableCell align='right'>{row.submissions_points_sum}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 15]}
           component='div'
-          count={data.length}
+          count={data.total}
           rowsPerPage={rowsPerPage}
           page={page}
-          onPageChange={(event, newPage) => setPage(newPage)}
+          onPageChange={(event, newPage: number) => {
+            setPage(newPage)
+
+            fetchStudents(page, rowsPerPage, orderBy, order)
+              .then((data) => setData(data))
+              .catch((error) => console.error('Fetch error: ', error))
+          }}
           onRowsPerPageChange={(event) => {
             setRowsPerPage(parseInt(event.target.value, 10))
             setPage(0)
+
+            fetchStudents(page, rowsPerPage, orderBy, order)
+              .then((data) => setData(data))
+              .catch((error) => console.error('Fetch error: ', error))
           }}
         />
       </Paper>
