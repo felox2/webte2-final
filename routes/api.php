@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,9 @@ require __DIR__ . '/auth.php';
 // TODO: secure routes (auth and roles) (maybe https://laravel.com/docs/10.x/authorization#creating-policies)
 Route::controller(StudentController::class)->group(function () {
   Route::get('/students', 'getAllStudents');
+});
+
+Route::group(['prefix' => 'exercises'], function () {
+  Route::get('/', [ExerciseController::class, 'index']);
+  Route::get('/{exercise_set}', [ExerciseController::class, 'show']);
 });
