@@ -24,7 +24,7 @@ Route::middleware('auth')->get('/user', function (Request $request) {
   return $request->user();
 });
 
-// TODO: secure routes (auth and roles)
+// TODO: secure routes (auth and roles) (maybe https://laravel.com/docs/10.x/authorization#creating-policies)
 Route::controller(StudentController::class)->group(function () {
   Route::get('/students', 'getAllStudents');
 });
