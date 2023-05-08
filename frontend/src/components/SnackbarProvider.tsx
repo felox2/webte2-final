@@ -1,6 +1,7 @@
 import MuiAlert, { AlertProps } from '@mui/material/Alert'
 import { AlertColor, Snackbar } from '@mui/material'
 import { createContext, forwardRef, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 
 interface SnackbarContextProps {
   triggerSnackbar: (message: string, severity: AlertColor) => void
@@ -57,7 +58,9 @@ export function SnackbarProvider({ children }: { children: React.ReactNode }) {
           severity={snackbarState.severity}
           sx={{ width: '100%' }}
         >
-          {snackbarState.message}
+          {snackbarState.message ?
+            <FormattedMessage id={snackbarState.message} defaultMessage={snackbarState.message} /> :
+            snackbarState.message}
         </Alert>
       </Snackbar>
     </SnackbarContext.Provider>

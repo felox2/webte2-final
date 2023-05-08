@@ -18,6 +18,11 @@ class ExerciseController extends Controller
 
     $exercise_sets = [];
 
+    $result = [
+      "items" => [],
+      "total" => 0
+    ];
+
     foreach ($files as &$file) {
       $path = $root . '/' . $file;
       $content = file_get_contents($path);
@@ -45,9 +50,15 @@ class ExerciseController extends Controller
       }
 
       $exercise_sets[] = $exercise_set;
+      $result["items"][] = [
+        "id" => $exercise_set->id,
+        "file_name" => basename($exercise_set->file_path),
+        "created_at" => $exercise_set->created_at,
+      ];
+      $result["total"] += 1;
     }
 
-    return response()->json($exercise_sets);
+    return response()->json($result);
   }
 
   public function show(ExerciseSet $exercise_set): JsonResponse

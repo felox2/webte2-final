@@ -24,16 +24,13 @@ interface Items {
   submissions_points_sum: number
 }
 
-interface Data {
-  items: Items[],
-  total: number
-}
-
 interface HeadCell {
   id: keyof Items
   label: string
   numeric: boolean
 }
+
+type Data = ResponseBody<Items>
 
 const headCells: readonly HeadCell[] = [
   {
@@ -69,7 +66,8 @@ const headCells: readonly HeadCell[] = [
 ]
 
 const fetchStudents = async (page: number, rowsPerPage: number, sort: keyof Items, order: 'asc' | 'desc'): Promise<Data> => {
-  const response = await ky.get('students', { searchParams: { page: page + 1, size: rowsPerPage, sort, order } })
+  const searchParams = { submissionDetails: true, page: page + 1, size: rowsPerPage, sort, order }
+  const response = await ky.get('students', { searchParams })
   return await response.json()
 }
 

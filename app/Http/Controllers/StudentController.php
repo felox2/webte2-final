@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
-  public function getAllStudents(Request $request): JsonResponse
+  public function index(Request $request): JsonResponse
   {
     $qParams = $request->query();
 
@@ -18,11 +18,41 @@ class StudentController extends Controller
     $pageSize = $qParams["size"] ?? 10;
     $sort = $qParams["sort"] ?? "id";
     $order = $qParams["order"] ?? "asc";
+    $submissionDetails = $qParams["submissionDetails"] ?? false;
 
     if ($order !== "asc" && $order !== "desc") {
       $order = "asc";
     }
 
+    if ($submissionDetails) {
+      $students = $this->getStudentsWithSubmissionDetails([
+        "page" => $page,
+        "pageSize" => $pageSize,
+        "sort" => $sort,
+        "order" => $order
+      ]);
+
+      // Filter out unnecessary data
+      $result = [
+        "items" => $students->items(),
+        "total" => $students->total(),
+      ];
+
+      return response()->json($result, 200);
+    }
+
+    $students = User::where("role", "student")->get();
+
+    $result = [
+      "items" => $students,
+      "total" => count($students),
+    ];
+
+    return response()->json($result, 200);
+  }
+
+  private function getStudentsWithSubmissionDetails($params)
+  {
     $studentsQuery = User::where("role", "student")
       ->withCount([
         "submissions" => function ($query) {
@@ -35,23 +65,15 @@ class StudentController extends Controller
           $query->select(DB::raw("COALESCE(sum(points), 0) as submissions_points_sum"))->whereNotNull("provided_solution");
         },
       ])
-      ->orderBy($sort, $order);
+      ->orderBy($params["sort"], $params["order"]);
 
     $numericColumns = ["id", "submissions_count", "submissions_count_provided_solution", "submissions_points_sum"];
 
-    if (in_array($sort, $numericColumns)) {
-      $studentsQuery = $studentsQuery->orderBy("last_name", $order);
+    if (in_array($params["sort"], $numericColumns)) {
+      $studentsQuery = $studentsQuery->orderBy("last_name", $params["order"]);
     }
 
-    $students = $studentsQuery
-      ->paginate($pageSize, ["*"], "page", $page);
-
-    // Filter out unnecessary data
-    $result = [
-      "items" => $students->items(),
-      "total" => $students->total(),
-    ];
-
-    return response()->json($result, 200);
+    return $studentsQuery
+      ->paginate($params["pageSize"], ["*"], "page", $params["page"]);
   }
 }
