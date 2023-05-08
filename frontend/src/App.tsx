@@ -56,18 +56,6 @@ export default function App() {
 
             <CssBaseline />
             <RouterProvider router={router} />
-
-            {/* TODO: maybe add a loader */}
-            {initializing ? (
-              <Box sx={{
-                position: 'fixed',
-                left: 0,
-                top: 0,
-                width: '100%',
-                height: '100%',
-                bgcolor: 'rgba(0, 0, 0, 0.5)',
-              }} />
-            ) : null}
           </AuthProvider>
         </SnackbarProvider>
       </IntlProvider>

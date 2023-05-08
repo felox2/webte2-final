@@ -77,7 +77,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {!value.initializing ? children : (
+        // TODO: Add loading animation?
+        <div>Loading...</div>
+      )}
     </AuthContext.Provider>
   )
 }
