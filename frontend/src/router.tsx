@@ -23,7 +23,7 @@ const router = createBrowserRouter(
         <Route element={<GuardedRoute redirectRoute={'/auth/login'} />}>
           <Route index element={<Dashboard />} />
 
-          <Route element={<GuardedRoute roles={[Roles.Teacher]} redirectRoute={'/'} />}>
+          <Route element={<GuardedRoute roles={[Roles.Teacher, Roles.Admin]} redirectRoute={'/'} />}>
             <Route path='student/:id' element={<Student />} />
             <Route path='assigning' element={<Assigning />} />
           </Route>

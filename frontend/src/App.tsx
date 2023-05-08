@@ -1,18 +1,18 @@
 import { useContext, useMemo, useState } from 'react'
-import { IntlProvider } from 'react-intl'
+import { FormattedMessage, IntlProvider } from 'react-intl'
 import { AuthContext, AuthProvider } from '@/components/AuthProvider'
 import { Box, CssBaseline, IconButton, Menu, MenuItem, ThemeProvider } from '@mui/material'
 import { RouterProvider } from 'react-router-dom'
 import IconTranslate from '@mui/icons-material/Translate'
 import router from '@/router'
 import theme from '@/theme'
-import messages from '@/locales'
+import messages, { common as commonMessages } from '@/locales'
 import { SnackbarProvider } from './components/SnackbarProvider'
 
 export default function App() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [locale, setLocale] = useState<keyof typeof messages>('en')
-  const currentMessages = useMemo(() => messages[locale], [locale])
+  const currentMessages = useMemo(() => ({ ...commonMessages, ...messages[locale] }), [locale])
   const open = Boolean(anchorEl)
   const locales = Object.keys(messages) as Array<keyof typeof messages>
   const { initializing } = useContext(AuthContext)
@@ -48,7 +48,7 @@ export default function App() {
               >
                 {locales.map((locale) => (
                   <MenuItem key={locale} onClick={() => changeLocale(locale)}>
-                    {locale}
+                    <FormattedMessage id={`lang.${locale}`} />
                   </MenuItem>
                 ))}
               </Menu>

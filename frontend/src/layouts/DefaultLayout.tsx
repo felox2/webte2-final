@@ -1,6 +1,7 @@
 import { Box } from '@mui/material'
 import { Outlet } from 'react-router-dom'
 import Navbar from '@/components/Navbar'
+import Copyright from '@/components/Copyright'
 
 export default function GuestLayout() {
   return (
@@ -20,6 +21,8 @@ export default function GuestLayout() {
           <Outlet />
         </Box>
       </Box>
+
+      <Copyright sx={{ my: 2 }} />
     </Box>
   )
 }

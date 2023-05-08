@@ -17,7 +17,7 @@ def is_same(x, y):
 
     a = sympy.simplify(a)
     b = sympy.simplify(b)
-    
+
     return a == b
 
 if len(sys.argv) != 3:

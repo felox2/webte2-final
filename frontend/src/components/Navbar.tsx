@@ -87,7 +87,7 @@ export default function Navbar() {
   return (
     <>
       <AppBar position='static'>
-        <Container maxWidth='lg'>
+        <Container>
           <Toolbar>
             <IconButton
               color='inherit'
