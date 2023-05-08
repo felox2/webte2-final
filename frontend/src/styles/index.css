@@ -2,4 +2,13 @@
   display: block;
   border-radius: 6px;
   font-size: 1.75rem;
+  flex-grow: 1;
+}
+
+.latex > .body > p {
+  margin: 0;
+}
+
+.latex img {
+  margin: 0.5rem 0;
 }

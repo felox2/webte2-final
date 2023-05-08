@@ -1,7 +1,9 @@
 import { useMemo } from 'react'
 import { Generator, HtmlGenerator, parse } from 'latex.js'
 
-class TestMacro {
+import 'katex/dist/katex.css'
+
+class CustomMacros {
   g: Generator
 
   constructor(generator: Generator) {
@@ -14,7 +16,7 @@ class TestMacro {
 }
 
 // @ts-ignore
-TestMacro.prototype.includegraphics = function(file: string) {
+CustomMacros.prototype.includegraphics = function(file: string) {
   const img = this.g.create('img')
   img.src = `${import.meta.env.VITE_API_URL}/${file}`
 
@@ -25,9 +27,11 @@ export default function Latex({ text }: { text: string }) {
   const html = useMemo(() => {
     const generator = new HtmlGenerator({
       hyphenate: false,
-      CustomMacros: TestMacro,
+      CustomMacros: CustomMacros,
     })
-    const doc = parse(text, { generator: generator })
+    // TODO: do this some other way
+    const t = text.replace(/\\(begin|end)\{equation\*\}/g, '$$$$')
+    const doc = parse(t, { generator: generator })
     const domFragment = doc.domFragment()
 
     return domFragment.firstChild.outerHTML

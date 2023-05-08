@@ -21,6 +21,7 @@
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.2",
+    "dayjs": "^1.11.7",
     "katex": "^0.16.6",
     "ky": "^0.33.3",
     "latex.js": "^0.12.6",

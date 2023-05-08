@@ -8,6 +8,7 @@ import Register from '@/pages/auth/Register'
 import GuardedRoute from '@/components/GuardedRoute'
 import { Roles } from './utils/roles'
 import Assigning from './pages/Assigning'
+import Submission from '@/pages/submissions/Submission'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,8 @@ const router = createBrowserRouter(
       <Route path='/' element={<DefaultLayout />}>
         <Route element={<GuardedRoute redirectRoute={'/auth/login'} />}>
           <Route index element={<Dashboard />} />
+
+          <Route path='submission/:id' element={<Submission />} />
 
           <Route element={<GuardedRoute roles={[Roles.Teacher, Roles.Admin]} redirectRoute={'/'} />}>
             <Route path='student/:id' element={<Student />} />

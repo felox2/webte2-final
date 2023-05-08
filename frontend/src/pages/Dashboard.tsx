@@ -2,6 +2,7 @@ import PermissionGate from '@/components/PermissionGate'
 import StudentsTable from '@/components/StudentsTable'
 import { Roles } from '@/utils/roles'
 import { Box, Typography } from '@mui/material'
+import Assignments from '@/components/Assignments'
 
 export default function Dashboard() {
   return (
@@ -14,9 +15,7 @@ export default function Dashboard() {
       </PermissionGate>
 
       <PermissionGate roles={[Roles.Student]}>
-        <Box mt={2}>
-          <Typography variant='h4'>Hey Im a student</Typography>
-        </Box>
+        <Assignments />
       </PermissionGate>
     </>
   )

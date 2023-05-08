@@ -4,6 +4,14 @@ export default {
   'navbar.home': 'Home',
   'navbar.assigning': 'Assigning',
 
+  'assignments.current': 'Current assignments',
+  'assignments.past': 'Past assignments',
+  'assignments.noCurrentAssignments': 'No current assignments',
+
+  'submissions.task': 'Task',
+  'submissions.solution': 'Solution',
+  'submissions.providedSolution': 'Your solution',
+
   'tables.headers.students.studentid': 'Student ID',
   'tables.headers.students.lastname': 'Last name',
   'tables.headers.students.firstname': 'First name',
