@@ -20,8 +20,9 @@ use Illuminate\Support\Facades\Route;
 require __DIR__ . '/auth.php';
 
 // TODO: secure routes (auth and roles) (maybe https://laravel.com/docs/10.x/authorization#creating-policies)
-Route::controller(StudentController::class)->group(function () {
-  Route::get('/students', 'index');
+Route::group(['prefix' => 'students'], function () {
+  Route::get('/', [StudentController::class, 'index']);
+  Route::get('/{id}', [StudentController::class, 'show']);
 });
 
 Route::group(['prefix' => 'exercises'], function () {

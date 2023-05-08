@@ -19,20 +19,15 @@ import {
 } from '@mui/material'
 import SnackbarContext from '@/components/SnackbarProvider'
 import { ky } from '@/utils/ky'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { ResponseBody, Student } from '@/types/api'
+import { useEffectOnce } from '@/hooks/useEffectOnce'
 
 interface ExerciseSet {
   id: number,
   file_name: string,
   created_at: string,
-}
-
-interface Student {
-  id: number,
-  first_name: string,
-  last_name: string,
-  email: string,
 }
 
 interface Errors {
@@ -97,7 +92,7 @@ export default function () {
 
   const [errors, setErrors] = useState<Errors>({})
 
-  useEffect(() => {
+  useEffectOnce(() => {
     ky.get('exercises')
       .json<ResponseBody<ExerciseSet>>()
       .then(setExerciseSets)
@@ -107,7 +102,7 @@ export default function () {
       .json<ResponseBody<Student>>()
       .then(setStudents)
       .catch(console.error)
-  }, [])
+  })
 
   const reset = () => {
     setTitle('')
@@ -208,7 +203,10 @@ export default function () {
                   <ListItem key={student.id} disablePadding>
                     <ListItemButton onClick={() => handleStudentListItemToggle(student)} dense>
                       <ListItemIcon>
-                        <Checkbox edge='start' />
+                        <Checkbox
+                          checked={studentIds.includes(student.id)}
+                          edge='start'
+                        />
                       </ListItemIcon>
                       <ListItemText
                         primary={`${student.first_name} ${student.last_name}`}

@@ -35,4 +35,6 @@ export default {
   'assigning.form.errors.pointsPositive': 'Points must be positive',
   'assigning.snackbar.success': 'Assignment was successfully assigned',
   'assigning.snackbar.error': 'Assignment assigning failed',
+
+  'student.banner.assignmentCount': 'Number of all assigned assignments: {count}',
 }

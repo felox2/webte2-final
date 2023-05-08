@@ -10,15 +10,14 @@ import {
   TableSortLabel,
 } from '@mui/material'
 import Table from '@mui/material/Table'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 import { ky } from '@/utils/ky'
+import { ResponseBody, Student } from '@/types/api'
+import { useEffectOnce } from '@/hooks/useEffectOnce'
 
-interface Items {
-  id: number
-  first_name: string
-  last_name: string
+interface Items extends Student {
   submissions_count: number
   submissions_count_provided_solution: number
   submissions_points_sum: number
@@ -80,11 +79,11 @@ export default function StudentsTable() {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
-  useEffect(() => {
+  useEffectOnce(() => {
     fetchStudents(page, rowsPerPage, orderBy, order)
       .then((data) => setData(data))
       .catch((error) => console.error('Fetch error: ', error))
-  }, [])
+  })
 
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Items) => {

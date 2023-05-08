@@ -27,4 +27,6 @@ export default {
   'assigning.form.errors.pointsPositive': 'Body musia byť kladné',
   'assigning.snackbar.success': 'Priradenie úlohy prebehlo úspešne',
   'assigning.snackbar.error': 'Priradenie úlohy zlyhalo',
+
+  'student.banner.assignmentCount': 'Počet všetkých pridelených úloh: {count}',
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -46,6 +47,34 @@ class StudentController extends Controller
     $result = [
       "items" => $students,
       "total" => count($students),
+    ];
+
+    return response()->json($result, 200);
+  }
+
+  public function show(string $id): JsonResponse
+  {
+    $student = User::where("role", "student")
+      ->select("id", "first_name", "last_name", "email")
+      ->find($id);
+
+    if (!$student) {
+      return response()->json(["message" => "Student not found."], 404);
+    }
+
+    $submissions = Submission::with(["assignment" => function ($query) {
+      $query->select("id", "title", "description", "max_points", "start_date", "end_date");
+    }])
+      ->where("student_id", $id)
+      ->select("id", "exercise_id", "assignment_id", "student_id", "points", "provided_solution")
+      ->get();
+
+    $result = [
+      "student" => $student,
+      "submissions" => [
+        "items" => $submissions,
+        "total" => count($submissions)
+      ],
     ];
 
     return response()->json($result, 200);

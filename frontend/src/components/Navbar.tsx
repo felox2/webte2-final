@@ -17,6 +17,7 @@ import { AuthContext } from '@/components/AuthProvider'
 import { FormattedMessage } from 'react-intl'
 import { Roles } from '@/utils/roles'
 import PermissionGate from './PermissionGate'
+import { stringAvatar } from '@/utils/avatar'
 
 const links = [
   {
@@ -152,7 +153,7 @@ export default function Navbar() {
               user ?
                 (<Box sx={{ flexGrow: 0 }}>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar>{user.first_name[0] + user.last_name[0]}</Avatar>
+                    <Avatar {...stringAvatar(`${user.first_name} ${user.last_name}`)} />
                   </IconButton>
 
                   <Menu

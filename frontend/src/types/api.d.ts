@@ -1,3 +1,8 @@
+export interface ResponseBody<T> {
+  items: T[],
+  total: number
+}
+
 export interface Teacher {
   id: number
   first_name: string
@@ -31,4 +36,11 @@ export interface Submission {
   provided_solution: string | null
   assignment: Assignment
   exercise: Exercise | null
+}
+
+export interface Student {
+  id: number
+  first_name: string
+  last_name: string
+  email: string
 }
