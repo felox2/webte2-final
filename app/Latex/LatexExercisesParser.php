@@ -74,17 +74,11 @@ class LatexExercisesParser
   }
 
   private function parsePreamble(string &$line): void {
+    $trimmedLine = trim($line);
     // ignore new environment declarations
-    if (str_starts_with(trim($line), "\\newenvironment")) {
-      return;
+    if (str_starts_with($trimmedLine, "\\documentclass")) {
+      $this->documentPreamble .= $line;
     }
-
-    // ignore empty lines
-    if (empty(trim($line))) {
-      return;
-    }
-
-    $this->documentPreamble .= $line;
   }
 
   private function parseSections(&$sections): array {
@@ -95,7 +89,7 @@ class LatexExercisesParser
 
       // embed parsed section into document preamble
       $parsedSection["task"] = sprintf($this->documentPreamble, $parsedSection["task"]);
-      $parsedSection["solution"] = sprintf($this->documentPreamble, $parsedSection["solution"]);
+      $parsedSection["solution"] = trim($parsedSection["solution"]);
 
       $parsedSections[] = $parsedSection;
     }
@@ -112,17 +106,18 @@ class LatexExercisesParser
     $scope = null;
 
     foreach (explode("\n", $section) as $line) {
-      if (str_starts_with(trim($line), "\\begin{task}")) {
+      $trimmedLine = trim($line);
+      if (str_starts_with($trimmedLine, "\\begin{task}")) {
         $scope = "task";
         continue;
-      }
-      else if (str_starts_with(trim($line), "\\begin{solution}")) {
+      } else if (str_starts_with($trimmedLine, "\\begin{solution}")) {
         $scope = "solution";
         continue;
-      }
-      else if (str_starts_with(trim($line), "\\end{task}") ||
-               str_starts_with(trim($line), "\\end{solution}")) {
+      } else if (str_starts_with($trimmedLine, "\\end{task}") ||
+        str_starts_with($trimmedLine, "\\end{solution}")) {
         $scope = null;
+      } else if (str_starts_with($trimmedLine, "\\begin{equation*}") || str_starts_with($trimmedLine, "\\end{equation*}")) {
+        continue;
       }
 
       if ($scope == null) {

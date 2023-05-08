@@ -7,11 +7,8 @@ use App\Models\Exercise;
 
 class ExerciseValidation
 {
-  public static function validate(Exercise $exercise, Submission $assignment): bool
+  public static function validate(string $expected, string | null $actual): bool
   {
-    $expected = $exercise->solution;
-    $actual = $assignment->provided_solution;
-
     if (!$actual) {
       return false;
     }

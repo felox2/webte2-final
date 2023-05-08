@@ -3,6 +3,7 @@
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubmissionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,4 +31,10 @@ Route::group(['prefix' => 'exercises'], function () {
 
 Route::group(['prefix' => 'assignments', 'middleware' => 'auth'], function () {
   Route::post('/', [AssignmentController::class, 'create']);
+});
+
+Route::group(['prefix' => 'submissions', 'middleware' => 'auth'], function () {
+  Route::get('/', [SubmissionController::class, 'index']);
+  Route::post('/{submission}', [SubmissionController::class, 'show']);
+  Route::post('/{submission}/submit', [SubmissionController::class, 'submit']);
 });

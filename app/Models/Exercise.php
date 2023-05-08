@@ -17,7 +17,7 @@ class Exercise extends Model
     'exercise_set_id',
   ];
 
-  function exerciseSet(): BelongsTo
+  function exercise_set(): BelongsTo
   {
     return $this->belongsTo(ExerciseSet::class);
   }
