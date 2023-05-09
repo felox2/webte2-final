@@ -29,4 +29,6 @@ export default {
   'assigning.snackbar.error': 'Priradenie úlohy zlyhalo',
 
   'student.banner.assignmentCount': 'Počet všetkých pridelených úloh: {count}',
+
+  'dashboard.labels.button.export.csv': 'Exportovať do CSV',
 }

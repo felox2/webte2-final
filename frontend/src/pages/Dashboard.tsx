@@ -1,17 +1,37 @@
 import PermissionGate from '@/components/PermissionGate'
 import StudentsTable from '@/components/StudentsTable'
 import { Roles } from '@/utils/roles'
-import { Box, Typography } from '@mui/material'
 import Assignments from '@/components/Assignments'
+import { Stack } from '@mui/material'
+import { FormattedMessage } from 'react-intl'
+import { ky } from '@/utils/ky'
+import DownloadFileButton from '@/components/DownloadFileButton'
 
 export default function Dashboard() {
+  const downloadCsvFile = async () => {
+    const headers = { accept: 'text/csv' }
+    const searchParams = { submissionDetails: true }
+    const response = await ky.get('students', { headers, searchParams })
+    return await response.blob()
+  }
+
   return (
     <>
-      <PermissionGate roles={[Roles.Teacher]}>
-        <Box mt={2}>
-          <Typography variant='h4'>Hey Im the teacher</Typography>
-        </Box>
-        <StudentsTable />
+      <PermissionGate roles={[Roles.Teacher, Roles.Admin]}>
+        <Stack
+          direction='column'
+          spacing={2}
+          marginY={4}
+        >
+          <DownloadFileButton
+            resourceCallback={downloadCsvFile}
+            filename='students.csv'
+            sx={{ alignSelf: 'end' }}
+          >
+            <FormattedMessage id='dashboard.labels.button.export.csv' />
+          </DownloadFileButton>
+          <StudentsTable />
+        </Stack>
       </PermissionGate>
 
       <PermissionGate roles={[Roles.Student]}>

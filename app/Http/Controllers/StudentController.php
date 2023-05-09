@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
-  public function index(Request $request): JsonResponse
+  public function index(Request $request)
   {
     $qParams = $request->query();
+    $acceptHeader = $request->getAcceptableContentTypes();
 
     $page = $qParams["page"] ?? 1;
     $pageSize = $qParams["size"] ?? 10;
@@ -25,32 +26,25 @@ class StudentController extends Controller
       $order = "asc";
     }
 
-    if ($submissionDetails) {
-      $students = $this->getStudentsWithSubmissionDetails([
-        "page" => $page,
-        "pageSize" => $pageSize,
-        "sort" => $sort,
-        "order" => $order
-      ]);
+    $result = $this->getStudents([
+      "page" => $page,
+      "pageSize" => $pageSize,
+      "sort" => $sort,
+      "order" => $order,
+      "submissionDetails" => $submissionDetails
+    ]);
 
-      // Filter out unnecessary data
-      $result = [
-        "items" => $students->items(),
-        "total" => $students->total(),
-      ];
+    if (in_array("text/csv", $acceptHeader)) {
+      $csv = $this->studentsToCsv($result["items"], $submissionDetails);
 
-      return response()->json($result, 200);
+      return response($csv, 200)
+        ->header("Content-Type", "text/csv")
+        ->header("Content-Disposition", "attachment; filename=students.csv");
     }
-
-    $students = User::where("role", "student")->get();
-
-    $result = [
-      "items" => $students,
-      "total" => count($students),
-    ];
 
     return response()->json($result, 200);
   }
+
 
   public function show(string $id): JsonResponse
   {
@@ -80,11 +74,35 @@ class StudentController extends Controller
     return response()->json($result, 200);
   }
 
-  private function getStudentsWithSubmissionDetails($params)
+
+  private function getStudents(array $params)
+  {
+    if ($params["submissionDetails"]) {
+      $students = $this->getStudentsWithSubmissionDetails($params);
+
+      return [
+        "items" => $students->items(),
+        "total" => $students->total(),
+      ];
+    }
+
+    $students = User::where("role", "student")
+      ->select("id", "first_name", "last_name", "email")
+      ->get();
+
+    return [
+      "items" => $students,
+      "total" => count($students),
+    ];
+  }
+
+
+  private function getStudentsWithSubmissionDetails(array &$params)
   {
     $studentsQuery = User::where("role", "student")
+      ->select("id", "first_name", "last_name", "email")
       ->withCount([
-        "submissions" => function ($query) {
+        "submissions as submissions_count" => function ($query) {
           $query->whereNotNull("exercise_id");
         },
         "submissions as submissions_count_provided_solution" => function ($query) {
@@ -104,5 +122,29 @@ class StudentController extends Controller
 
     return $studentsQuery
       ->paginate($params["pageSize"], ["*"], "page", $params["page"]);
+  }
+
+
+  private function studentsToCsv(&$students, bool $submissionDetails)
+  {
+    $csv = "id,first_name,last_name,email";
+
+    if ($submissionDetails) {
+      $csv .= ",submissions_count,submissions_count_provided_solution,submissions_points_sum";
+    }
+
+    $csv .= "\n";
+
+    foreach ($students as $student) {
+      $csv .= "{$student->id},{$student->first_name},{$student->last_name},{$student->email}";
+
+      if ($submissionDetails) {
+        $csv .= ",{$student->submissions_count},{$student->submissions_count_provided_solution},{$student->submissions_points_sum}";
+      }
+
+      $csv .= "\n";
+    }
+
+    return $csv;
   }
 }

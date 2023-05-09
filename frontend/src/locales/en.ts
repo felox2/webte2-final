@@ -37,4 +37,6 @@ export default {
   'assigning.snackbar.error': 'Assignment assigning failed',
 
   'student.banner.assignmentCount': 'Number of all assigned assignments: {count}',
+
+  'dashboard.labels.button.export.csv': 'Export to CSV',
 }
