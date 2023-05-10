@@ -29,9 +29,7 @@ export default function Latex({ text }: { text: string }) {
       hyphenate: false,
       CustomMacros: CustomMacros,
     })
-    // TODO: do this some other way
-    const t = text.replace(/\\(begin|end)\{equation\*\}/g, '$$$$')
-    const doc = parse(t, { generator: generator })
+    const doc = parse(text, { generator: generator })
     const domFragment = doc.domFragment()
 
     return domFragment.firstChild.outerHTML

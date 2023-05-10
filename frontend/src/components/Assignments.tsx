@@ -1,29 +1,46 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { ky } from '@/utils/ky'
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import { FormattedMessage } from 'react-intl'
-import { Submission } from '@/types/api'
+import { Submission, AssignmentGroup, Assignment } from '@/types/api'
 
-function AssignmentCard({ submission }: { submission: Submission }) {
+function AssignmentCard({ assignmentGroup }: { assignmentGroup: AssignmentGroup }) {
+  // const submission = assignment.submissions[0]
+  const points = useMemo(() => {
+    let points = 0
+
+    for (const assignment of assignmentGroup.assignments) {
+      const assignmentPoints = assignment.submissions[0].points
+
+      if (!assignmentPoints) {
+        return '?'
+      }
+
+      points += parseFloat(assignmentPoints)
+    }
+
+    return points
+  }, [assignmentGroup])
+
   return (
     <Card>
-      <CardActionArea href={`/submission/${submission.id}`}>
+      <CardActionArea href={`/assignment/${assignmentGroup.id}`}>
         <CardContent>
           <Typography variant='h5'>
-            {submission.assignment.title}
+            {assignmentGroup.title}
           </Typography>
           <Typography variant='body1'>
-            {submission.assignment.description}
+            {assignmentGroup.description}
           </Typography>
 
           <Typography>
-            {submission.assignment.end_date}
+            {assignmentGroup.end_date}
           </Typography>
 
           <Typography>
-            {submission.points ?? '?'}/{submission.assignment.max_points}
+            {points}/{assignmentGroup.max_points}
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -32,13 +49,13 @@ function AssignmentCard({ submission }: { submission: Submission }) {
 }
 
 export default function Assignments() {
-  const [currentAssignments, setCurrentAssignments] = useState<Submission[]>([])
-  const [pastAssignments, setPastAssignments] = useState<Submission[]>([])
+  const [currentAssignments, setCurrentAssignments] = useState<AssignmentGroup[]>([])
+  const [pastAssignments, setPastAssignments] = useState<AssignmentGroup[]>([])
 
   useEffectOnce(() => {
-    ky.get('submissions').json()
+    ky.get('assignment-groups').json()
       .then((res) => {
-        const data = res as { past: Submission[], current: Submission[] }
+        const data = res as { past: AssignmentGroup[], current: AssignmentGroup[] }
 
         setCurrentAssignments(data.current)
         setPastAssignments(data.past)
@@ -51,9 +68,9 @@ export default function Assignments() {
         <FormattedMessage id='assignments.current' />
       </Typography>
       <Grid container spacing={2}>
-        {currentAssignments?.length > 0 ? currentAssignments.map(submission => (
-          <Grid item key={submission.id} xs={12} xl={4}>
-            <AssignmentCard submission={submission} />
+        {currentAssignments?.length > 0 ? currentAssignments.map(assignmentGroup => (
+          <Grid item key={assignmentGroup.id} xs={12} xl={4}>
+            <AssignmentCard assignmentGroup={assignmentGroup} />
           </Grid>
         )) : (
           <Grid item xs={12}>
@@ -68,11 +85,11 @@ export default function Assignments() {
         <FormattedMessage id='assignments.past' />
       </Typography>
       <Grid container spacing={2}>
-        {pastAssignments.map(submission => (
-          <Grid item key={submission.id} xs={12} xl={4}>
-            <AssignmentCard submission={submission} />
-          </Grid>
-        ))}
+        {pastAssignments.map(assignmentGroup => (
+          <Grid item key={assignmentGroup.id} xs={12} xl={4}>
+            <AssignmentCard assignmentGroup={assignmentGroup} />
+          </Grid>),
+        )}
       </Grid>
     </>
   )

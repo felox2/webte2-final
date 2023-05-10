@@ -11,21 +11,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Assignment extends Model
 {
   protected $fillable = [
-    'teacher_id',
-    'title',
-    'description',
+    'assignment_group_id',
     'exercise_set_id',
     'max_points',
-    'start_date',
-    'end_date',
   ];
 
-  public function teacher(): BelongsTo
+  public function assignment_group(): BelongsTo
   {
-    return $this->belongsTo(User::class, 'teacher_id');
+    return $this->belongsTo(AssignmentGroup::class);
   }
 
-  public function exerciseSet(): BelongsTo
+  public function exercise_set(): BelongsTo
   {
     return $this->belongsTo(ExerciseSet::class, 'exercise_set_id');
   }

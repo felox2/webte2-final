@@ -36,7 +36,7 @@ export default function App() {
         <SnackbarProvider>
           <AuthProvider>
             {/* TODO: fix language icon's position for smaller screens (avatar overlapts it) */}
-            <Box sx={{ position: 'fixed', right: 0, top: 0, mt: 2, mr: 2 }}>
+            <Box sx={{ position: 'absolute', right: 0, top: 0, mt: 2, mr: 2 }}>
               <IconButton onClick={handleClick}>
                 <IconTranslate />
               </IconButton>

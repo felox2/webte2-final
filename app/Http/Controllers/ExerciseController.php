@@ -10,13 +10,13 @@ class ExerciseController extends Controller
 {
   public function index(): JsonResponse
   {
+    $this->authorize('viewAny', ExerciseSet::class);
+    
     $root = storage_path('app');
     $files = scandir($root);
     $files = array_filter($files, function ($file) {
       return str_ends_with($file, '.tex');
     });
-
-    $exercise_sets = [];
 
     $result = [
       "items" => [],
@@ -37,9 +37,9 @@ class ExerciseController extends Controller
         ]);
 
         $parser = new LatexExercisesParser($path);
-        $result = $parser->parse();
+        $parser_results = $parser->parse();
 
-        foreach ($result as $exercise) {
+        foreach ($parser_results as $exercise) {
           $exercise_set->exercises()->create([
             'task' => $exercise['task'],
             'solution' => $exercise['solution'],
@@ -49,7 +49,6 @@ class ExerciseController extends Controller
         }
       }
 
-      $exercise_sets[] = $exercise_set;
       $result["items"][] = [
         "id" => $exercise_set->id,
         "file_name" => basename($exercise_set->file_path),
@@ -63,6 +62,8 @@ class ExerciseController extends Controller
 
   public function show(ExerciseSet $exercise_set): JsonResponse
   {
+    $this->authorize('view', $exercise_set);
+
     return response()->json($exercise_set->load('exercises'));
   }
 }

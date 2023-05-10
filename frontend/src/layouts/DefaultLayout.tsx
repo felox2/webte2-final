@@ -22,7 +22,7 @@ export default function GuestLayout() {
         </Box>
       </Box>
 
-      <Copyright sx={{ my: 2 }} />
+      <Copyright />
     </Box>
   )
 }

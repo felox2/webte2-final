@@ -9,16 +9,23 @@ export interface Teacher {
   last_name: string
 }
 
-export interface Assignment {
+export interface AssignmentGroup {
   id: number
   title: string
   description: string
-  max_points: number
   start_date: string
   end_date: string | null
+  max_points: string
   teacher_id: number
-  exercise_set_id: number
   teacher: Teacher
+  assignments: Assignment[]
+}
+
+export interface Assignment {
+  id: number
+  max_points: string
+  exercise_set_id: number
+  submissions: Submission[]
 }
 
 export interface Exercise {
@@ -32,7 +39,7 @@ export interface Submission {
   assignment_id: number
   student_id: number
   exercise_id: number
-  points: number | null
+  points: string | null
   provided_solution: string | null
   assignment: Assignment
   exercise: Exercise | null

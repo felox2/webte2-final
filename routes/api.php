@@ -19,23 +19,22 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
 
-// TODO: secure routes (auth and roles) (maybe https://laravel.com/docs/10.x/authorization#creating-policies)
-Route::group(['prefix' => 'students'], function () {
+Route::group(['prefix' => 'students', 'middleware' => 'auth'], function () {
   Route::get('/', [StudentController::class, 'index']);
   Route::get('/{id}', [StudentController::class, 'show']);
 });
 
-Route::group(['prefix' => 'exercises'], function () {
+Route::group(['prefix' => 'exercises', 'middleware' => 'auth'], function () {
   Route::get('/', [ExerciseController::class, 'index']);
   Route::get('/{exercise_set}', [ExerciseController::class, 'show']);
 });
 
-Route::group(['prefix' => 'assignments', 'middleware' => 'auth'], function () {
+Route::group(['prefix' => 'assignment-groups', 'middleware' => 'auth'], function () {
   Route::post('/', [AssignmentController::class, 'create']);
+  Route::get('/', [AssignmentController::class, 'index']);
+  Route::post('/{id}', [AssignmentController::class, 'show']);
 });
 
 Route::group(['prefix' => 'submissions', 'middleware' => 'auth'], function () {
-  Route::get('/', [SubmissionController::class, 'index']);
-  Route::post('/{submission}', [SubmissionController::class, 'show']);
   Route::post('/{submission}/submit', [SubmissionController::class, 'submit']);
 });

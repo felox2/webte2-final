@@ -21,19 +21,31 @@ return new class extends Migration {
       $table->id();
       $table->string('task', 2048);
       $table->string('solution', 2048);
-      $table->foreignId('exercise_set_id')->constrained();
+      $table->foreignId('exercise_set_id')->constrained()->onDelete('cascade');
+      $table->timestamps();
+    });
+
+    Schema::create('assignment_groups', function (Blueprint $table) {
+      $table->id();
+      $table->string('title');
+      $table->string('description');
+      $table->foreignId('teacher_id')->constrained('users');
+      $table->timestamp('start_date')->nullable();
+      $table->timestamp('end_date')->nullable();
+      $table->float('max_points', 8, 3);
       $table->timestamps();
     });
 
     Schema::create('assignments', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('teacher_id')->constrained('users');
-      $table->string('title');
-      $table->string('description');
+//      $table->foreignId('teacher_id')->constrained('users');
+//      $table->string('title');
+//      $table->string('description');
+      $table->foreignId('assignment_group_id')->constrained();
       $table->foreignId('exercise_set_id')->constrained();
       $table->float('max_points', 8, 3);
-      $table->timestamp('start_date')->nullable();
-      $table->timestamp('end_date')->nullable();
+//      $table->timestamp('start_date')->nullable();
+//      $table->timestamp('end_date')->nullable();
       $table->timestamps();
     });
 
@@ -55,7 +67,7 @@ return new class extends Migration {
   {
     Schema::dropIfExists('submissions');
     Schema::dropIfExists('assignments');
-
+    Schema::dropIfExists('assignment_groups');
     Schema::dropIfExists('exercises');
     Schema::dropIfExists('exercise_sets');
   }

@@ -8,7 +8,7 @@ export default {
   'assignments.past': 'Past assignments',
   'assignments.noCurrentAssignments': 'No current assignments',
 
-  'submissions.task': 'Task',
+  'submissions.task': 'Task {number} ({points}/{maxPoints})',
   'submissions.solution': 'Solution',
   'submissions.providedSolution': 'Your solution',
 

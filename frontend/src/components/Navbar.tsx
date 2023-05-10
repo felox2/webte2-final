@@ -11,7 +11,6 @@ import {
   Avatar, SwipeableDrawer, List, Divider, ListItem, ListItemButton, ListItemText,
 } from '@mui/material'
 import React, { useContext, useState } from 'react'
-import MenuIcon from '@mui/icons-material/Menu'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '@/components/AuthProvider'
 import { FormattedMessage } from 'react-intl'
@@ -19,10 +18,14 @@ import { Roles } from '@/utils/roles'
 import PermissionGate from './PermissionGate'
 import { stringAvatar } from '@/utils/avatar'
 
+import MenuIcon from '@mui/icons-material/Menu'
+import HomeIcon from '@mui/icons-material/Home'
+
 const links = [
   {
     label: 'navbar.home',
     href: '/',
+    startIcon: <HomeIcon />,
     roles: [Roles.Student, Roles.Teacher, Roles.Admin],
   },
   {
@@ -142,7 +145,8 @@ export default function Navbar() {
                 <PermissionGate key={link.href} roles={link.roles}>
                   <Button
                     href={link.href}
-                    sx={{ my: 2, color: 'white', display: 'block' }}>
+                    startIcon={link.startIcon}
+                    sx={{ color: 'white' }}>
                     <FormattedMessage id={link.label} />
                   </Button>
                 </PermissionGate>
@@ -171,15 +175,15 @@ export default function Navbar() {
                     }}
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}>
-                    {settings.map((setting) => (
-                      <MenuItem
-                        key={setting.href}
-                        href={setting.href}
-                        onClick={handleCloseUserMenu}>
-                        <Typography textAlign='center'>{setting.label}</Typography>
-                      </MenuItem>
-                    ))}
-                    <Divider />
+                    {/*{settings.map((setting) => (*/}
+                    {/*  <MenuItem*/}
+                    {/*    key={setting.href}*/}
+                    {/*    href={setting.href}*/}
+                    {/*    onClick={handleCloseUserMenu}>*/}
+                    {/*    <Typography textAlign='center'>{setting.label}</Typography>*/}
+                    {/*  </MenuItem>*/}
+                    {/*))}*/}
+                    {/*<Divider />*/}
                     <MenuItem onClick={handleLogoutClick}>
                       <Typography textAlign='center'>Logout</Typography>
                     </MenuItem>

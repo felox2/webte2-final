@@ -7,7 +7,8 @@ class LatexExercisesParser
   private string $filePath;
   private string $documentPreamble;
 
-  public function __construct(string $filePath) {
+  public function __construct(string $filePath)
+  {
     $this->filePath = $filePath;
   }
 
@@ -17,7 +18,8 @@ class LatexExercisesParser
    * @return array Array of parsed exercises from latex document as associative arrays
    *  with two props "task" and "solution". The content of each prop is a complete latex file.
    */
-  public function parse(): array {
+  public function parse(): array
+  {
     $file = fopen($this->filePath, "r");
     $line = fgets($file);
 
@@ -43,8 +45,7 @@ class LatexExercisesParser
 
       if ($isInsideDocumentBody) {
         $this->parseBodyContent($sections, $line);
-      }
-      else {
+      } else {
         $this->parsePreamble($line);
       }
 
@@ -56,7 +57,8 @@ class LatexExercisesParser
     return $this->parseSections($sections);
   }
 
-  private function parseBodyContent(array &$sections, string $line): void {
+  private function parseBodyContent(array &$sections, string $line): void
+  {
     if (str_starts_with(trim($line), "\\section")) {
       // start parse new section
       $sections[] = $line;
@@ -73,7 +75,8 @@ class LatexExercisesParser
     $sections[$lastIndex] .= $line;
   }
 
-  private function parsePreamble(string &$line): void {
+  private function parsePreamble(string &$line): void
+  {
     $trimmedLine = trim($line);
     // ignore new environment declarations
     if (str_starts_with($trimmedLine, "\\documentclass")) {
@@ -81,7 +84,8 @@ class LatexExercisesParser
     }
   }
 
-  private function parseSections(&$sections): array {
+  private function parseSections(&$sections): array
+  {
     $parsedSections = [];
 
     foreach ($sections as $section) {
@@ -97,10 +101,11 @@ class LatexExercisesParser
     return $parsedSections;
   }
 
-  private function parseSection(string &$section): array {
+  private function parseSection(string &$section): array
+  {
     $parsedSection = [
-        "task" => "",
-        "solution" => ""
+      "task" => "",
+      "solution" => ""
     ];
 
     $scope = null;
@@ -116,8 +121,13 @@ class LatexExercisesParser
       } else if (str_starts_with($trimmedLine, "\\end{task}") ||
         str_starts_with($trimmedLine, "\\end{solution}")) {
         $scope = null;
-      } else if (str_starts_with($trimmedLine, "\\begin{equation*}") || str_starts_with($trimmedLine, "\\end{equation*}")) {
-        continue;
+      } else if ((str_starts_with($trimmedLine, "\\begin{equation*}") || str_starts_with($trimmedLine, "\\end{equation*}"))) {
+        if ($scope === 'task') {
+          $line = str_replace("\\begin{equation*}", "$$", $line);
+          $line = str_replace("\\end{equation*}", "$$", $line);
+        } else {
+          continue;
+        }
       }
 
       if ($scope == null) {

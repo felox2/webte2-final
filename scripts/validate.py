@@ -18,7 +18,7 @@ def is_same(x, y):
     a = sympy.simplify(a)
     b = sympy.simplify(b)
 
-    return a == b
+    return sympy.Eq(a, b) == True
 
 if len(sys.argv) != 3:
     print("Usage: python validate.py <expected> <actual>")

@@ -56,6 +56,9 @@ class StudentController extends Controller
       return response()->json(["message" => "Student not found."], 404);
     }
 
+    $this->authorize("view", $student);
+
+    // FIXME: update to new db structure
     $submissions = Submission::with(["assignment" => function ($query) {
       $query->select("id", "title", "description", "max_points", "start_date", "end_date");
     }])

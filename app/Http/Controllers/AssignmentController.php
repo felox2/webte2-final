@@ -4,32 +4,121 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateAssignmentRequest;
 use App\Models\Assignment;
+use App\Models\AssignmentGroup;
+use App\Models\Exercise;
 use App\Models\User;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 
 class AssignmentController extends Controller
 {
   public function create(CreateAssignmentRequest $request): JsonResponse
   {
+    $this->authorize('create', AssignmentGroup::class);
+
     $validated = $request->validated();
     $user = auth()->user();
     $student_ids = $validated['student_ids'] ?? User::where('role', 'student')->pluck('id')->toArray();
-    $assignment = Assignment::create([
+
+    $assignment_group = AssignmentGroup::create([
       'teacher_id' => $user->id,
       'title' => $validated['title'],
       'description' => $validated['description'],
-      'exercise_set_id' => $validated['exercise_set_id'],
-      'max_points' => $validated['max_points'],
-      'start_date' => $validated['start_date'] ?? now(),
+      'start_date' => $validated['start_date'] ?? now()->utc(),
       'end_date' => $validated['end_date'] ?? null,
+      'max_points' => $validated['max_points'],
     ]);
 
-    foreach ($student_ids as $student_id) {
-      $assignment->submissions()->create([
-        'student_id' => $student_id,
+    $max_points_per_assignment = $validated['max_points'] / count($validated['exercise_set_ids']);
+    foreach ($validated['exercise_set_ids'] as $exercise_set_id) {
+      $assignment = Assignment::create([
+        'assignment_group_id' => $assignment_group->id,
+        'exercise_set_id' => $exercise_set_id,
+        'max_points' => $max_points_per_assignment,
       ]);
+
+      foreach ($student_ids as $student_id) {
+        $assignment->submissions()->create([
+          'student_id' => $student_id,
+        ]);
+      }
     }
 
-    return response()->json($assignment);
+    return response()->json($assignment_group);
+  }
+
+  public function index(): array
+  {
+    $student = auth()->user();
+
+    return [
+      'current' => AssignmentGroup::with('assignments.submissions')
+        ->where('start_date', '<', now()->utc())
+        ->where(function (Builder $q) {
+          $q->where('end_date', '>', now()->utc())
+            ->orWhereNull('end_date');
+        })
+        ->whereHas('assignments.submissions', function (Builder $q) use ($student) {
+          $q->where('student_id', $student->id)
+            ->whereNull('provided_solution');
+        })
+        ->get(),
+
+      'past' => AssignmentGroup::with('assignments.submissions')
+        ->where(function (Builder $q) use ($student) {
+          $q->where('end_date', '<', now()->utc())
+            ->orWhere(function (Builder $q) use ($student) {
+              $q->whereHas('assignments.submissions', function (Builder $q) use ($student) {
+                $q->where('student_id', $student->id)
+                  ->whereNotNull('provided_solution');
+              })->whereDoesntHave('assignments.submissions', function (Builder $q) use ($student) {
+                $q->where('student_id', $student->id)
+                  ->whereNull('provided_solution');
+              });
+            });
+        })
+        ->whereHas('assignments.submissions', function (Builder $q) use ($student) {
+          $q->where('student_id', $student->id);
+        })
+        ->get()
+    ];
+  }
+
+  public function show(string $id)
+  {
+    $assignmentGroup = AssignmentGroup::with([
+      'assignments' => function (Builder $q) {
+        $q->with([
+          'submissions' => function (Builder $q) {
+            $q->where('student_id', auth()->user()->id);
+          },
+        ]);
+      }])
+      ->where('id', $id)
+      ->where('start_date', '<', now()->utc())
+      ->firstOrFail();
+
+    if (!$assignmentGroup->end_date || $assignmentGroup->end_date > now()->utc()) {
+      foreach ($assignmentGroup->assignments as $assignment) {
+        foreach ($assignment->submissions as $submission) {
+          if (!$submission->exercise_id) {
+            $submission->exercise_id = Exercise::where('exercise_set_id', $assignment->exercise_set_id)
+              ->inRandomOrder()
+              ->pluck('id')
+              ->first();
+            $submission->save();
+          }
+        }
+      }
+    }
+
+    $to_load = 'assignments.submissions.exercise:id,task';
+    if ($assignmentGroup->end_date && $assignmentGroup->end_date < now()->utc()) {
+      $to_load .= ',solution';
+    }
+
+    $assignmentGroup->load($to_load);
+
+    return $assignmentGroup;
   }
 }

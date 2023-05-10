@@ -2,10 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Submission;
 use App\Models\User;
 
-class SubmissionPolicy
+class AssignmentGroupPolicy
 {
   public function before(User $user, string $ability): ?bool
   {
@@ -15,8 +14,8 @@ class SubmissionPolicy
     return null;
   }
 
-  public function submit(User $user, Submission $submission): bool
+  public function create(User $user): bool
   {
-    return $user->id === $submission->student_id;
+    return false;
   }
 }

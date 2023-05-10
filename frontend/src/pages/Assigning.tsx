@@ -57,7 +57,7 @@ function validateForm(content: any): [boolean, Errors] {
     isValid = false
   }
 
-  if (!content.exerciseSetId) {
+  if (!content.exerciseSetIds?.length) {
     errors.exerciseSet = 'assigning.form.errors.exerciseSetRequired'
     isValid = false
   }
@@ -85,7 +85,7 @@ export default function () {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [studentIds, setStudentIds] = useState<number[]>([])
-  const [exerciseSetId, setExerciseSetId] = useState<number|''>('')
+  const [exerciseSetIds, setExerciseSetIds] = useState<number[]>([])
   const [points, setPoints] = useState<number|''>('')
   const [startDate, setStartDate] = useState<Date>()
   const [endDate, setEndDate] = useState<Date>()
@@ -108,7 +108,7 @@ export default function () {
     setTitle('')
     setDescription('')
     setStudentIds([])
-    setExerciseSetId('')
+    setExerciseSetIds([])
     setPoints('')
     setStartDate(undefined)
     setEndDate(undefined)
@@ -116,7 +116,7 @@ export default function () {
   }
 
   const handleSubmit = () => {
-    const content = { title, description, studentIds, exerciseSetId, points, startDate, endDate }
+    const content = { title, description, studentIds, exerciseSetIds, points, startDate, endDate }
     const [isValid, errors] = validateForm(content)
     setErrors(errors)
 
@@ -126,13 +126,13 @@ export default function () {
       title,
       description,
       student_ids: studentIds,
-      exercise_set_id: exerciseSetId,
+      exercise_set_ids: exerciseSetIds,
       max_points: points,
       start_date: startDate?.toISOString().slice(0, 10),
       end_date: endDate?.toISOString().slice(0, 10)
     }
 
-    ky.post('assignments', { json: body })
+    ky.post('assignment-groups', { json: body })
       .then(() => {
         reset()
         triggerSnackbar('assigning.snackbar.success', 'success')
@@ -233,9 +233,10 @@ export default function () {
             <Select
               id='exercise-set-select'
               labelId='exercise-set-select-label'
-              value={exerciseSetId}
+              value={exerciseSetIds}
+              multiple
               sx={{ minWidth: '200px' }}
-              onChange={(event) => setExerciseSetId(event.target.value as number)}
+              onChange={(event) => setExerciseSetIds(event.target.value as number[])}
               label='Exercise Set'
               error={!!errors.exerciseSet}
             >

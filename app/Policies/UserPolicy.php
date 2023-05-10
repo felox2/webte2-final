@@ -2,11 +2,18 @@
 
 namespace App\Policies;
 
-use App\Models\Submission;
 use App\Models\User;
 
-class SubmissionPolicy
+class UserPolicy
 {
+  /**
+   * Create a new policy instance.
+   */
+  public function __construct()
+  {
+    //
+  }
+
   public function before(User $user, string $ability): ?bool
   {
     if ($user->role === 'teacher' || $user->role === 'admin') {
@@ -15,8 +22,8 @@ class SubmissionPolicy
     return null;
   }
 
-  public function submit(User $user, Submission $submission): bool
+  public function view(User $user, User $model): bool
   {
-    return $user->id === $submission->student_id;
+    return $user->id === $model->id;
   }
 }
