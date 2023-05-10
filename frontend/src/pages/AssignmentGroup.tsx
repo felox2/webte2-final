@@ -135,8 +135,22 @@ export default function AssignmentGroup() {
     })
   }
 
+  const points = useMemo(() => {
+    if (!assignmentGroup) return NaN
+
+    // count points only when all submissions have provided solution
+    const points = assignmentGroup.assignments.reduce((acc, assignment) => {
+      if (!assignment.submissions[0].provided_solution) {
+        return NaN
+      }
+      return acc + parseFloat(assignment.submissions[0].points ?? '0')
+    }, 0)
+
+    return isNaN(points) ? '?' : points
+  }, [assignmentGroup])
+
   return assignmentGroup ? (
-    <Container sx={{ mb: 8 }}>
+    <Container sx={{ mb: 8, overflowX: 'hidden' }}>
       <div>
         <Typography variant='h4'>{assignmentGroup.title}</Typography>
         <Typography variant='body1'>{assignmentGroup.description}</Typography>
@@ -144,7 +158,7 @@ export default function AssignmentGroup() {
 
       <div>
         <Typography>
-          {'?'}/{assignmentGroup.max_points}
+          {points}/{assignmentGroup.max_points}
         </Typography>
         <Typography>{assignmentGroup.end_date}</Typography>
       </div>
