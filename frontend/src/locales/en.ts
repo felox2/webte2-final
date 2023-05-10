@@ -3,6 +3,7 @@ export default {
 
   'navbar.home': 'Home',
   'navbar.assigning': 'Assigning',
+  'navbar.guide': 'Guide',
 
   'assignments.current': 'Current assignments',
   'assignments.past': 'Past assignments',

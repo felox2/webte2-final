@@ -5,7 +5,7 @@ import { Card, CardActionArea, CardContent, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid'
 import Container from '@mui/material/Container'
 import { FormattedMessage } from 'react-intl'
-import { Submission, AssignmentGroup, Assignment } from '@/types/api'
+import { AssignmentGroup } from '@/types/api'
 
 function AssignmentCard({ assignmentGroup }: { assignmentGroup: AssignmentGroup }) {
   // const submission = assignment.submissions[0]
@@ -15,11 +15,11 @@ function AssignmentCard({ assignmentGroup }: { assignmentGroup: AssignmentGroup 
     for (const assignment of assignmentGroup.assignments) {
       const assignmentPoints = assignment.submissions[0].points
 
-      if (!assignmentPoints) {
+      if (!assignmentPoints && assignmentPoints !== 0) {
         return '?'
       }
 
-      points += parseFloat(assignmentPoints)
+      points += assignmentPoints
     }
 
     return points

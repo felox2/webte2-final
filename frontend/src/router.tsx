@@ -9,6 +9,7 @@ import GuardedRoute from '@/components/GuardedRoute'
 import { Roles } from './utils/roles'
 import Assigning from './pages/Assigning'
 import AssignmentGroup from '@/pages/AssignmentGroup'
+import UserGuide from './pages/UserGuide'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,8 @@ const router = createBrowserRouter(
             <Route path='student/:id' element={<Student />} />
             <Route path='assigning' element={<Assigning />} />
           </Route>
+
+          <Route path='guide' element={<UserGuide />} />
         </Route>
       </Route>
     </>

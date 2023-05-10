@@ -197,7 +197,7 @@ export default function () {
             <FormLabel error={!!errors.students} required>
               <FormattedMessage id='assigning.form.labels.students' />
             </FormLabel>
-            <Paper variant='outlined' elevation={3}>
+            <Paper variant='outlined'>
               <List sx={{ maxHeight: '200px', overflowY: 'auto' }} >
                 {students.items.map((student) => (
                   <ListItem key={student.id} disablePadding>
@@ -241,7 +241,12 @@ export default function () {
               error={!!errors.exerciseSet}
             >
               {exerciseSets.items.map((exerciseSet) => (
-                <MenuItem value={exerciseSet.id}>{exerciseSet.file_name}</MenuItem>
+                <MenuItem
+                  key={exerciseSet.id}
+                  value={exerciseSet.id}
+                >
+                  {exerciseSet.file_name}
+                </MenuItem>
               ))}
             </Select>
             {!!errors.exerciseSet && (

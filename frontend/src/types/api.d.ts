@@ -39,7 +39,7 @@ export interface Submission {
   assignment_id: number
   student_id: number
   exercise_id: number
-  points: string | null
+  points: number | null
   provided_solution: string | null
   assignment: Assignment
   exercise: Exercise | null

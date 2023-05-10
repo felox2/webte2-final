@@ -29,6 +29,7 @@ import { stringAvatar } from '@/utils/avatar'
 import MenuIcon from '@mui/icons-material/Menu'
 import HomeIcon from '@mui/icons-material/Home'
 import AssignmentIcon from '@mui/icons-material/Assignment'
+import MenuBookIcon from '@mui/icons-material/MenuBook'
 
 const links = [
   {
@@ -43,6 +44,12 @@ const links = [
     startIcon: <AssignmentIcon />,
     roles: [Roles.Teacher, Roles.Admin],
   },
+  {
+    label: 'navbar.guide',
+    href: '/guide',
+    startIcon: <MenuBookIcon />,
+    roles: [Roles.Student, Roles.Teacher, Roles.Admin],
+  }
 ]
 
 const settings = [

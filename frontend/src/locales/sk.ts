@@ -3,6 +3,7 @@ export default {
 
   'navbar.home': 'Domov',
   'navbar.assigning': 'Priraďovanie',
+  'navbar.guide': 'Návod',
 
   'tables.headers.students.studentid': 'ID študenta',
   'tables.headers.students.lastname': 'Priezvisko',
