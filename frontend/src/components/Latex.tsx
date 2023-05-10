@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Generator, HtmlGenerator, parse } from 'latex.js'
 
-import 'katex/dist/katex.css'
+import 'katex/dist/katex.min.css'
 
 class CustomMacros {
   g: Generator

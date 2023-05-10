@@ -8,14 +8,13 @@ import { FormattedMessage } from 'react-intl'
 import { AssignmentGroup } from '@/types/api'
 
 function AssignmentCard({ assignmentGroup }: { assignmentGroup: AssignmentGroup }) {
-  // const submission = assignment.submissions[0]
   const points = useMemo(() => {
     let points = 0
 
     for (const assignment of assignmentGroup.assignments) {
       const assignmentPoints = assignment.submissions[0].points
 
-      if (!assignmentPoints && assignmentPoints !== 0) {
+      if (assignmentPoints === null) {
         return '?'
       }
 

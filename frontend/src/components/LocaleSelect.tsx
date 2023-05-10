@@ -29,10 +29,19 @@ export default function LocaleSelect(props: ComponentProps<typeof Box>) {
       </IconButton>
 
       <Menu
+        sx={{ mt: '45px' }}
         anchorEl={anchorElLocale}
         open={Boolean(anchorElLocale)}
         onClose={handleCloseLocaleMenu}
-      >
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}>
         {locales.map((locale) => (
           <MenuItem key={locale} onClick={() => handleChangeLocale(locale)}>
             <FormattedMessage id={`lang.${locale}`} />
