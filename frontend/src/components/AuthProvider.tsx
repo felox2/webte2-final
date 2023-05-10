@@ -30,8 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .then(async (data: any) => {
         handleLogin(data.access_token)
       })
-      .catch(() => {
-      })
+      .catch(() => {})
       .finally(() => {
         setInitializing(false)
       })
@@ -57,15 +56,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   function handleLogout() {
-    ky.post('auth/logout', { credentials: 'include' })
-      .then(() => {
-        setUser(null)
-        setDefaults({
-          headers: {
-            authorization: undefined,
-          },
-        })
+    ky.post('auth/logout', { credentials: 'include' }).then(() => {
+      setUser(null)
+      setDefaults({
+        headers: {
+          authorization: undefined,
+        },
       })
+    })
   }
 
   const value = {
@@ -77,7 +75,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {!value.initializing ? children : (
+      {!value.initializing ? (
+        children
+      ) : (
         // TODO: Add loading animation?
         <div>Loading...</div>
       )}

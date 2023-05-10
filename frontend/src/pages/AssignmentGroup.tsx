@@ -8,20 +8,27 @@ import Latex from '@/components/Latex'
 import dayjs from 'dayjs'
 import MathInput from '@/components/MathInput'
 import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
 import { FormattedMessage } from 'react-intl'
 
-function Assignment({ assignment, handleSubmitResponse, index, endDate }: {
-  assignment: Assignment,
-  index: number,
-  endDate: dayjs.Dayjs | null,
+function Assignment({
+  assignment,
+  handleSubmitResponse,
+  index,
+  endDate,
+}: {
+  assignment: Assignment
+  index: number
+  endDate: dayjs.Dayjs | null
   handleSubmitResponse?: (data: any) => void
 }) {
   const [solution, setSolution] = useState('')
   const submission = useMemo(() => assignment.submissions[0], [assignment])
 
-  const canSubmit = useMemo(() =>
-      !submission?.provided_solution && (endDate ? endDate.isAfter(dayjs()) : true),
-    [submission, endDate])
+  const canSubmit = useMemo(
+    () => !submission?.provided_solution && (endDate ? endDate.isAfter(dayjs()) : true),
+    [submission, endDate]
+  )
 
   function handleMathInput(value: string) {
     setSolution(value)
@@ -30,7 +37,8 @@ function Assignment({ assignment, handleSubmitResponse, index, endDate }: {
   function handleSubmit() {
     ky.post(`submissions/${submission.id}/submit`, {
       json: { solution },
-    }).json()
+    })
+      .json()
       .then((res) => {
         handleSubmitResponse?.(res)
       })
@@ -41,11 +49,14 @@ function Assignment({ assignment, handleSubmitResponse, index, endDate }: {
       {submission.exercise && (
         <Box mt={2}>
           <Typography variant='h5'>
-            <FormattedMessage id='submissions.task' values={{
-              number: index + 1,
-              points: submission.points ?? '?',
-              maxPoints: assignment.max_points,
-            }} />
+            <FormattedMessage
+              id='submissions.task'
+              values={{
+                number: index + 1,
+                points: submission.points ?? '?',
+                maxPoints: assignment.max_points,
+              }}
+            />
           </Typography>
           <Latex text={submission.exercise.task} />
         </Box>
@@ -70,7 +81,13 @@ function Assignment({ assignment, handleSubmitResponse, index, endDate }: {
       )}
 
       {canSubmit && (
-        <Stack display='flex' flexDirection='row' width='100%' direction='row' spacing={1} my={2}>
+        <Stack
+          display='flex'
+          flexDirection='row'
+          width='100%'
+          direction='row'
+          spacing={1}
+          my={2}>
           <MathInput value={solution} onChange={handleMathInput} />
           <Button variant='contained' onClick={handleSubmit}>
             <FormattedMessage id='submit' />
@@ -84,9 +101,11 @@ function Assignment({ assignment, handleSubmitResponse, index, endDate }: {
 export default function AssignmentGroup() {
   const { id } = useParams()
   const [assignmentGroup, setAssignmentGroup] = useState<AssignmentGroup | null>(null)
-  const endDate = useMemo(() =>
+  const endDate = useMemo(
+    () =>
       assignmentGroup?.end_date ? dayjs.utc(assignmentGroup.end_date).local() : null,
-    [assignmentGroup])
+    [assignmentGroup]
+  )
 
   useEffectOnce(() => {
     ky.post(`assignment-groups/${id}`)
@@ -117,14 +136,16 @@ export default function AssignmentGroup() {
   }
 
   return assignmentGroup ? (
-    <Box mb={8}>
+    <Container sx={{ mb: 8 }}>
       <div>
         <Typography variant='h4'>{assignmentGroup.title}</Typography>
         <Typography variant='body1'>{assignmentGroup.description}</Typography>
       </div>
 
       <div>
-        <Typography>{'?'}/{assignmentGroup.max_points}</Typography>
+        <Typography>
+          {'?'}/{assignmentGroup.max_points}
+        </Typography>
         <Typography>{assignmentGroup.end_date}</Typography>
       </div>
 
@@ -137,9 +158,10 @@ export default function AssignmentGroup() {
           handleSubmitResponse={updateSubmission}
         />
       ))}
-    </Box>
+    </Container>
   ) : (
     <Box>
+      {/* TODO: better loading */}
       <Typography variant='h4'>Loading...</Typography>
     </Box>
   )

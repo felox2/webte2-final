@@ -19,6 +19,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) 
 
 const SnackbarContext = createContext<SnackbarContextProps>({ triggerSnackbar: () => {} })
 
+// FIXME: on mobile the snackbar is on top of the navbar
 // TODO: Only supports one snackbar at a time, could be improved to multiple snackbars
 // problem is that the provider gets re-rendered and the state is reset
 // (so the array of snackbars is always empty), idk why and don't care for now

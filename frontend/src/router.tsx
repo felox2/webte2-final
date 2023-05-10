@@ -8,7 +8,7 @@ import Register from '@/pages/auth/Register'
 import GuardedRoute from '@/components/GuardedRoute'
 import { Roles } from './utils/roles'
 import Assigning from './pages/Assigning'
-import AssignmentGroup from '@/pages/assignment/AssignmentGroup'
+import AssignmentGroup from '@/pages/AssignmentGroup'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,17 +26,20 @@ const router = createBrowserRouter(
 
           <Route path='assignment/:id' element={<AssignmentGroup />} />
 
-          <Route element={<GuardedRoute roles={[Roles.Teacher, Roles.Admin]} redirectRoute={'/'} />}>
+          <Route
+            element={
+              <GuardedRoute roles={[Roles.Teacher, Roles.Admin]} redirectRoute={'/'} />
+            }>
             <Route path='student/:id' element={<Student />} />
             <Route path='assigning' element={<Assigning />} />
           </Route>
-
         </Route>
       </Route>
-    </>,
-  ), {
+    </>
+  ),
+  {
     basename: import.meta.env.BASE_URL,
-  },
+  }
 )
 
 export default router

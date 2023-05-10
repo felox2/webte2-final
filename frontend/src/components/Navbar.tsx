@@ -8,7 +8,14 @@ import {
   Menu,
   MenuItem,
   Button,
-  Avatar, SwipeableDrawer, List, Divider, ListItem, ListItemButton, ListItemText,
+  Avatar,
+  SwipeableDrawer,
+  List,
+  Divider,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  ListItemIcon,
 } from '@mui/material'
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -16,10 +23,12 @@ import { AuthContext } from '@/components/AuthProvider'
 import { FormattedMessage } from 'react-intl'
 import { Roles } from '@/utils/roles'
 import PermissionGate from './PermissionGate'
+import LocaleSelect from '@/components/LocaleSelect'
 import { stringAvatar } from '@/utils/avatar'
 
 import MenuIcon from '@mui/icons-material/Menu'
 import HomeIcon from '@mui/icons-material/Home'
+import AssignmentIcon from '@mui/icons-material/Assignment'
 
 const links = [
   {
@@ -31,8 +40,9 @@ const links = [
   {
     label: 'navbar.assigning',
     href: '/assigning',
+    startIcon: <AssignmentIcon />,
     roles: [Roles.Teacher, Roles.Admin],
-  }
+  },
 ]
 
 const settings = [
@@ -46,6 +56,7 @@ export default function Navbar() {
   const { user, handleLogout } = useContext(AuthContext)
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -54,8 +65,6 @@ export default function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
-
-  const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState)
@@ -67,8 +76,8 @@ export default function Navbar() {
   }
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant='h6' sx={{ my: 2 }}>
+    <Box onClick={handleDrawerToggle} sx={{ width: 250 }}>
+      <Typography variant='h6' sx={{ m: 2 }}>
         MUI
       </Typography>
       <Divider />
@@ -76,7 +85,8 @@ export default function Navbar() {
         {links.map((item) => (
           <PermissionGate key={item.href} roles={item.roles}>
             <ListItem disablePadding>
-              <ListItemButton sx={{ textAlign: 'center' }}>
+              <ListItemButton href={item.href}>
+                {item.startIcon && <ListItemIcon>{item.startIcon}</ListItemIcon>}
                 <ListItemText>
                   <FormattedMessage id={item.label} />
                 </ListItemText>
@@ -98,8 +108,7 @@ export default function Navbar() {
               aria-label='open drawer'
               edge='start'
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: 'none' } }}
-            >
+              sx={{ mr: 2, display: { md: 'none' } }}>
               <MenuIcon />
             </IconButton>
 
@@ -153,47 +162,52 @@ export default function Navbar() {
               ))}
             </Box>
 
-            {
-              user ?
-                (<Box sx={{ flexGrow: 0 }}>
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar {...stringAvatar(`${user.first_name} ${user.last_name}`)} />
-                  </IconButton>
+            <LocaleSelect sx={{ flexGrow: 0, mr: 1 }} />
 
-                  <Menu
-                    sx={{ mt: '45px' }}
-                    id='menu-appbar'
-                    anchorEl={anchorElUser}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}>
-                    {/*{settings.map((setting) => (*/}
-                    {/*  <MenuItem*/}
-                    {/*    key={setting.href}*/}
-                    {/*    href={setting.href}*/}
-                    {/*    onClick={handleCloseUserMenu}>*/}
-                    {/*    <Typography textAlign='center'>{setting.label}</Typography>*/}
-                    {/*  </MenuItem>*/}
-                    {/*))}*/}
-                    {/*<Divider />*/}
-                    <MenuItem onClick={handleLogoutClick}>
-                      <Typography textAlign='center'>Logout</Typography>
-                    </MenuItem>
-                  </Menu>
-                </Box>) : null
-            }
+            {user ? (
+              <Box sx={{ flexGrow: 0 }}>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar {...stringAvatar(`${user.first_name} ${user.last_name}`)} />
+                </IconButton>
+
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id='menu-appbar'
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}>
+                  {/*{settings.map((setting) => (*/}
+                  {/*  <MenuItem*/}
+                  {/*    key={setting.href}*/}
+                  {/*    href={setting.href}*/}
+                  {/*    onClick={handleCloseUserMenu}>*/}
+                  {/*    <Typography textAlign='center'>{setting.label}</Typography>*/}
+                  {/*  </MenuItem>*/}
+                  {/*))}*/}
+                  {/*<Divider />*/}
+                  <MenuItem onClick={handleLogoutClick}>
+                    <Typography textAlign='center'>Logout</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            ) : null}
           </Toolbar>
         </Container>
       </AppBar>
-      <SwipeableDrawer variant='temporary' open={mobileOpen} onClose={handleDrawerToggle} onOpen={handleDrawerToggle}>
+      <SwipeableDrawer
+        variant='temporary'
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        onOpen={handleDrawerToggle}>
         {drawer}
       </SwipeableDrawer>
     </>

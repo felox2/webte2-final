@@ -2,7 +2,7 @@ import PermissionGate from '@/components/PermissionGate'
 import StudentsTable from '@/components/StudentsTable'
 import { Roles } from '@/utils/roles'
 import Assignments from '@/components/Assignments'
-import { Stack } from '@mui/material'
+import { Container, Stack } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
 import { ky } from '@/utils/ky'
 import DownloadFileButton from '@/components/DownloadFileButton'
@@ -16,7 +16,7 @@ export default function Dashboard() {
   }
 
   return (
-    <>
+    <Container>
       <PermissionGate roles={[Roles.Teacher, Roles.Admin]}>
         <Stack
           direction='column'
@@ -37,6 +37,6 @@ export default function Dashboard() {
       <PermissionGate roles={[Roles.Student]}>
         <Assignments />
       </PermissionGate>
-    </>
+    </Container>
   )
 }

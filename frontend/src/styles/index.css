@@ -11,4 +11,5 @@
 
 .latex img {
   margin: 0.5rem 0;
+  max-width: 100%;
 }

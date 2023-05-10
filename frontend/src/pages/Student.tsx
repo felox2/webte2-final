@@ -2,7 +2,7 @@ import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { ResponseBody, Student, Submission } from '@/types/api'
 import { stringAvatar } from '@/utils/avatar'
 import { ky } from '@/utils/ky'
-import { Avatar, Divider, Paper, Stack, Typography } from '@mui/material'
+import { Avatar, Container, Divider, Paper, Stack, Typography } from '@mui/material'
 import { useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { useParams } from 'react-router-dom'
@@ -30,7 +30,7 @@ export default function Student() {
   })
 
   return (
-    <>
+    <Container>
       <Stack direction='row' alignItems='center'>
         <Avatar {...stringAvatar(`${student?.first_name} ${student?.last_name}`)} />
         <Stack margin={2} direction='column'>
@@ -64,6 +64,6 @@ export default function Student() {
           ))}
         </Paper>
       </Stack>
-    </>
+    </Container>
   )
 }

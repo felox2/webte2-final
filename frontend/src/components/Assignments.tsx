@@ -3,6 +3,7 @@ import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { ky } from '@/utils/ky'
 import { Card, CardActionArea, CardContent, Typography } from '@mui/material'
 import Grid from '@mui/material/Grid'
+import Container from '@mui/material/Container'
 import { FormattedMessage } from 'react-intl'
 import { Submission, AssignmentGroup, Assignment } from '@/types/api'
 
@@ -63,7 +64,7 @@ export default function Assignments() {
   })
 
   return (
-    <>
+    <Container>
       <Typography variant='h4'>
         <FormattedMessage id='assignments.current' />
       </Typography>
@@ -91,6 +92,6 @@ export default function Assignments() {
           </Grid>),
         )}
       </Grid>
-    </>
+    </Container>
   )
 }
