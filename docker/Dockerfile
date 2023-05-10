@@ -47,7 +47,9 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libpng-dev \
     supervisor \
-    python3
+    python3 \
+    python3-pip \
+    python-is-python3
 
 COPY --from=build-caddy /usr/bin/caddy /usr/bin/caddy
 
@@ -73,6 +75,11 @@ WORKDIR /var/www
 
 COPY --from=build-backend /app ./
 COPY --from=build-frontend /app/dist ./dist
+
+RUN cd ./scripts && pip3 install -r requirements.txt
+
+# create symlink for images
+RUN ln -s /var/www/storage/app/images /var/www/public/api/images
 
 RUN chown -R ${user}:${user} /var/www/storage /var/www/bootstrap/cache
 RUN chown ${user}:${user} /var/www
