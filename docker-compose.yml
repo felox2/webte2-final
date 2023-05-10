@@ -15,5 +15,9 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
+      tags:
+        - "webte-final:latest"
+      labels:
+        - "sk.stuba.fei.webte.final"
     ports:
       - "8880:80"
