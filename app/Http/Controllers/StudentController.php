@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -58,19 +57,36 @@ class StudentController extends Controller
 
     $this->authorize("view", $student);
 
-    // FIXME: update to new db structure
-    $submissions = Submission::with(["assignment" => function ($query) {
-      $query->select("id", "title", "description", "max_points", "start_date", "end_date");
-    }])
-      ->where("student_id", $id)
-      ->select("id", "exercise_id", "assignment_id", "student_id", "points", "provided_solution")
+    $assignmentGroups = DB::table('assignment_groups')
+      ->join('assignments', 'assignment_groups.id', '=', 'assignments.assignment_group_id')
+      ->join('submissions', 'assignments.id', '=', 'submissions.assignment_id')
+      ->join('exercise_sets', 'assignments.exercise_set_id', '=', 'exercise_sets.id')
+      ->where('submissions.student_id', '=', $id)
+      ->groupBy('assignment_groups.id')
+      ->select(
+        'assignment_groups.id',
+        'assignment_groups.title',
+        'assignment_groups.description',
+        'assignment_groups.start_date',
+        'assignment_groups.end_date',
+        'assignment_groups.max_points',
+        'assignment_groups.created_at',
+        DB::raw('JSON_ARRAYAGG(JSON_OBJECT("id", assignments.id, "max_points", assignments.max_points, "points", submissions.points, "exercise_id", submissions.exercise_id, "filename", exercise_sets.file_path)) as assignments'))
       ->get();
+
+    foreach ($assignmentGroups as $assignmentGroup) {
+      $assignmentGroup->assignments = json_decode($assignmentGroup->assignments);
+
+      foreach ($assignmentGroup->assignments as $assignment) {
+        $assignment->filename = basename($assignment->filename);
+      }
+    }
 
     $result = [
       "student" => $student,
-      "submissions" => [
-        "items" => $submissions,
-        "total" => count($submissions)
+      "assignmentGroups" => [
+        "items" => $assignmentGroups,
+        "total" => count($assignmentGroups)
       ],
     ];
 

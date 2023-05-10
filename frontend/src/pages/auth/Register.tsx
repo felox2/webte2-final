@@ -28,7 +28,7 @@ export default function SignUp() {
       triggerSnackbar('Registered successfully', 'success')
     }
     catch (err) {
-      console.log(err)
+      console.error(err)
       triggerSnackbar('Couldn\'t register', 'error')
     }
 

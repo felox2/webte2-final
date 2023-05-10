@@ -18,7 +18,7 @@ function AssignmentCard({ assignmentGroup }: { assignmentGroup: AssignmentGroup 
         return '?'
       }
 
-      points += assignmentPoints
+      points += parseFloat(assignmentPoints)
     }
 
     return points

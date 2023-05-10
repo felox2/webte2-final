@@ -18,6 +18,7 @@ export interface AssignmentGroup {
   max_points: string
   teacher_id: number
   teacher: Teacher
+  created_at?: string
   assignments: Assignment[]
 }
 
@@ -39,7 +40,7 @@ export interface Submission {
   assignment_id: number
   student_id: number
   exercise_id: number
-  points: number | null
+  points: string | null
   provided_solution: string | null
   assignment: Assignment
   exercise: Exercise | null

@@ -10,6 +10,8 @@ import MathInput from '@/components/MathInput'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import { FormattedMessage } from 'react-intl'
+import PermissionGate from '@/components/PermissionGate'
+import { Roles } from '@/utils/roles'
 
 function Assignment({
   assignment,
@@ -80,20 +82,31 @@ function Assignment({
         </Box>
       )}
 
-      {canSubmit && (
-        <Stack
-          display='flex'
-          flexDirection='row'
-          width='100%'
-          direction='row'
-          spacing={1}
-          my={2}>
-          <MathInput value={solution} onChange={handleMathInput} />
-          <Button variant='contained' onClick={handleSubmit}>
-            <FormattedMessage id='submit' />
-          </Button>
-        </Stack>
-      )}
+      <PermissionGate roles={[Roles.Student]}>
+        {canSubmit && (
+          <Stack
+            display='flex'
+            flexDirection='row'
+            width='100%'
+            direction='row'
+            spacing={1}
+            my={2}>
+            <MathInput value={solution} onChange={handleMathInput} />
+            <Button variant='contained' onClick={handleSubmit}>
+              <FormattedMessage id='submit' />
+            </Button>
+          </Stack>
+        )}
+      </PermissionGate>
+
+      <PermissionGate roles={[Roles.Teacher]}>
+        {submission.provided_solution == null && (
+          <Typography variant='h5'>
+            <FormattedMessage id='submissions.solution.notSubmitted' />
+        </Typography>
+        )}
+      </PermissionGate>
+
     </Box>
   )
 }
