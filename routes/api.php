@@ -40,6 +40,6 @@ Route::group(['prefix' => 'submissions', 'middleware' => 'auth'], function () {
   Route::post('/{submission}/submit', [SubmissionController::class, 'submit']);
 });
 
-Route::group(['prefix' => 'docs'], function () {
+Route::group(['prefix' => 'docs', 'middleware' => 'auth'], function () {
   Route::get('/{role}', [DocsController::class, 'show']);
 });

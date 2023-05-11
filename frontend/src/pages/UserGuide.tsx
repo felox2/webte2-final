@@ -37,8 +37,11 @@ export default function UserGuide() {
   })
 
   const downloadPdfFile = async () => {
+    if (uri === null) {
+      throw new Error('Cannot download PDF file')
+    }
     const headers = { accept: 'application/pdf' }
-    const response = await ky.get('docs', { headers })
+    const response = await ky.get(uri, { headers })
     return await response.blob()
   }
 

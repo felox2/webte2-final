@@ -9,6 +9,8 @@
   "license": "MIT",
   "require": {
     "php": "^8.2",
+    "dompdf/dompdf": "^2.0",
+    "erusev/parsedown": "^1.7",
     "guzzlehttp/guzzle": "^7.5",
     "laravel/framework": "^10.0",
     "laravel/tinker": "^2.8",

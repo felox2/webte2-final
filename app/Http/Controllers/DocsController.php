@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Parsedown;
 
 class DocsController extends Controller
 {
@@ -28,8 +29,7 @@ class DocsController extends Controller
     }
 
     if (in_array("application/pdf", $acceptHeader)) {
-      // TODO: Implement PDF generation
-      return response('Not Implemented', 501);
+      return $this->getPdf($fileName);
     }
 
     return response('Not Acceptable', 406);
@@ -50,6 +50,31 @@ class DocsController extends Controller
 
     return response($content, 200, [
       'Content-Type' => 'text/markdown'
+    ]);
+  }
+
+  private function getPdf(string $fileName)
+  {
+    $filePath = "docs/$fileName";
+
+    if (!Storage::disk('local')->exists($filePath)) {
+      return response('Pdf Docs Not found', 404);
+    }
+
+    $parsedown = new Parsedown();
+    $markdown = Storage::disk('local')->get($filePath);
+    $html = $parsedown->text($markdown);
+
+    $dompdf = new \Dompdf\Dompdf();
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->loadHtml($html);
+    $dompdf->render();
+
+    $output = $dompdf->output();
+
+    return response($output, 200, [
+      'Content-Type' => 'application/pdf',
+      'Content-Disposition' => 'attachment; filename="docs.pdf"'
     ]);
   }
 }
