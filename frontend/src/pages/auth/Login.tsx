@@ -11,7 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Copyright from '@/components/Copyright'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { ky } from '@/utils/ky'
 import { AuthContext } from '@/components/AuthProvider'
 import SnackbarContext from '@/components/SnackbarProvider'
@@ -19,6 +19,7 @@ import SnackbarContext from '@/components/SnackbarProvider'
 export default function SignIn() {
   const auth = useContext(AuthContext)
   const { triggerSnackbar } = useContext(SnackbarContext)
+  const intl = useIntl()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -55,7 +56,7 @@ export default function SignIn() {
             margin='normal'
             required
             fullWidth
-            label='Email Address'
+            label={intl.formatMessage({ id: 'auth.login.email' })}
             name='email'
             autoComplete='email'
             autoFocus
@@ -65,14 +66,14 @@ export default function SignIn() {
             required
             fullWidth
             name='password'
-            label='Password'
+            label={intl.formatMessage({ id: 'auth.login.password' })}
             type='password'
             id='password'
             autoComplete='current-password'
           />
           <FormControlLabel
             control={<Checkbox value='remember' name='remember' color='primary' defaultChecked={true} />}
-            label='Remember me'
+            label={<FormattedMessage id='auth.login.remember' />}
           />
           <Button
             type='submit'
@@ -85,7 +86,7 @@ export default function SignIn() {
           <Grid container justifyContent='flex-end'>
             <Grid item>
               <Link href='/auth/register' variant='body2'>
-                {'Don\'t have an account? Sign Up'}
+                <FormattedMessage id='auth.login.redirectToRegister' />
               </Link>
             </Grid>
           </Grid>

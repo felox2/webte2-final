@@ -1,5 +1,16 @@
 export default {
   'auth.login': 'Sign in',
+  'auth.login.redirectToRegister': 'Don\'t have an account? Sign Up',
+  'auth.login.remember': 'Remember me',
+  'auth.login.email': 'Email Address',
+  'auth.login.password': 'Password',
+  'auth.register': 'Sign up',
+  'auth.register.redirectToLogin': 'Already have an account? Sign in',
+  'auth.register.firstName': 'First Name',
+  'auth.register.lastName': 'Last Name',
+  'auth.register.email': 'Email Address',
+  'auth.register.password': 'Password',
+  'auth.register.passwordRepeat': 'Password Pepeat',
 
   'navbar.home': 'Home',
   'navbar.assigning': 'Assigning',

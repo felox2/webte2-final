@@ -12,8 +12,10 @@ import Copyright from '@/components/Copyright'
 import { AuthContext } from '@/components/AuthProvider'
 import { ky } from '@/utils/ky'
 import SnackbarContext from '@/components/SnackbarProvider'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 export default function SignUp() {
+  const intl = useIntl()
   const auth = useContext(AuthContext)
   const { triggerSnackbar } = useContext(SnackbarContext)
 
@@ -48,7 +50,7 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component='h1' variant='h5'>
-          Sign up
+          <FormattedMessage id='auth.register' />
         </Typography>
         <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -58,7 +60,7 @@ export default function SignUp() {
                 name='first_name'
                 required
                 fullWidth
-                label='First Name'
+                label={intl.formatMessage({ id: 'auth.register.firstName' })}
                 autoFocus
               />
             </Grid>
@@ -66,7 +68,7 @@ export default function SignUp() {
               <TextField
                 required
                 fullWidth
-                label='Last Name'
+                label={intl.formatMessage({ id: 'auth.register.lastName' })}
                 name='last_name'
                 autoComplete='family-name'
               />
@@ -75,7 +77,7 @@ export default function SignUp() {
               <TextField
                 required
                 fullWidth
-                label='Email Address'
+                label={intl.formatMessage({ id: 'auth.register.email' })}
                 name='email'
                 autoComplete='email'
               />
@@ -85,7 +87,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 name='password'
-                label='Password'
+                label={intl.formatMessage({ id: 'auth.register.password' })}
                 type='password'
                 autoComplete='new-password'
               />
@@ -95,7 +97,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 name='password_confirmation'
-                label='Password Repeat'
+                label={intl.formatMessage({ id: 'auth.register.passwordRepeat' })}
                 type='password'
                 autoComplete='new-password'
               />
@@ -107,12 +109,12 @@ export default function SignUp() {
             variant='contained'
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign Up
+            <FormattedMessage id='auth.register' />
           </Button>
           <Grid container justifyContent='flex-end'>
             <Grid item>
               <Link href='/auth/login' variant='body2'>
-                Already have an account? Sign in
+                <FormattedMessage id='auth.register.redirectToLogin' />
               </Link>
             </Grid>
           </Grid>

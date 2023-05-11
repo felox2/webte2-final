@@ -20,7 +20,7 @@ import {
 import SnackbarContext from '@/components/SnackbarProvider'
 import { ky } from '@/utils/ky'
 import { useContext, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { ResponseBody, Student } from '@/types/api'
 import { useEffectOnce } from '@/hooks/useEffectOnce'
 
@@ -76,7 +76,8 @@ function validateForm(content: any): [boolean, Errors] {
   return [isValid, errors]
 }
 
-export default function () {
+export default function Assigning() {
+  const intl = useIntl()
   const { triggerSnackbar } = useContext(SnackbarContext)
   const [exerciseSets, setExerciseSets] = useState<ResponseBody<ExerciseSet>>({ items: [], total: 0 })
   const [students, setStudents] = useState<ResponseBody<Student>>({ items: [], total: 0 })
@@ -237,7 +238,7 @@ export default function () {
               multiple
               sx={{ minWidth: '200px' }}
               onChange={(event) => setExerciseSetIds(event.target.value as number[])}
-              label='Exercise Set'
+              label={intl.formatMessage({ id: 'assigning.form.labels.exerciseSet' })}
               error={!!errors.exerciseSet}
             >
               {exerciseSets.items.map((exerciseSet) => (
