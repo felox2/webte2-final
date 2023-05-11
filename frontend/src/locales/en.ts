@@ -51,4 +51,5 @@ export default {
   'student.banner.assignmentCount': 'Number of all assigned assignments: {count}',
 
   'dashboard.labels.button.export.csv': 'Export to CSV',
+  'guide.labels.button.export.pdf': 'Export to PDF',
 }

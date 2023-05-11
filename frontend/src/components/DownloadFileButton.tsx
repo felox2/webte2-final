@@ -1,5 +1,6 @@
-import { Box, Button, CircularProgress, SxProps, Theme } from "@mui/material"
-import { useState } from "react"
+import { Box, Button, CircularProgress, SxProps, Theme } from '@mui/material'
+import { useContext, useState } from 'react'
+import SnackbarContext from './SnackbarProvider'
 
 interface Props {
   resourceCallback: () => Promise<Blob>,
@@ -10,6 +11,7 @@ interface Props {
 
 export default function DownloadFileButton({ resourceCallback, children, filename, sx }: Props) {
   const [isDisabled, setIsDisabled] = useState(false)
+  const { triggerSnackbar } = useContext(SnackbarContext)
 
   const downloadFile = async () => {
     const blob = await resourceCallback()
@@ -26,6 +28,13 @@ export default function DownloadFileButton({ resourceCallback, children, filenam
   const handleButtonClick = () => {
     setIsDisabled(true)
     downloadFile()
+      .then(() => {
+        triggerSnackbar('File downloaded successfully', 'success')
+      })
+      .catch((error) => {
+        console.error(error)
+        triggerSnackbar('Failed to download the file', 'error')
+      })
       .finally(() => setIsDisabled(false))
   }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\DocsController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubmissionController;
@@ -37,4 +38,8 @@ Route::group(['prefix' => 'assignment-groups', 'middleware' => 'auth'], function
 
 Route::group(['prefix' => 'submissions', 'middleware' => 'auth'], function () {
   Route::post('/{submission}/submit', [SubmissionController::class, 'submit']);
+});
+
+Route::group(['prefix' => 'docs'], function () {
+  Route::get('/{role}', [DocsController::class, 'show']);
 });
