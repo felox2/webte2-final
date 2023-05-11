@@ -1,5 +1,16 @@
 export default {
   'auth.login': 'Prihlásiť sa',
+  'auth.login.redirectToRegister': 'Nemáš účet? Zaregistruj sa',
+  'auth.login.remember': 'Zapamätať si ma',
+  'auth.login.email': 'E-mail',
+  'auth.login.password': 'Heslo',
+  'auth.register': 'Prihlásiť sa',
+  'auth.register.redirectToLogin': 'Máš už účet? Prihlás sa',
+  'auth.register.firstName': 'Meno',
+  'auth.register.lastName': 'Priezvisko',
+  'auth.register.email': 'E-mail',
+  'auth.register.password': 'Heslo',
+  'auth.register.passwordRepeat': 'Potvrdenie hesla',
 
   'navbar.home': 'Domov',
   'navbar.assigning': 'Priraďovanie',
