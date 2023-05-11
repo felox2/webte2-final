@@ -93,7 +93,7 @@ function Assignment({
             my={2}>
             <MathInput value={solution} onChange={handleMathInput} />
             <Button variant='contained' onClick={handleSubmit}>
-              <FormattedMessage id='submit' />
+              <FormattedMessage id='submissions.labels.button.submit' />
             </Button>
           </Stack>
         )}

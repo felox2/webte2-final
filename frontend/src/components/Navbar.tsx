@@ -202,7 +202,9 @@ export default function Navbar() {
                   {/*))}*/}
                   {/*<Divider />*/}
                   <MenuItem onClick={handleLogoutClick}>
-                    <Typography textAlign='center'>Logout</Typography>
+                    <Typography textAlign='center'>
+                      <FormattedMessage id='navbar.logout' />
+                    </Typography>
                   </MenuItem>
                 </Menu>
               </Box>

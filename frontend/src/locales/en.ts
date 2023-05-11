@@ -15,6 +15,7 @@ export default {
   'navbar.home': 'Home',
   'navbar.assigning': 'Assigning',
   'navbar.guide': 'Guide',
+  'navbar.logout': 'Logout',
 
   'assignments.current': 'Current assignments',
   'assignments.past': 'Past assignments',
@@ -23,6 +24,7 @@ export default {
   'submissions.task': 'Task {number} ({points}/{maxPoints})',
   'submissions.solution': 'Correct solution',
   'submissions.providedSolution': 'Your solution',
+  'submissions.labels.button.submit': 'Submit',
 
   'tables.headers.students.studentid': 'Student ID',
   'tables.headers.students.lastname': 'Last name',

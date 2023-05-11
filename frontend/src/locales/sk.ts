@@ -15,6 +15,7 @@ export default {
   'navbar.home': 'Domov',
   'navbar.assigning': 'Priraďovanie',
   'navbar.guide': 'Návod',
+  'navbar.logout': 'Odhlásiť sa',
 
   'assignments.current': 'Aktuálne úlohy',
   'assignments.past': 'Odovzdané úlohy',
@@ -23,6 +24,7 @@ export default {
   'submissions.task': 'Úloha {number} ({points}/{maxPoints})',
   'submissions.solution': 'Správne riešenie',
   'submissions.providedSolution': 'Tvoje riešenie',
+  'submissions.labels.button.submit': 'Odovzdať',
 
   'tables.headers.students.studentid': 'ID študenta',
   'tables.headers.students.lastname': 'Priezvisko',
@@ -51,4 +53,5 @@ export default {
   'student.banner.assignmentCount': 'Počet všetkých pridelených úloh: {count}',
 
   'dashboard.labels.button.export.csv': 'Exportovať do CSV',
+  'guide.labels.button.export.pdf': 'Exportovať do PDF',
 }
