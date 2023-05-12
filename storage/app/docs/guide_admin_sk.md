@@ -1,4 +1,4 @@
-# Teacher Guide
+# Admin Guide
 
 - [Introduction](#introduction)
 - [Installation](#installation)
