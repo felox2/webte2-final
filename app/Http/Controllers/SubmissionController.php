@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Latex\ExerciseValidation;
+use App\Models\Exercise;
 use App\Models\Submission;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -44,5 +45,36 @@ class SubmissionController extends Controller
     }
 
     return $submission;
+  }
+
+  public function generate(Submission $submission)
+  {
+    $this->authorize('generate', $submission);
+
+    $submission->load('assignment', 'assignment.assignment_group');
+
+    $assignmentGroup = $submission->assignment->assignment_group;
+
+    if ($assignmentGroup->end_date && $assignmentGroup->end_date < now()->utc()) {
+      return response()->json(['message' => 'Assignment has not ended'], 400);
+    }
+
+    if (!$submission->exercise_id) {
+      $submission->exercise_id = Exercise::where('exercise_set_id', $submission->assignment->exercise_set_id)
+        ->inRandomOrder()
+        ->pluck('id')
+        ->first();
+      $submission->save();
+    }
+
+    $to_load = 'exercise:id,task';
+    if ($assignmentGroup->end_date && $assignmentGroup->end_date < now()->utc()) {
+      $to_load .= ',solution';
+    }
+
+    $submission->load($to_load);
+    unset($submission->assignment);
+
+    return response()->json($submission);
   }
 }

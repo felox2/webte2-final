@@ -38,14 +38,9 @@ return new class extends Migration {
 
     Schema::create('assignments', function (Blueprint $table) {
       $table->id();
-//      $table->foreignId('teacher_id')->constrained('users');
-//      $table->string('title');
-//      $table->string('description');
       $table->foreignId('assignment_group_id')->constrained();
       $table->foreignId('exercise_set_id')->constrained();
       $table->float('max_points', 8, 3);
-//      $table->timestamp('start_date')->nullable();
-//      $table->timestamp('end_date')->nullable();
       $table->timestamps();
     });
 

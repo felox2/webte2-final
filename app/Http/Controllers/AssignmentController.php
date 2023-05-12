@@ -98,20 +98,6 @@ class AssignmentController extends Controller
       ->where('start_date', '<', now()->utc())
       ->firstOrFail();
 
-    if (!$assignmentGroup->end_date || $assignmentGroup->end_date > now()->utc()) {
-      foreach ($assignmentGroup->assignments as $assignment) {
-        foreach ($assignment->submissions as $submission) {
-          if (!$submission->exercise_id) {
-            $submission->exercise_id = Exercise::where('exercise_set_id', $assignment->exercise_set_id)
-              ->inRandomOrder()
-              ->pluck('id')
-              ->first();
-            $submission->save();
-          }
-        }
-      }
-    }
-
     $to_load = 'assignments.submissions.exercise:id,task';
     if ($assignmentGroup->end_date && $assignmentGroup->end_date < now()->utc()) {
       $to_load .= ',solution';
