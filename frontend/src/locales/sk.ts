@@ -25,6 +25,7 @@ export default {
   'submissions.solution': 'Správne riešenie',
   'submissions.providedSolution': 'Tvoje riešenie',
   'submissions.labels.button.submit': 'Odovzdať',
+  'submissions.labels.button.generateExercise': 'Vygenerovať úlohu',
 
   'tables.headers.students.studentid': 'ID študenta',
   'tables.headers.students.lastname': 'Priezvisko',
