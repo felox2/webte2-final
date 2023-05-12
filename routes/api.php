@@ -33,10 +33,11 @@ Route::group(['prefix' => 'exercises', 'middleware' => 'auth'], function () {
 Route::group(['prefix' => 'assignment-groups', 'middleware' => 'auth'], function () {
   Route::post('/', [AssignmentController::class, 'create']);
   Route::get('/', [AssignmentController::class, 'index']);
-  Route::post('/{id}', [AssignmentController::class, 'show']);
+  Route::get('/{id}', [AssignmentController::class, 'show']);
 });
 
 Route::group(['prefix' => 'submissions', 'middleware' => 'auth'], function () {
+  Route::post('/{submission}', [SubmissionController::class, 'generate']);
   Route::post('/{submission}/submit', [SubmissionController::class, 'submit']);
 });
 

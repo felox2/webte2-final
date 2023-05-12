@@ -19,4 +19,9 @@ class SubmissionPolicy
   {
     return $user->id === $submission->student_id;
   }
+
+  public function generate(User $user, Submission $submission): bool
+  {
+    return $user->id === $submission->student_id;
+  }
 }

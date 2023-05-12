@@ -13,6 +13,8 @@ import { FormattedMessage } from 'react-intl'
 import PermissionGate from '@/components/PermissionGate'
 import { Roles } from '@/utils/roles'
 
+import ShuffleIcon from '@mui/icons-material/Shuffle'
+
 function Assignment({
   assignment,
   handleSubmitResponse,
@@ -29,11 +31,19 @@ function Assignment({
 
   const canSubmit = useMemo(
     () => !submission?.provided_solution && (endDate ? endDate.isAfter(dayjs()) : true),
-    [submission, endDate]
+    [submission, endDate],
   )
 
   function handleMathInput(value: string) {
     setSolution(value)
+  }
+
+  function handleGenerate() {
+    ky.post(`submissions/${submission.id}`)
+      .json()
+      .then((res) => {
+        handleSubmitResponse?.(res)
+      })
   }
 
   function handleSubmit() {
@@ -48,18 +58,27 @@ function Assignment({
 
   return (
     <Box>
+      <Typography variant='h5' mt={2}>
+        <FormattedMessage
+          id='submissions.task'
+          values={{
+            number: index + 1,
+            points: submission.points ?? '?',
+            maxPoints: assignment.max_points,
+          }}
+        />
+      </Typography>
+
+      {!submission.exercise && (
+        <Box mt={1}>
+          <Button variant='contained' startIcon={<ShuffleIcon />} onClick={handleGenerate}>
+            <FormattedMessage id='submissions.labels.button.generateExercise' />
+          </Button>
+        </Box>
+      )}
+
       {submission.exercise && (
         <Box mt={2}>
-          <Typography variant='h5'>
-            <FormattedMessage
-              id='submissions.task'
-              values={{
-                number: index + 1,
-                points: submission.points ?? '?',
-                maxPoints: assignment.max_points,
-              }}
-            />
-          </Typography>
           <Latex text={submission.exercise.task} />
         </Box>
       )}
@@ -83,7 +102,7 @@ function Assignment({
       )}
 
       <PermissionGate roles={[Roles.Student]}>
-        {canSubmit && (
+        {canSubmit && submission.exercise && (
           <Stack
             display='flex'
             flexDirection='row'
@@ -103,7 +122,7 @@ function Assignment({
         {submission.provided_solution == null && (
           <Typography variant='h5'>
             <FormattedMessage id='submissions.solution.notSubmitted' />
-        </Typography>
+          </Typography>
         )}
       </PermissionGate>
 
@@ -117,11 +136,11 @@ export default function AssignmentGroup() {
   const endDate = useMemo(
     () =>
       assignmentGroup?.end_date ? dayjs.utc(assignmentGroup.end_date).local() : null,
-    [assignmentGroup]
+    [assignmentGroup],
   )
 
   useEffectOnce(() => {
-    ky.post(`assignment-groups/${id}`)
+    ky.get(`assignment-groups/${id}`)
       .json()
       .then((res) => {
         const data = res as AssignmentGroup

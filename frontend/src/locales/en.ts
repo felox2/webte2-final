@@ -25,6 +25,7 @@ export default {
   'submissions.solution': 'Correct solution',
   'submissions.providedSolution': 'Your solution',
   'submissions.labels.button.submit': 'Submit',
+  'submissions.labels.button.generateExercise': 'Generate exercise',
 
   'tables.headers.students.studentid': 'Student ID',
   'tables.headers.students.lastname': 'Last name',
