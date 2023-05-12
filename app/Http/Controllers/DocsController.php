@@ -11,12 +11,15 @@ class DocsController extends Controller
 {
   public function show(Request $request, string $role)
   {
+    $qParams = $request->query();
     $acceptHeader = $request->getAcceptableContentTypes();
 
+    $lang = $qParams["lang"] ?? "en";
+
     $fileName = match ($role) {
-      'student' => 'guide_student.md',
-      'teacher' => 'guide_teacher.md',
-      'admin' => 'guide_admin.md',
+      "student" => "guide_student_$lang.md",
+      "teacher" => "guide_teacher_$lang.md",
+      "admin" => "guide_admin_$lang.md",
       default => null,
     };
 

@@ -1,10 +1,10 @@
+import { LocaleContext } from '@/App'
 import { AuthContext } from '@/components/AuthProvider'
 import DownloadFileButton from '@/components/DownloadFileButton'
-import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { ky } from '@/utils/ky'
 import { Roles } from '@/utils/roles'
 import { Container, Stack, Typography } from '@mui/material'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import ReactMarkdown from 'react-markdown'
 
@@ -22,26 +22,27 @@ function getMarkdownUri(role: Roles|undefined) {
 
 export default function UserGuide() {
   const auth = useContext(AuthContext)
+  const { locale } = useContext(LocaleContext)
   const [markdown, setMarkdown] = useState<string|null>(null)
 
   const uri = getMarkdownUri(auth.user?.role)
 
-  useEffectOnce(() => {
+  useEffect(() => {
     if (uri === null) {
       return
     }
 
-    ky.get(uri, { headers: { Accept: 'text/markdown' } })
+    ky.get(uri, { headers: { Accept: 'text/markdown' }, searchParams: { lang: locale } })
       .text()
       .then(setMarkdown)
-  })
+  }, [locale])
 
   const downloadPdfFile = async () => {
     if (uri === null) {
       throw new Error('Cannot download PDF file')
     }
     const headers = { accept: 'application/pdf' }
-    const response = await ky.get(uri, { headers })
+    const response = await ky.get(uri, { headers, searchParams: { lang: locale } })
     return await response.blob()
   }
 
