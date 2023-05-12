@@ -27,13 +27,36 @@ Vyplňte nasledujúce polia:
 
 1. Sekcia pre konkrétneho študenta:
 
- V tejto sekcii uvidíte podrobnosti o vygenerovaných a odovzdaných úlohách študenta:
+ V tejto sekcii uvidíte podrobnosti o vygenerovaných a odovzdaných úlohách študenta
 
-- **Vygenerované úlohy:** Zoznam úloh, ktoré si študent vygeneroval.
-- **Odovzdané úlohy:** Zoznam úloh, ktoré študent odovzdal.
-- **Správny výsledok:** Správne riešenie danej úlohy.
-- **Odovzdaný výsledok:** Riešenie, ktoré študent odovzdal.
-- **Získané body:** Počet bodov, ktoré študent získal za konkrétnu úlohu.
+V hornej lište je vidno údaje o študentovi:
+
+- **meno a priezvisko študenta**
+- **email študenta**
+- **Počet všetkých pridelených úloh**
+
+Nižšie uvidíte priradené sety úloh s nasledujúcimi informáciami
+
+- **Názov setu úloh**
+- **Popis setu úloh**
+- **Celkový počet bodov za dané sety**
+- **Dátum a čas kedy boli priradené sety**
+- **Odkedy dokedy je zadaný set aktívny**
+- **Priradené sety úloh:**
+
+Zobrazia sa informácie ohľadom priradených setov úloh:
+
+- **Názov setu**
+- Ak nebol vygenerovaný tak zobrazí  informáciu, že nebol vygenerovaný
+- Ak bol tak zobrazí **získaný počet bodov / maximálny počet bodov** a tlačidlo view
+
+Po kliknutí na tlačidlo view sa zobrazí:
+
+- **Názov úlohy**
+- **Popis úlohy**
+- **Získaný počet bodov / maximálny počet bodov** :
+- **Zadanie úlohy**
+- **Tvoje riešenie:** Odovzdané riešenie úlohy.
 
 1. Sekcia "Upload"
 
