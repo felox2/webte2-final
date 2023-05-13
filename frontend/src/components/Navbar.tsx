@@ -162,7 +162,7 @@ export default function Navbar() {
                   <Button
                     href={link.href}
                     startIcon={link.startIcon}
-                    sx={{ color: 'white' }}>
+                    sx={{ color: 'white', mr: 1 }}>
                     <FormattedMessage id={link.label} />
                   </Button>
                 </PermissionGate>

@@ -14,6 +14,7 @@ import PermissionGate from '@/components/PermissionGate'
 import { Roles } from '@/utils/roles'
 
 import ShuffleIcon from '@mui/icons-material/Shuffle'
+import { useLoading } from '@/components/LoadingProvider'
 
 function Assignment({
   assignment,
@@ -31,7 +32,7 @@ function Assignment({
 
   const canSubmit = useMemo(
     () => !submission?.provided_solution && (endDate ? endDate.isAfter(dayjs()) : true),
-    [submission, endDate],
+    [submission, endDate]
   )
 
   function handleMathInput(value: string) {
@@ -71,7 +72,10 @@ function Assignment({
 
       {!submission.exercise && (
         <Box mt={1}>
-          <Button variant='contained' startIcon={<ShuffleIcon />} onClick={handleGenerate}>
+          <Button
+            variant='contained'
+            startIcon={<ShuffleIcon />}
+            onClick={handleGenerate}>
             <FormattedMessage id='submissions.labels.button.generateExercise' />
           </Button>
         </Box>
@@ -125,7 +129,6 @@ function Assignment({
           </Typography>
         )}
       </PermissionGate>
-
     </Box>
   )
 }
@@ -133,19 +136,24 @@ function Assignment({
 export default function AssignmentGroup() {
   const { id } = useParams()
   const [assignmentGroup, setAssignmentGroup] = useState<AssignmentGroup | null>(null)
+  const { loading, setLoading } = useLoading()
   const endDate = useMemo(
     () =>
       assignmentGroup?.end_date ? dayjs.utc(assignmentGroup.end_date).local() : null,
-    [assignmentGroup],
+    [assignmentGroup]
   )
 
   useEffectOnce(() => {
+    setLoading(true)
     ky.get(`assignment-groups/${id}`)
       .json()
       .then((res) => {
         const data = res as AssignmentGroup
 
         setAssignmentGroup(data)
+      })
+      .finally(() => {
+        setLoading(false)
       })
   })
 
@@ -181,34 +189,32 @@ export default function AssignmentGroup() {
     return isNaN(points) ? '?' : points
   }, [assignmentGroup])
 
-  return assignmentGroup ? (
-    <Container sx={{ mb: 8, overflowX: 'hidden' }}>
-      <div>
-        <Typography variant='h4'>{assignmentGroup.title}</Typography>
-        <Typography variant='body1'>{assignmentGroup.description}</Typography>
-      </div>
+  return (
+    !loading &&
+    assignmentGroup && (
+      <Container sx={{ mb: 8, overflowX: 'hidden' }}>
+        <div>
+          <Typography variant='h4'>{assignmentGroup.title}</Typography>
+          <Typography variant='body1'>{assignmentGroup.description}</Typography>
+        </div>
 
-      <div>
-        <Typography>
-          {points}/{assignmentGroup.max_points}
-        </Typography>
-        <Typography>{assignmentGroup.end_date}</Typography>
-      </div>
+        <div>
+          <Typography>
+            {points}/{assignmentGroup.max_points}
+          </Typography>
+          <Typography>{assignmentGroup.end_date}</Typography>
+        </div>
 
-      {assignmentGroup.assignments.map((assignment, index) => (
-        <Assignment
-          key={assignment.id}
-          assignment={assignment}
-          endDate={endDate}
-          index={index}
-          handleSubmitResponse={updateSubmission}
-        />
-      ))}
-    </Container>
-  ) : (
-    <Box>
-      {/* TODO: better loading */}
-      <Typography variant='h4'>Loading...</Typography>
-    </Box>
+        {assignmentGroup.assignments.map((assignment, index) => (
+          <Assignment
+            key={assignment.id}
+            assignment={assignment}
+            endDate={endDate}
+            index={index}
+            handleSubmitResponse={updateSubmission}
+          />
+        ))}
+      </Container>
+    )
   )
 }
