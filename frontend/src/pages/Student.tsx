@@ -92,7 +92,7 @@ function AssignmentGroup(assignmentGroup: AssignmentGroup) {
         </Stack>
         <Grid container>
           {assignmentGroup.assignments.map((assignment, index) => (
-            <Grid item xs={12} sm={6} md={3}>
+            <Grid item key={index} xs={12} sm={6} md={3}>
               <AssignmentCard key={assignment.id} assignment={assignment as AssignmentExtras} index={index + 1} groupId={assignmentGroup.id} />
             </Grid>
           ))}

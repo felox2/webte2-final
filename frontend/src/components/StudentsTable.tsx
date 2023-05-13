@@ -16,6 +16,7 @@ import { FormattedMessage } from 'react-intl'
 import { ky } from '@/utils/ky'
 import { ResponseBody, Student } from '@/types/api'
 import { useEffectOnce } from '@/hooks/useEffectOnce'
+import { useLoading } from './LoadingProvider'
 
 interface Items extends Student {
   submissions_count: number
@@ -72,17 +73,20 @@ const fetchStudents = async (page: number, rowsPerPage: number, sort: keyof Item
 
 export default function StudentsTable() {
   const navigate = useNavigate()
+  const { loading, setLoading } = useLoading()
 
   const [data, setData] = useState<Data>({ items: [], total: 0 })
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc')
+  const [order, setOrder] = useState<'asc'|'desc'>('asc')
   const [orderBy, setOrderBy] = useState<keyof Items>('id')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
   useEffectOnce(() => {
+    setLoading(true)
     fetchStudents(page, rowsPerPage, orderBy, order)
       .then((data) => setData(data))
       .catch((error) => console.error('Fetch error: ', error))
+      .finally(() => setLoading(false))
   })
 
 
@@ -144,6 +148,8 @@ export default function StudentsTable() {
           component='div'
           count={data.total}
           rowsPerPage={rowsPerPage}
+          labelRowsPerPage={<FormattedMessage id='tables.footers.students.rowsPerPage' />}
+          labelDisplayedRows={({ from, to, count }) => <FormattedMessage id='tables.footers.students.rows' values={{ from, to, count }} />}
           page={page}
           onPageChange={(event, newPage: number) => {
             setPage(newPage)

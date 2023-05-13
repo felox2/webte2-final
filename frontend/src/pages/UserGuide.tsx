@@ -1,6 +1,7 @@
 import { LocaleContext } from '@/App'
 import { AuthContext } from '@/components/AuthProvider'
 import DownloadFileButton from '@/components/DownloadFileButton'
+import { useLoading } from '@/components/LoadingProvider'
 import { ky } from '@/utils/ky'
 import { Roles } from '@/utils/roles'
 import { Container, Stack, Typography } from '@mui/material'
@@ -24,6 +25,7 @@ export default function UserGuide() {
   const auth = useContext(AuthContext)
   const { locale } = useContext(LocaleContext)
   const [markdown, setMarkdown] = useState<string|null>(null)
+  const { loading, setLoading } = useLoading()
 
   const uri = getMarkdownUri(auth.user?.role)
 
@@ -32,9 +34,11 @@ export default function UserGuide() {
       return
     }
 
+    setLoading(true)
     ky.get(uri, { headers: { Accept: 'text/markdown' }, searchParams: { lang: locale } })
       .text()
       .then(setMarkdown)
+      .finally(() => setLoading(false))
   }, [locale])
 
   const downloadPdfFile = async () => {
@@ -60,10 +64,8 @@ export default function UserGuide() {
         >
           <FormattedMessage id='guide.labels.button.export.pdf' />
         </DownloadFileButton>
-        {markdown ?
-          <ReactMarkdown>{markdown}</ReactMarkdown> :
-          <Typography variant='h4' align='center'>Guide is not available</Typography>
-        }
+        {!loading && (markdown ?  <ReactMarkdown>{markdown}</ReactMarkdown> :
+          <Typography variant='h4' align='center'>Guide is not available</Typography>)}
       </Stack>
     </Container>
   )

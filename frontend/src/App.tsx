@@ -7,6 +7,7 @@ import router from '@/router'
 import theme from '@/theme'
 import messages, { common as commonMessages } from '@/locales'
 import { SnackbarProvider } from './components/SnackbarProvider'
+import { LoadingProvider } from './components/LoadingProvider'
 
 export const LocaleContext = createContext({
   locale: 'en',
@@ -32,8 +33,10 @@ export default function App() {
         <SnackbarProvider>
           <AuthProvider>
             <LocaleContext.Provider value={{ locale, changeLocale, locales }}>
-              <CssBaseline />
-              <RouterProvider router={router} />
+              <LoadingProvider>
+                <CssBaseline />
+                <RouterProvider router={router} />
+              </LoadingProvider>
             </LocaleContext.Provider>
           </AuthProvider>
         </SnackbarProvider>

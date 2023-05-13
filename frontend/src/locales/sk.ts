@@ -33,6 +33,8 @@ export default {
   'tables.headers.students.generatedAssignmentCount': 'Počet vygenerovaných úloh',
   'tables.headers.students.handedInAssignmentCount': 'Počet odovzdaných úloh',
   'tables.headers.students.earnedPointCount': 'Počet získaných bodov',
+  'tables.footers.students.rowsPerPage': 'Riadkov na stranu:',
+  'tables.footers.students.rows': '{from}-{to} z {count}',
 
   'assigning.form.labels.title': 'Názov',
   'assigning.form.labels.description': 'Popis',

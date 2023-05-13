@@ -33,6 +33,8 @@ export default {
   'tables.headers.students.generatedAssignmentCount': 'Generated assignments count',
   'tables.headers.students.handedInAssignmentCount': 'Submitted assignments count',
   'tables.headers.students.earnedPointCount': 'Total points earned',
+  'tables.footers.students.rowsPerPage': 'Rows per page',
+  'tables.footers.students.rows': '{from} - {to} of {count}',
 
   'assigning.form.labels.title': 'Title',
   'assigning.form.labels.description': 'Description',
