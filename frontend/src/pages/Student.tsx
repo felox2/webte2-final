@@ -69,19 +69,19 @@ function AssignmentCard({
                 {isCorrect ? <CheckIcon color='success' /> : <CloseIcon color='error' />}
               </Stack>
             ) : (
-              <Typography variant='body1'>Not submitted</Typography>
+              <Typography variant='body1'><FormattedMessage id='student.assignmentGroup.notSubmitted' /></Typography>
             )}
             <Button
               variant='contained'
               color='primary'
               // TODO redirect to a custom submission page, not the assignment page
               onClick={() => navigate(`/assignment/${groupId}`)}>
-              View
+              <FormattedMessage id='student.assignmentGroup.view' />
             </Button>
           </Stack>
         ) : (
           <Typography variant='h6' align='center'>
-            Not generated
+            <FormattedMessage id='student.assignmentGroup.notGenerated' />
           </Typography>
         )}
       </Stack>

@@ -63,6 +63,9 @@ export default {
   'student.banner.assignmentCount': 'Number of all assigned assignments: {count}',
   'student.assignmentGroup.created': 'Created',
   'student.assignmentGroup.active': 'Active: ',
+  'student.assignmentGroup.view': 'View',
+  'student.assignmentGroup.notGenerated': 'Not generated',
+  'student.assignmentGroup.notSubmitted': 'Not submitted',
 
   'dashboard.labels.button.export.csv': 'Export to CSV',
   'guide.labels.button.export.pdf': 'Export to PDF',

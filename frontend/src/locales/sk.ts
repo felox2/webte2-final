@@ -1,5 +1,7 @@
 export default {
   'auth.login': 'Prihlásiť sa',
+  'auth.login.success': 'Prihlásenie prebehlo úspešne',
+  'auth.login.error': 'Prihlásenie bolo neuspešné',
   'auth.login.redirectToRegister': 'Nemáš účet? Zaregistruj sa',
   'auth.login.remember': 'Zapamätať si ma',
   'auth.login.email': 'E-mail',
@@ -56,6 +58,11 @@ export default {
   'assigning.snackbar.error': 'Prepáč, priradenie úlohy zlyhalo',
 
   'student.banner.assignmentCount': 'Počet všetkých pridelených úloh: {count}',
+  'student.assignmentGroup.created': 'Vytvorené',
+  'student.assignmentGroup.active': 'Aktívne: ',
+  'student.assignmentGroup.view': 'Zobraziť',
+  'student.assignmentGroup.notGenerated': 'Nevygenerované',
+  'student.assignmentGroup.notSubmitted': 'Neodovzdané',
 
   'dashboard.labels.button.export.csv': 'Exportovať do CSV',
   'guide.labels.button.export.pdf': 'Exportovať do PDF',
