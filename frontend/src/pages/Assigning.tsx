@@ -15,27 +15,29 @@ import {
   Paper,
   Select,
   Stack,
-  TextField
+  TextField,
 } from '@mui/material'
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import SnackbarContext from '@/components/SnackbarProvider'
 import { ky } from '@/utils/ky'
 import { useContext, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { ResponseBody, Student } from '@/types/api'
 import { useEffectOnce } from '@/hooks/useEffectOnce'
+import { Dayjs } from 'dayjs'
 
 interface ExerciseSet {
-  id: number,
-  file_name: string,
-  created_at: string,
+  id: number
+  file_name: string
+  created_at: string
 }
 
 interface Errors {
-  title?: string,
-  description?: string,
-  students?: string,
-  exerciseSet?: string,
-  points?: string,
+  title?: string
+  description?: string
+  students?: string
+  exerciseSet?: string
+  points?: string
 }
 
 function validateForm(content: any): [boolean, Errors] {
@@ -65,8 +67,7 @@ function validateForm(content: any): [boolean, Errors] {
   if (typeof content.points !== 'number') {
     errors.points = 'assigning.form.errors.pointsRequired'
     isValid = false
-  }
-  else {
+  } else {
     if (content.points < 1) {
       errors.points = 'assigning.form.errors.pointsPositive'
       isValid = false
@@ -79,7 +80,10 @@ function validateForm(content: any): [boolean, Errors] {
 export default function Assigning() {
   const intl = useIntl()
   const { triggerSnackbar } = useContext(SnackbarContext)
-  const [exerciseSets, setExerciseSets] = useState<ResponseBody<ExerciseSet>>({ items: [], total: 0 })
+  const [exerciseSets, setExerciseSets] = useState<ResponseBody<ExerciseSet>>({
+    items: [],
+    total: 0,
+  })
   const [students, setStudents] = useState<ResponseBody<Student>>({ items: [], total: 0 })
 
   // form data
@@ -87,9 +91,9 @@ export default function Assigning() {
   const [description, setDescription] = useState('')
   const [studentIds, setStudentIds] = useState<number[]>([])
   const [exerciseSetIds, setExerciseSetIds] = useState<number[]>([])
-  const [points, setPoints] = useState<number|''>('')
-  const [startDate, setStartDate] = useState<Date>()
-  const [endDate, setEndDate] = useState<Date>()
+  const [points, setPoints] = useState<number | ''>('')
+  const [startDate, setStartDate] = useState<Dayjs | null>(null)
+  const [endDate, setEndDate] = useState<Dayjs | null>(null)
 
   const [errors, setErrors] = useState<Errors>({})
 
@@ -111,13 +115,21 @@ export default function Assigning() {
     setStudentIds([])
     setExerciseSetIds([])
     setPoints('')
-    setStartDate(undefined)
-    setEndDate(undefined)
+    setStartDate(null)
+    setEndDate(null)
     setErrors({})
   }
 
   const handleSubmit = () => {
-    const content = { title, description, studentIds, exerciseSetIds, points, startDate, endDate }
+    const content = {
+      title,
+      description,
+      studentIds,
+      exerciseSetIds,
+      points,
+      startDate,
+      endDate,
+    }
     const [isValid, errors] = validateForm(content)
     setErrors(errors)
 
@@ -130,7 +142,7 @@ export default function Assigning() {
       exercise_set_ids: exerciseSetIds,
       max_points: points,
       start_date: startDate?.toISOString().slice(0, 10),
-      end_date: endDate?.toISOString().slice(0, 10)
+      end_date: endDate?.toISOString().slice(0, 10),
     }
 
     ky.post('assignment-groups', { json: body })
@@ -138,7 +150,7 @@ export default function Assigning() {
         reset()
         triggerSnackbar('assigning.snackbar.success', 'success')
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err)
         triggerSnackbar('assigning.snackbar.error', 'error')
       })
@@ -158,8 +170,7 @@ export default function Assigning() {
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={4}
-          justifyContent={'center'}
-        >
+          justifyContent={'center'}>
           <Stack direction={'column'} spacing={4} sx={{ width: '100%' }}>
             <FormControl>
               <FormLabel error={!!errors.title} required>
@@ -199,10 +210,12 @@ export default function Assigning() {
               <FormattedMessage id='assigning.form.labels.students' />
             </FormLabel>
             <Paper variant='outlined'>
-              <List sx={{ maxHeight: '200px', overflowY: 'auto' }} >
+              <List sx={{ maxHeight: '200px', overflowY: 'auto' }}>
                 {students.items.map((student) => (
                   <ListItem key={student.id} disablePadding>
-                    <ListItemButton onClick={() => handleStudentListItemToggle(student)} dense>
+                    <ListItemButton
+                      onClick={() => handleStudentListItemToggle(student)}
+                      dense>
                       <ListItemIcon>
                         <Checkbox
                           checked={studentIds.includes(student.id)}
@@ -228,7 +241,10 @@ export default function Assigning() {
 
         <Stack direction={'column'} spacing={4}>
           <FormControl>
-            <InputLabel id='exercise-set-select-label' error={!!errors.exerciseSet} required>
+            <InputLabel
+              id='exercise-set-select-label'
+              error={!!errors.exerciseSet}
+              required>
               <FormattedMessage id='assigning.form.labels.exerciseSet' />
             </InputLabel>
             <Select
@@ -239,13 +255,9 @@ export default function Assigning() {
               sx={{ minWidth: '200px' }}
               onChange={(event) => setExerciseSetIds(event.target.value as number[])}
               label={intl.formatMessage({ id: 'assigning.form.labels.exerciseSet' })}
-              error={!!errors.exerciseSet}
-            >
+              error={!!errors.exerciseSet}>
               {exerciseSets.items.map((exerciseSet) => (
-                <MenuItem
-                  key={exerciseSet.id}
-                  value={exerciseSet.id}
-                >
+                <MenuItem key={exerciseSet.id} value={exerciseSet.id}>
                   {exerciseSet.file_name}
                 </MenuItem>
               ))}
@@ -279,13 +291,19 @@ export default function Assigning() {
               <FormLabel>
                 <FormattedMessage id='assigning.form.labels.startDate' />
               </FormLabel>
-              <TextField type='date' value={startDate?.toISOString().split('T')[0]} onChange={(event) => setStartDate(new Date(event.target.value))} />
+              <DateTimePicker
+                value={startDate}
+                onChange={(newValue) => setStartDate(newValue)}
+              />
             </FormControl>
             <FormControl sx={{ width: '100%' }}>
               <FormLabel>
                 <FormattedMessage id='assigning.form.labels.endDate' />
               </FormLabel>
-              <TextField type='date' value={endDate?.toISOString().split('T')[0]} onChange={(event) => setEndDate(new Date(event.target.value))} />
+              <DateTimePicker
+                value={endDate}
+                onChange={(newValue) => setEndDate(newValue)}
+              />
             </FormControl>
           </Stack>
         </Stack>

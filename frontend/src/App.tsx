@@ -8,6 +8,8 @@ import theme from '@/theme'
 import messages, { common as commonMessages } from '@/locales'
 import { SnackbarProvider } from './components/SnackbarProvider'
 import { LoadingProvider } from './components/LoadingProvider'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 export const LocaleContext = createContext({
   locale: 'en',
@@ -32,12 +34,14 @@ export default function App() {
       <IntlProvider defaultLocale='en' locale={locale} messages={currentMessages}>
         <SnackbarProvider>
           <AuthProvider>
-            <LocaleContext.Provider value={{ locale, changeLocale, locales }}>
-              <LoadingProvider>
-                <CssBaseline />
-                <RouterProvider router={router} />
-              </LoadingProvider>
-            </LocaleContext.Provider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <LocaleContext.Provider value={{ locale, changeLocale, locales }}>
+                <LoadingProvider>
+                  <CssBaseline />
+                  <RouterProvider router={router} />
+                </LoadingProvider>
+              </LocaleContext.Provider>
+            </LocalizationProvider>
           </AuthProvider>
         </SnackbarProvider>
       </IntlProvider>
