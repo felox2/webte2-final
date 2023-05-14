@@ -3,7 +3,7 @@ import { Box, Card, CardContent, Divider, Stack, Typography } from '@mui/materia
 import { Assignment, AssignmentGroup, Submission } from '@/types/api'
 import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { ky } from '@/utils/ky'
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import Latex from '@/components/Latex'
 import dayjs from 'dayjs'
 import MathInput from '@/components/MathInput'
@@ -131,7 +131,7 @@ function Assignment({
 
       <PermissionGate roles={[Roles.Teacher]}>
         {submission.provided_solution == null && (
-          <Typography variant='h5'>
+          <Typography variant='h5' align='center'>
             <FormattedMessage id='submissions.solution.notSubmitted' />
           </Typography>
         )}
@@ -142,6 +142,7 @@ function Assignment({
 
 export default function AssignmentGroup() {
   const { id } = useParams()
+  const [searchParams] = useSearchParams()
   const [assignmentGroup, setAssignmentGroup] = useState<AssignmentGroup | null>(null)
   const { loading, setLoading } = useLoading()
   const endDate = useMemo(
@@ -149,6 +150,8 @@ export default function AssignmentGroup() {
       assignmentGroup?.end_date ? dayjs.utc(assignmentGroup.end_date).local() : null,
     [assignmentGroup]
   )
+
+  const assignmentToShow = parseInt(searchParams.get('show') ?? '')
 
   useEffectOnce(() => {
     setLoading(true)
@@ -226,17 +229,36 @@ export default function AssignmentGroup() {
             </Typography>
           </Box>
 
-          {assignmentGroup.assignments.map((assignment, index) => (
-            <Fragment key={assignment.id}>
-              <Divider />
-              <Assignment
-                assignment={assignment}
-                endDate={endDate}
-                index={index}
-                handleSubmitResponse={updateSubmission}
-              />
-            </Fragment>
-          ))}
+          <PermissionGate roles={[Roles.Teacher, Roles.Admin]}>
+            {assignmentGroup.assignments
+              .filter((assignment) => assignment.id === assignmentToShow || !assignmentToShow)
+              .map((assignment, index) => (
+              <Fragment key={assignment.id}>
+                <Divider />
+                <Assignment
+                  assignment={assignment}
+                  endDate={endDate}
+                  index={index}
+                  handleSubmitResponse={updateSubmission}
+                />
+              </Fragment>
+            ))}
+          </PermissionGate>
+
+          <PermissionGate roles={[Roles.Student]}>
+            {assignmentGroup.assignments.map((assignment, index) => (
+              <Fragment key={assignment.id}>
+                <Divider />
+                <Assignment
+                  assignment={assignment}
+                  endDate={endDate}
+                  index={index}
+                  handleSubmitResponse={updateSubmission}
+                />
+              </Fragment>
+            ))}
+          </PermissionGate>
+
         </CardContent>
       </Card>
     </Container>

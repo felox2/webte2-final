@@ -30,6 +30,7 @@ export default {
 
   'submissions.task': 'Task {number}',
   'submissions.solution': 'Correct solution',
+  'submissions.solution.notSubmitted': 'No solution submitted yet',
   'submissions.providedSolution': 'Your solution',
   'submissions.labels.button.submit': 'Submit',
   'submissions.labels.button.generateExercise': 'Generate exercise',
