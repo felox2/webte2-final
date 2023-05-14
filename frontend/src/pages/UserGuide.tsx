@@ -2,6 +2,7 @@ import { LocaleContext } from '@/App'
 import { AuthContext } from '@/components/AuthProvider'
 import DownloadFileButton from '@/components/DownloadFileButton'
 import { useLoading } from '@/components/LoadingProvider'
+import { Title } from '@/components/Title'
 import { ky } from '@/utils/ky'
 import { Roles } from '@/utils/roles'
 import { Container, Stack, Typography } from '@mui/material'
@@ -52,6 +53,7 @@ export default function UserGuide() {
 
   return (
     <Container>
+      <Title text='guide' />
       <Stack
         direction='column'
         spacing={2}

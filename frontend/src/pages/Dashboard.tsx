@@ -6,6 +6,7 @@ import { Container, Stack } from '@mui/material'
 import { FormattedMessage } from 'react-intl'
 import { ky } from '@/utils/ky'
 import DownloadFileButton from '@/components/DownloadFileButton'
+import { Title } from '@/components/Title'
 
 export default function Dashboard() {
   const downloadCsvFile = async () => {
@@ -17,6 +18,7 @@ export default function Dashboard() {
 
   return (
     <Container>
+      <Title text='dashboard' />
       <PermissionGate roles={[Roles.Teacher, Roles.Admin]}>
         <Stack
           direction='column'

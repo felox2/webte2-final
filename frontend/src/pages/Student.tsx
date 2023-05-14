@@ -27,6 +27,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import { usePoints } from '@/hooks/usePoints'
 import { getColorForPoints } from '@/utils'
+import { Title } from '@/components/Title'
 
 interface Data {
   student: Student
@@ -198,6 +199,7 @@ export default function Student() {
     <Container>
       {!loading && (
         <>
+          <Title text={`${student?.first_name} ${student?.last_name}`} />
           <Stack direction='row' alignItems='center'>
             <Avatar {...stringAvatar(`${student?.first_name} ${student?.last_name}`)} />
             <Stack margin={2} direction='column'>

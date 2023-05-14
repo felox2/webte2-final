@@ -13,6 +13,7 @@ import { AuthContext } from '@/components/AuthProvider'
 import { ky } from '@/utils/ky'
 import SnackbarContext from '@/components/SnackbarProvider'
 import { FormattedMessage, useIntl } from 'react-intl'
+import { Title } from '@/components/Title'
 
 export default function SignUp() {
   const intl = useIntl()
@@ -38,6 +39,7 @@ export default function SignUp() {
 
   return (
     <Container component='main' maxWidth='xs'>
+      <Title text='auth.register' />
       <Box
         sx={{
           marginTop: 8,

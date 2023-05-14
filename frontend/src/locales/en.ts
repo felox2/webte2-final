@@ -1,4 +1,7 @@
 export default {
+  'guide': 'Guide',
+  'dashboard': 'Dashboard',
+
   'auth.login': 'Sign in',
   'auth.login.success': 'Logged in successfully',
   'auth.login.error': 'Couldn\'t log in',

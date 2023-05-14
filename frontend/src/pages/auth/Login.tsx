@@ -15,6 +15,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { ky } from '@/utils/ky'
 import { AuthContext } from '@/components/AuthProvider'
 import SnackbarContext from '@/components/SnackbarProvider'
+import { Title } from '@/components/Title'
 
 export default function SignIn() {
   const auth = useContext(AuthContext)
@@ -39,6 +40,7 @@ export default function SignIn() {
 
   return (
     <Container component='main' maxWidth='xs'>
+      <Title text='auth.login' />
       <Box
         sx={{
           marginTop: 8,

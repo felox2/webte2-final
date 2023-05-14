@@ -25,6 +25,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { ResponseBody, Student } from '@/types/api'
 import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { Dayjs } from 'dayjs'
+import { Title } from '@/components/Title'
 
 interface ExerciseSet {
   id: number
@@ -166,6 +167,7 @@ export default function Assigning() {
 
   return (
     <Paper sx={{ marginTop: 4 }}>
+      <Title />
       <Stack direction={'column'} spacing={4} padding={4}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}

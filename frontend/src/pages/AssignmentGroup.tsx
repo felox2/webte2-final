@@ -17,6 +17,7 @@ import ShuffleIcon from '@mui/icons-material/Shuffle'
 import { useLoading } from '@/components/LoadingProvider'
 import { getColorForPoints } from '@/utils'
 import { usePoints } from '@/hooks/usePoints'
+import { Title } from '@/components/Title'
 
 function Assignment({
   assignment,
@@ -196,6 +197,7 @@ export default function AssignmentGroup() {
 
   return !loading && assignmentGroup ? (
     <Container sx={{ mb: 8, overflowX: 'hidden' }}>
+      <Title text={assignmentGroup.title} />
       <Card variant='outlined'>
         <CardContent>
           <Typography variant='h4' display='flex' justifyContent='space-between'>
