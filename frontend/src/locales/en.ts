@@ -1,5 +1,7 @@
 export default {
   'auth.login': 'Sign in',
+  'auth.login.success': 'Logged in successfully',
+  'auth.login.error': 'Couldn\'t log in',
   'auth.login.redirectToRegister': 'Don\'t have an account? Sign Up',
   'auth.login.remember': 'Remember me',
   'auth.login.email': 'Email',

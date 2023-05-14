@@ -10,6 +10,7 @@ import { SnackbarProvider } from './components/SnackbarProvider'
 import { LoadingProvider } from './components/LoadingProvider'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { SnackbarProvider as NotistackProvider } from 'notistack'
 
 export const LocaleContext = createContext({
   locale: 'en',
@@ -32,18 +33,20 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <IntlProvider defaultLocale='en' locale={locale} messages={currentMessages}>
-        <SnackbarProvider>
-          <AuthProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <LocaleContext.Provider value={{ locale, changeLocale, locales }}>
-                <LoadingProvider>
-                  <CssBaseline />
-                  <RouterProvider router={router} />
-                </LoadingProvider>
-              </LocaleContext.Provider>
-            </LocalizationProvider>
-          </AuthProvider>
-        </SnackbarProvider>
+        <NotistackProvider maxSnack={3}>
+          <SnackbarProvider>
+            <AuthProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocaleContext.Provider value={{ locale, changeLocale, locales }}>
+                  <LoadingProvider>
+                    <CssBaseline />
+                    <RouterProvider router={router} />
+                  </LoadingProvider>
+                </LocaleContext.Provider>
+              </LocalizationProvider>
+            </AuthProvider>
+          </SnackbarProvider>
+        </NotistackProvider>
       </IntlProvider>
     </ThemeProvider>
   )
