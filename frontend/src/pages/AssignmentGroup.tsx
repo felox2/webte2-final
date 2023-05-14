@@ -15,6 +15,8 @@ import { Roles } from '@/utils/roles'
 
 import ShuffleIcon from '@mui/icons-material/Shuffle'
 import { useLoading } from '@/components/LoadingProvider'
+import { getColorForPoints } from '@/utils'
+import { usePoints } from '@/hooks/usePoints'
 
 function Assignment({
   assignment,
@@ -60,13 +62,6 @@ function Assignment({
 
   const formatPoints = (points: string) => {
     return intl.formatNumber(parseFloat(points))
-  }
-
-  const getColorForPoints = (points: string | null) => {
-    if (points === null) {
-      return 'primary'
-    }
-    return points === assignment.max_points ? 'success.main' : 'error'
   }
 
   return (
@@ -186,19 +181,7 @@ export default function AssignmentGroup() {
     })
   }
 
-  const points = useMemo(() => {
-    if (!assignmentGroup) return NaN
-
-    // count points only when all submissions have provided solution
-    const points = assignmentGroup.assignments.reduce((acc, assignment) => {
-      if (!assignment.submissions[0].provided_solution) {
-        return NaN
-      }
-      return acc + parseFloat(assignment.submissions[0].points ?? '0')
-    }, 0)
-
-    return isNaN(points) ? '-' : points
-  }, [assignmentGroup])
+  const points = usePoints(assignmentGroup)
 
   const diff = useMemo(() => {
     if (!assignmentGroup?.end_date) {
@@ -213,7 +196,7 @@ export default function AssignmentGroup() {
 
   return !loading && assignmentGroup ? (
     <Container sx={{ mb: 8, overflowX: 'hidden' }}>
-      <Card>
+      <Card variant='outlined'>
         <CardContent>
           <Typography variant='h4' display='flex' justifyContent='space-between'>
             <span>{assignmentGroup.title}</span>

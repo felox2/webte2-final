@@ -58,6 +58,8 @@ export default {
   'assigning.snackbar.error': 'Sorry, assignment assigning failed',
 
   'student.banner.assignmentCount': 'Number of all assigned assignments: {count}',
+  'student.assignmentGroup.created': 'Created',
+  'student.assignmentGroup.active': 'Active: ',
 
   'dashboard.labels.button.export.csv': 'Export to CSV',
   'guide.labels.button.export.pdf': 'Export to PDF',

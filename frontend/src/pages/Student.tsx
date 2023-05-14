@@ -2,13 +2,31 @@ import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { Assignment, AssignmentGroup, ResponseBody, Student } from '@/types/api'
 import { stringAvatar } from '@/utils/avatar'
 import { ky } from '@/utils/ky'
-import { Avatar, Button, Container, Divider, Grid, Paper, Stack, Typography } from '@mui/material'
-import { useState } from 'react'
-import { FormattedMessage } from 'react-intl'
+import {
+  Avatar,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material'
+import { useMemo, useState } from 'react'
+import {
+  FormattedDate,
+  FormattedDateTimeRange,
+  FormattedMessage,
+  FormattedRelativeTime,
+  useIntl,
+} from 'react-intl'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useLoading } from '@/components/LoadingProvider'
 
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
+import { usePoints } from '@/hooks/usePoints'
+import { getColorForPoints } from '@/utils'
 
 interface Data {
   student: Student
@@ -16,19 +34,18 @@ interface Data {
 }
 
 interface AssignmentExtras extends Assignment {
-  filename: string,
-  exercise_id: number | null,
-  points: number | null,
+  filename: string
+  exercise_id: number | null
+  points: number | null
 }
 
 function AssignmentCard({
   assignment,
   index,
-  groupId
-}:
-{
-  assignment: AssignmentExtras,
-  index: number,
+  groupId,
+}: {
+  assignment: AssignmentExtras
+  index: number
   groupId: number
 }) {
   const navigate = useNavigate()
@@ -45,28 +62,67 @@ function AssignmentCard({
           <Stack direction='row' justifyContent='space-between' alignItems='center'>
             {isSubmitted ? (
               <Stack direction='row' spacing={1}>
-                <Typography variant='body1'>{`${assignment.points}/${assignment.max_points}`}</Typography>
-                {isCorrect ? <CheckIcon /> : <CloseIcon />}
+                <Typography variant='body1'>
+                  {`${assignment.points}/${assignment.max_points}`}
+                </Typography>
+                {isCorrect ? <CheckIcon color='success' /> : <CloseIcon color='error' />}
               </Stack>
-            ) :
-              <Typography variant='body1'>Not submitted</Typography>}
+            ) : (
+              <Typography variant='body1'>Not submitted</Typography>
+            )}
             <Button
               variant='contained'
               color='primary'
               // TODO redirect to a custom submission page, not the assignment page
-              onClick={() => navigate(`/assignment/${groupId}`)}
-            >
+              onClick={() => navigate(`/assignment/${groupId}`)}>
               View
             </Button>
           </Stack>
-        ) :
-          <Typography variant='h6' align='center'>Not generated</Typography>}
+        ) : (
+          <Typography variant='h6' align='center'>
+            Not generated
+          </Typography>
+        )}
       </Stack>
     </Paper>
   )
 }
 
 function AssignmentGroup(assignmentGroup: AssignmentGroup) {
+  const intl = useIntl()
+
+  const startDate = useMemo(
+    () => new Date(assignmentGroup.start_date),
+    [assignmentGroup.start_date]
+  )
+  const endDate = useMemo(
+    () => (assignmentGroup.end_date ? new Date(assignmentGroup.end_date) : null),
+    [assignmentGroup.end_date]
+  )
+  const createdDiff = useMemo(() => {
+    const date = new Date(assignmentGroup.created_at)
+    const now = new Date()
+
+    return (date.valueOf() - now.valueOf()) / 1000
+  }, [assignmentGroup.created_at])
+
+  const points = useMemo(() => {
+    let points = 0
+
+    for (const assignment of assignmentGroup.assignments) {
+      // @ts-ignore
+      const assignmentPoints = assignment.points
+
+      if (assignmentPoints === null) {
+        return null
+      }
+
+      points += parseFloat(assignmentPoints)
+    }
+
+    return intl.formatNumber(points, { maximumFractionDigits: 3 })
+  }, [assignmentGroup])
+
   return (
     <Paper variant='outlined'>
       <Stack direction='column' padding={2} spacing={2}>
@@ -76,24 +132,40 @@ function AssignmentGroup(assignmentGroup: AssignmentGroup) {
             <Typography variant='body1'>{assignmentGroup.description}</Typography>
           </div>
           <div>
-            <Typography variant='body1' align='right'>
-              {/* TODO: Translate */}
-              {`Max. points: ${assignmentGroup.max_points}`}
+            <Typography variant='h5' align='right' color={getColorForPoints(points)}>
+              {points ?? '-'}/{assignmentGroup.max_points}
             </Typography>
             <Typography variant='body1' align='right'>
-              {/* TODO: Translate */}
-              {`Created: ${assignmentGroup.created_at}`}
+              <FormattedMessage id='student.assignmentGroup.created' />{' '}
+              <FormattedRelativeTime
+                value={createdDiff}
+                numeric='auto'
+                updateIntervalInSeconds={1}
+              />
             </Typography>
             <Typography variant='body1' align='right'>
-              {/* TODO: Translate */}
-              {`Active: ${assignmentGroup.start_date.slice(0, 10)} - ${assignmentGroup.end_date?.slice(0, 10) || '∞'}`}
+              <FormattedMessage id='student.assignmentGroup.active' />
+
+              {endDate ? (
+                <FormattedDateTimeRange from={startDate} to={endDate} />
+              ) : (
+                <>
+                  <FormattedDate value={startDate} />
+                  {' - ∞'}
+                </>
+              )}
             </Typography>
           </div>
         </Stack>
         <Grid container>
           {assignmentGroup.assignments.map((assignment, index) => (
             <Grid item key={index} xs={12} sm={6} md={3}>
-              <AssignmentCard key={assignment.id} assignment={assignment as AssignmentExtras} index={index + 1} groupId={assignmentGroup.id} />
+              <AssignmentCard
+                key={assignment.id}
+                assignment={assignment as AssignmentExtras}
+                index={index + 1}
+                groupId={assignmentGroup.id}
+              />
             </Grid>
           ))}
         </Grid>
@@ -104,42 +176,56 @@ function AssignmentGroup(assignmentGroup: AssignmentGroup) {
 
 export default function Student() {
   const { id } = useParams<{ id: string }>()
+  const { loading, setLoading } = useLoading()
 
   const [student, setStudent] = useState<Student>()
-  const [assignmentGroups, setAssignmentGroups] = useState<ResponseBody<AssignmentGroup>>()
+  const [assignmentGroups, setAssignmentGroups] =
+    useState<ResponseBody<AssignmentGroup>>()
 
   useEffectOnce(() => {
+    setLoading(true)
     ky.get(`students/${id}`)
       .json<Data>()
-      .then(data => {
+      .then((data) => {
         setStudent(data.student)
         setAssignmentGroups(data.assignmentGroups)
       })
       .catch(console.error)
+      .finally(() => setLoading(false))
   })
 
   return (
     <Container>
-      <Stack direction='row' alignItems='center'>
-        <Avatar {...stringAvatar(`${student?.first_name} ${student?.last_name}`)} />
-        <Stack margin={2} direction='column'>
-          <Typography variant='h5'>{student?.first_name} {student?.last_name}</Typography>
-          <Typography variant='body1'>{student?.email}</Typography>
-        </Stack>
-        <Typography
-          variant='h6'
-          alignSelf='flex-end'
-          sx={{ marginLeft: 'auto', paddingY: '0.5rem' }}
-        >
-          <FormattedMessage id='student.banner.assignmentCount' values={{ count: assignmentGroups?.total ?? '-' }} />
-        </Typography>
-      </Stack>
+      {!loading && (
+        <>
+          <Stack direction='row' alignItems='center'>
+            <Avatar {...stringAvatar(`${student?.first_name} ${student?.last_name}`)} />
+            <Stack margin={2} direction='column'>
+              <Typography variant='h5'>
+                {student?.first_name} {student?.last_name}
+              </Typography>
+              <Typography variant='body1'>{student?.email}</Typography>
+            </Stack>
+            <Typography
+              variant='h6'
+              alignSelf='flex-end'
+              sx={{ marginLeft: 'auto', paddingY: '0.5rem' }}>
+              <FormattedMessage
+                id='student.banner.assignmentCount'
+                values={{ count: assignmentGroups?.total ?? '-' }}
+              />
+            </Typography>
+          </Stack>
 
-      <Divider sx={{ marginTop: '0' }} />
+          <Divider sx={{ marginTop: '0' }} />
 
-      <Stack direction='column' spacing={2} marginY={2}>
-        {assignmentGroups?.items.map((assignmentGroup) => <AssignmentGroup key={assignmentGroup.id} {...assignmentGroup} />)}
-      </Stack>
+          <Stack direction='column' spacing={2} marginY={2}>
+            {assignmentGroups?.items.map((assignmentGroup) => (
+              <AssignmentGroup key={assignmentGroup.id} {...assignmentGroup} />
+            ))}
+          </Stack>
+        </>
+      )}
     </Container>
   )
 }

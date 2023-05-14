@@ -18,24 +18,10 @@ import Container from '@mui/material/Container'
 import { FormattedMessage, FormattedRelativeTime } from 'react-intl'
 import { AssignmentGroup } from '@/types/api'
 import { stringAvatar } from '@/utils/avatar'
+import { usePoints } from '@/hooks/usePoints'
 
 function AssignmentCard({ assignmentGroup }: { assignmentGroup: AssignmentGroup }) {
-  const points = useMemo(() => {
-    let points = 0
-
-    for (const assignment of assignmentGroup.assignments) {
-      const assignmentPoints = assignment.submissions[0].points
-
-      if (assignmentPoints === null) {
-        return '-'
-      }
-
-      points += parseFloat(assignmentPoints)
-    }
-
-    return points
-  }, [assignmentGroup])
-
+  const points = usePoints(assignmentGroup)
   const diff = useMemo(() => {
     if (!assignmentGroup.end_date) {
       return 0

@@ -18,7 +18,7 @@ export interface AssignmentGroup {
   max_points: string
   teacher_id: number
   teacher: Teacher
-  created_at?: string
+  created_at: string
   assignments: Assignment[]
 }
 
