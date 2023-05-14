@@ -13,7 +13,7 @@ Fill in the following fields:
 - **Students:** Select the students to be assigned to work on the assigned sets. \*This field is mandatory
 - **Assign button** : Checks the validity of filled fields. If they are not validly filled in, an error message will be displayed if the data is incorrectly filled out. If they are filled in correctly, it assigns the selected sets to the selected students.
 
-1. "Home" section:
+2. "Home" section:
 
 In this section you will find an overview of all students:
 
@@ -25,7 +25,7 @@ In this section you will find an overview of all students:
 - **Total Points Earned:** The number of points the student earned from all submitted examples.
 - Clicking on a specific student will display the third section.
 
-1. Section for a specific student:
+3. Section for a specific student:
 
 In this section you will see the details of the generated and submitted student assignments
 
@@ -58,7 +58,7 @@ After clicking the view button , the following will appear:
 - **Task assignment**
 - **Your solution:** Submitted solution to the task.
 
-1. " Upload " section
+4. " Upload " section
 
 In this section, the teacher has the opportunity to upload sets for elaboration.
 

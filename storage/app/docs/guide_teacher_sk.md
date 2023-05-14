@@ -13,7 +13,7 @@ Vyplňte nasledujúce polia:
 - **Výber študentov:** Vyberte študentov, ktorí majú byť pridelení na vypracovanie zadaných setov. \*Toto pole je povinné
 - **Tlačidlo Priradiť** : Kontroluje valídnosť vyplnených polí. Ak nie sú validne vyplnené tak vypíše error správu pri zle vyplnenom údaji. Ak sú správne vyplnený priradí vybrané sety vybraným študentom.
 
-1. Sekcia "Domov":
+2. Sekcia "Domov":
 
  V tejto sekcii nájdete prehľad o všetkých študentoch:
 
@@ -25,7 +25,7 @@ Vyplňte nasledujúce polia:
 - **Celkový počet získaných bodov:** Počet bodov, ktoré študent získal zo všetkých odovzdaných príkladov.
 - Kliknutím na konkrétneho študenta sa zobrazí tretia sekcia.
 
-1. Sekcia pre konkrétneho študenta:
+3. Sekcia pre konkrétneho študenta:
 
  V tejto sekcii uvidíte podrobnosti o vygenerovaných a odovzdaných úlohách študenta
 
@@ -58,7 +58,7 @@ Po kliknutí na tlačidlo view sa zobrazí:
 - **Zadanie úlohy**
 - **Tvoje riešenie:** Odovzdané riešenie úlohy.
 
-1. Sekcia "Upload"
+4. Sekcia "Upload"
 
 V tejto sekcii má učiteľ možnosť uploadnuť sety na vypracovanie.
 
