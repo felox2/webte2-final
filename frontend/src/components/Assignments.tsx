@@ -54,7 +54,7 @@ function AssignmentCard({ assignmentGroup }: { assignmentGroup: AssignmentGroup 
           <Typography variant='h5' display='flex' justifyContent='space-between'>
             <span>{assignmentGroup.title}</span>
 
-            <Typography variant='h6' fontWeight='regular' color='primary'>
+            <Typography variant='h6' component='p' fontWeight='regular' color='primary'>
               {points}/{assignmentGroup.max_points}
             </Typography>
           </Typography>
@@ -119,7 +119,12 @@ export default function Assignments() {
       <Grid container spacing={2}>
         {[...Array(2)].map((_, i) => (
           <Grid item key={i} xs={12} md={6} lg={4}>
-            <Skeleton variant='rounded' height={120} sx={{ mt: 2, mb: 1 }} animation='wave' />
+            <Skeleton
+              variant='rounded'
+              height={120}
+              sx={{ mt: 2, mb: 1 }}
+              animation='wave'
+            />
 
             <Stack direction='row' spacing={2}>
               <Skeleton variant='circular' width={40} height={40} animation='wave' />

@@ -27,11 +27,13 @@ export default function SignIn() {
     const data = new FormData(event.currentTarget)
 
     try {
-      const res: any = await ky.post('auth/login', { body: data, credentials: 'include' }).json()
+      const res: any = await ky
+        .post('auth/login', { body: data, credentials: 'include' })
+        .json()
       auth.handleLogin(res.access_token)
-      triggerSnackbar('Logged in successfully', 'success')
+      triggerSnackbar('auth.login.success', 'success')
     } catch (err) {
-      triggerSnackbar('Couldn\'t log in', 'error')
+      triggerSnackbar('auth.login.error', 'error')
     }
   }
 
@@ -43,8 +45,7 @@ export default function SignIn() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-        }}
-      >
+        }}>
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
@@ -72,15 +73,17 @@ export default function SignIn() {
             autoComplete='current-password'
           />
           <FormControlLabel
-            control={<Checkbox value='remember' name='remember' color='primary' defaultChecked={true} />}
+            control={
+              <Checkbox
+                value='remember'
+                name='remember'
+                color='primary'
+                defaultChecked={true}
+              />
+            }
             label={<FormattedMessage id='auth.login.remember' />}
           />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
             <FormattedMessage id='auth.login' defaultMessage='Sign In' />
           </Button>
           <Grid container justifyContent='flex-end'>

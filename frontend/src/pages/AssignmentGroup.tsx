@@ -1,13 +1,5 @@
-import { useMemo, useState } from 'react'
-import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material'
+import { Fragment, useMemo, useState } from 'react'
+import { Box, Card, CardContent, Divider, Stack, Typography } from '@mui/material'
 import { Assignment, AssignmentGroup, Submission } from '@/types/api'
 import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { ky } from '@/utils/ky'
@@ -74,14 +66,17 @@ function Assignment({
     if (points === null) {
       return 'primary'
     }
-    return points === assignment.max_points ? 'success' : 'error'
+    return points === assignment.max_points ? 'success.main' : 'error'
   }
 
   return (
     <Box>
       <Typography variant='h5' mt={2} display='flex' justifyContent='space-between'>
         <FormattedMessage id='submissions.task' values={{ number: index + 1 }} />
-        <Typography variant='h6' color={getColorForPoints(submission.points)}>
+        <Typography
+          variant='h6'
+          component='p'
+          color={getColorForPoints(submission.points)}>
           {submission.points ?? '-'}/{formatPoints(assignment.max_points)}
         </Typography>
       </Typography>
@@ -223,7 +218,7 @@ export default function AssignmentGroup() {
           <Typography variant='h4' display='flex' justifyContent='space-between'>
             <span>{assignmentGroup.title}</span>
 
-            <Typography variant='h5' color='primary'>
+            <Typography variant='h5' component='p' color='primary'>
               {points}/{assignmentGroup.max_points}
             </Typography>
           </Typography>
@@ -247,16 +242,15 @@ export default function AssignmentGroup() {
           </Box>
 
           {assignmentGroup.assignments.map((assignment, index) => (
-            <>
+            <Fragment key={assignment.id}>
               <Divider />
               <Assignment
-                key={assignment.id}
                 assignment={assignment}
                 endDate={endDate}
                 index={index}
                 handleSubmitResponse={updateSubmission}
               />
-            </>
+            </Fragment>
           ))}
         </CardContent>
       </Card>
