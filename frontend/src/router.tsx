@@ -10,6 +10,7 @@ import { Roles } from './utils/roles'
 import Assigning from './pages/Assigning'
 import AssignmentGroup from '@/pages/AssignmentGroup'
 import UserGuide from './pages/UserGuide'
+import NotFound from './pages/NotFound'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,7 +22,7 @@ const router = createBrowserRouter(
         </Route>
       </Route>
 
-      <Route path='/' element={<DefaultLayout />}>
+      <Route path='/' element={<DefaultLayout />} errorElement={<NotFound />}>
         <Route element={<GuardedRoute redirectRoute={'/auth/login'} />}>
           <Route index element={<Dashboard />} />
 

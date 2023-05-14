@@ -59,4 +59,7 @@ export default {
 
   'dashboard.labels.button.export.csv': 'Export to CSV',
   'guide.labels.button.export.pdf': 'Export to PDF',
+
+  'error.notFound': 'Page not found',
+  'error.unknown': 'Something went wrong',
 }
