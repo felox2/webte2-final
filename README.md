@@ -1,4 +1,4 @@
-Nasadená verzia: https://site244.webte.fei.stuba.sk/final
+Nasadená verzia: https://site244.webte.fei.stuba.sk/
 ![databaza](./db.png)
 
 Test users:
