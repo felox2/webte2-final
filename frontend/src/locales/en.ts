@@ -72,5 +72,5 @@ export default {
   'guide.labels.button.export.pdf': 'Export to PDF',
 
   'error.notFound': 'Page not found',
-  'error.unknown': 'Something went wrong',
+  'error.unknown': 'Oops, something went wrong',
 }

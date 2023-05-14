@@ -1,4 +1,7 @@
 export default {
+  'guide': 'Návod',
+  'dashboard': 'Dashboard',
+
   'auth.login': 'Prihlásiť sa',
   'auth.login.success': 'Prihlásenie prebehlo úspešne',
   'auth.login.error': 'Prihlásenie bolo neuspešné',
@@ -67,4 +70,7 @@ export default {
 
   'dashboard.labels.button.export.csv': 'Exportovať do CSV',
   'guide.labels.button.export.pdf': 'Exportovať do PDF',
+
+  'error.notFound': 'Nepodarilo sa nájsť stránku',
+  'error.unknown': 'Ups, niečo sa pokazilo',
 }
