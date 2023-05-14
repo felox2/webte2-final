@@ -17,11 +17,13 @@ export default {
   'navbar.guide': 'Návod',
   'navbar.logout': 'Odhlásiť sa',
 
+  'assignments.due': 'Termín',
+  'assignments.noDueDate': 'Bez termínu odovzdania',
   'assignments.current': 'Aktuálne úlohy',
   'assignments.past': 'Odovzdané úlohy',
   'assignments.noCurrentAssignments': 'Žiadne aktuálne úlohy',
 
-  'submissions.task': 'Úloha {number} ({points}/{maxPoints})',
+  'submissions.task': 'Úloha {number}',
   'submissions.solution': 'Správne riešenie',
   'submissions.providedSolution': 'Tvoje riešenie',
   'submissions.labels.button.submit': 'Odovzdať',

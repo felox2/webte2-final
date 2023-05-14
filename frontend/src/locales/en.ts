@@ -17,11 +17,13 @@ export default {
   'navbar.guide': 'Guide',
   'navbar.logout': 'Logout',
 
+  'assignments.due': 'Due',
+  'assignments.noDueDate': 'No due date',
   'assignments.current': 'Current assignments',
   'assignments.past': 'Past assignments',
   'assignments.noCurrentAssignments': 'No current assignments',
 
-  'submissions.task': 'Task {number} ({points}/{maxPoints})',
+  'submissions.task': 'Task {number}',
   'submissions.solution': 'Correct solution',
   'submissions.providedSolution': 'Your solution',
   'submissions.labels.button.submit': 'Submit',

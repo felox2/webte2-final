@@ -1,5 +1,13 @@
 import { useMemo, useState } from 'react'
-import { Box, Stack, Typography } from '@mui/material'
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Stack,
+  Typography,
+} from '@mui/material'
 import { Assignment, AssignmentGroup, Submission } from '@/types/api'
 import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { ky } from '@/utils/ky'
@@ -9,7 +17,7 @@ import dayjs from 'dayjs'
 import MathInput from '@/components/MathInput'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, FormattedRelativeTime, useIntl } from 'react-intl'
 import PermissionGate from '@/components/PermissionGate'
 import { Roles } from '@/utils/roles'
 
@@ -27,6 +35,7 @@ function Assignment({
   endDate: dayjs.Dayjs | null
   handleSubmitResponse?: (data: any) => void
 }) {
+  const intl = useIntl()
   const [solution, setSolution] = useState('')
   const submission = useMemo(() => assignment.submissions[0], [assignment])
 
@@ -57,21 +66,28 @@ function Assignment({
       })
   }
 
+  const formatPoints = (points: string) => {
+    return intl.formatNumber(parseFloat(points))
+  }
+
+  const getColorForPoints = (points: string | null) => {
+    if (points === null) {
+      return 'primary'
+    }
+    return points === assignment.max_points ? 'success' : 'error'
+  }
+
   return (
     <Box>
-      <Typography variant='h5' mt={2}>
-        <FormattedMessage
-          id='submissions.task'
-          values={{
-            number: index + 1,
-            points: submission.points ?? '?',
-            maxPoints: assignment.max_points,
-          }}
-        />
+      <Typography variant='h5' mt={2} display='flex' justifyContent='space-between'>
+        <FormattedMessage id='submissions.task' values={{ number: index + 1 }} />
+        <Typography variant='h6' color={getColorForPoints(submission.points)}>
+          {submission.points ?? '-'}/{formatPoints(assignment.max_points)}
+        </Typography>
       </Typography>
 
       {!submission.exercise && (
-        <Box mt={1}>
+        <Box mt={1} mb={2}>
           <Button
             variant='contained'
             startIcon={<ShuffleIcon />}
@@ -186,35 +202,64 @@ export default function AssignmentGroup() {
       return acc + parseFloat(assignment.submissions[0].points ?? '0')
     }, 0)
 
-    return isNaN(points) ? '?' : points
+    return isNaN(points) ? '-' : points
   }, [assignmentGroup])
 
-  return (
-    !loading &&
-    assignmentGroup && (
-      <Container sx={{ mb: 8, overflowX: 'hidden' }}>
-        <div>
-          <Typography variant='h4'>{assignmentGroup.title}</Typography>
-          <Typography variant='body1'>{assignmentGroup.description}</Typography>
-        </div>
+  const diff = useMemo(() => {
+    if (!assignmentGroup?.end_date) {
+      return 0
+    }
 
-        <div>
-          <Typography>
-            {points}/{assignmentGroup.max_points}
+    const endDate = new Date(assignmentGroup.end_date)
+    const now = new Date()
+
+    return (endDate.valueOf() - now.valueOf()) / 1000
+  }, [assignmentGroup])
+
+  return !loading && assignmentGroup ? (
+    <Container sx={{ mb: 8, overflowX: 'hidden' }}>
+      <Card>
+        <CardContent>
+          <Typography variant='h4' display='flex' justifyContent='space-between'>
+            <span>{assignmentGroup.title}</span>
+
+            <Typography variant='h5' color='primary'>
+              {points}/{assignmentGroup.max_points}
+            </Typography>
           </Typography>
-          <Typography>{assignmentGroup.end_date}</Typography>
-        </div>
 
-        {assignmentGroup.assignments.map((assignment, index) => (
-          <Assignment
-            key={assignment.id}
-            assignment={assignment}
-            endDate={endDate}
-            index={index}
-            handleSubmitResponse={updateSubmission}
-          />
-        ))}
-      </Container>
-    )
-  )
+          <Box mb={2}>
+            <Typography variant='body1'>{assignmentGroup.description}</Typography>
+            <Typography color='text.secondary'>
+              {assignmentGroup.end_date ? (
+                <>
+                  <FormattedMessage id='assignments.due' />{' '}
+                  <FormattedRelativeTime
+                    value={diff}
+                    numeric='auto'
+                    updateIntervalInSeconds={1}
+                  />
+                </>
+              ) : (
+                <FormattedMessage id='assignments.noDueDate' />
+              )}
+            </Typography>
+          </Box>
+
+          {assignmentGroup.assignments.map((assignment, index) => (
+            <>
+              <Divider />
+              <Assignment
+                key={assignment.id}
+                assignment={assignment}
+                endDate={endDate}
+                index={index}
+                handleSubmitResponse={updateSubmission}
+              />
+            </>
+          ))}
+        </CardContent>
+      </Card>
+    </Container>
+  ) : null
 }

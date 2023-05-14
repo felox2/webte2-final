@@ -52,7 +52,7 @@ class AssignmentController extends Controller
     $student = auth()->user();
 
     return [
-      'current' => AssignmentGroup::with('assignments.submissions')
+      'current' => AssignmentGroup::with('assignments.submissions', 'teacher:id,first_name,last_name')
         ->where('start_date', '<', now()->utc())
         ->where(function (Builder $q) {
           $q->where('end_date', '>', now()->utc())
@@ -64,7 +64,7 @@ class AssignmentController extends Controller
         })
         ->get(),
 
-      'past' => AssignmentGroup::with('assignments.submissions')
+      'past' => AssignmentGroup::with('assignments.submissions', 'teacher:id,first_name,last_name')
         ->where(function (Builder $q) use ($student) {
           $q->where('end_date', '<', now()->utc())
             ->orWhere(function (Builder $q) use ($student) {
