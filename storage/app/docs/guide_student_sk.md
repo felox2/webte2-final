@@ -26,7 +26,7 @@ V tejto sekcii sú zobrazené úlohy, ktoré boli pridelené a ešte nie sú uza
 - **Dátum uzavretia**
 - **Získaný počet bodov / maximálny počet bodov**
 
-2. Kliknutím na odovzdanú úlohu v sekcii " **Odovzdané úlohy**" sa otvorí nová stránka s podrobnosťami o danom príklade:
+Kliknutím na odovzdanú úlohu v sekcii " **Odovzdané úlohy**" sa otvorí nová stránka s podrobnosťami o danom príklade:
 
 - **Názov setu úloh**
 - **Popis setu úloh**
@@ -37,7 +37,7 @@ V tejto sekcii sú zobrazené úlohy, ktoré boli pridelené a ešte nie sú uza
 - **Správne riešenie:** Správne riešenie úlohy
 - **Tvoje riešenie:** Odovzdané riešenie úlohy
 
-3. Kliknutím na úlohu v sekcii " **Aktuálne úlohy**" sa vám otvorí nová stránka s informáciami o danej úlohe:
+Kliknutím na úlohu v sekcii " **Aktuálne úlohy**" sa vám otvorí nová stránka s informáciami o danej úlohe:
 
 - **Názov setu úloh**
 - **Popis setu úloh**
