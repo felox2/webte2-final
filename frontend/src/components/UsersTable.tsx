@@ -19,10 +19,15 @@ import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { useLoading } from './LoadingProvider'
 import {User} from "@/components/AuthProvider";
 
+import DeleteIcon from '@mui/icons-material/Delete'
+import RoleIcon from '@mui/icons-material/ChangeCircle'
 
+interface Items extends User {
+  action:any
+}
 
 interface HeadCell {
-  id: keyof User
+  id: keyof Items
   label: string
   numeric: boolean
 }
@@ -55,9 +60,14 @@ const headCells: readonly HeadCell[] = [
     numeric: true,
     label: 'admin.table.labels.role',
   },
+  {
+    id: 'action',
+    numeric: true,
+    label: 'admin.table.labels.action',
+  },
 ]
 
-const fetchUsers = async (page: number, rowsPerPage: number, sort: keyof User, order: 'asc' | 'desc'): Promise<Data> => {
+const fetchUsers = async (page: number, rowsPerPage: number, sort: keyof Items, order: 'asc' | 'desc'): Promise<Data> => {
   const searchParams = { page: page + 1, size: rowsPerPage, sort, order }
   const response = await ky.get('users', { searchParams })
   return await response.json()
@@ -69,7 +79,7 @@ export default function UserTable() {
 
   const [data, setData] = useState<Data>({ items: [], total: 0 })
   const [order, setOrder] = useState<'asc'|'desc'>('asc')
-  const [orderBy, setOrderBy] = useState<keyof User>('id')
+  const [orderBy, setOrderBy] = useState<keyof Items>('id')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
 
@@ -82,7 +92,7 @@ export default function UserTable() {
   })
 
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof User) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Items) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
@@ -116,7 +126,9 @@ export default function UserTable() {
 
             <TableBody>
               {data.items.map((row) => (
-                <TableRow>
+                <TableRow
+                  hover
+                  key={row.id}>
                   <TableCell component='th' scope='row'>
                     {row.id}
                   </TableCell>
@@ -124,6 +136,13 @@ export default function UserTable() {
                   <TableCell>{row.first_name}</TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>{row.role}</TableCell>
+                  <TableCell>
+                    <DeleteIcon
+                      sx={{ cursor: 'pointer' }}/>
+                    <RoleIcon
+                      sx={{ cursor: 'pointer' }}/>
+                  </TableCell>
+
                 </TableRow>
               ))}
             </TableBody>
