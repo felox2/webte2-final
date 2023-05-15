@@ -2,9 +2,9 @@
 
 **Homepage**
 
-1. On the home page you will find the following sections:
+On the home page you will find the following sections:
 
-1. **Current assignments**
+**a) Current assignments**
 
 Tasks that have been assigned and are not yet closed are displayed in this section.
 
@@ -15,7 +15,7 @@ Tasks that have been assigned and are not yet closed are displayed in this secti
 - **Maximum number of points.**
 - **Closing date**. After the time is up, the task will be submitted automatically
 
-   **b) Past assignments**
+**b) Past assignments**
 
 In this section, the tasks that he has already submitted are displayed.
 
@@ -26,7 +26,7 @@ The following information is provided for each submitted task:
 - **Closing date**
 - **Number of points obtained / maximum number of points**
 
-2. Clicking on a submitted task in the " **Past assignments**" section will open a new page with details about that example:
+Clicking on a submitted task in the " **Past assignments**" section will open a new page with details about that example:
 
 - **Name of the task set**
 - **Description of the task set**
@@ -37,7 +37,7 @@ The following information is provided for each submitted task:
 - **Correct solution:** The correct solution to the task
 - **Your solution:** Submitted solution to the task
 
-3. Clicking on a task in the " **Current assignments**" section will open a new page with information about the given task:
+Clicking on a task in the " **Current assignments**" section will open a new page with information about the given task:
 
 - **Name of the task set**
 - **Description of the task set**

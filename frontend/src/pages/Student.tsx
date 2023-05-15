@@ -74,8 +74,7 @@ function AssignmentCard({
             <Button
               variant='contained'
               color='primary'
-              // TODO redirect to a custom submission page, not the assignment page
-              onClick={() => navigate(`/assignment/${groupId}`)}>
+              onClick={() => navigate(`/assignment/${groupId}?show=${assignment.id}`)}>
               <FormattedMessage id='student.assignmentGroup.view' />
             </Button>
           </Stack>

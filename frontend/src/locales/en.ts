@@ -31,6 +31,7 @@ export default {
 
   'submissions.task': 'Task {number}',
   'submissions.solution': 'Correct solution',
+  'submissions.solution.notSubmitted': 'No solution submitted yet',
   'submissions.providedSolution': 'Your solution',
   'submissions.labels.button.submit': 'Submit',
   'submissions.labels.button.generateExercise': 'Generate exercise',
@@ -75,5 +76,5 @@ export default {
   'guide.labels.button.export.pdf': 'Export to PDF',
 
   'error.notFound': 'Page not found',
-  'error.unknown': 'Something went wrong',
+  'error.unknown': 'Oops, something went wrong',
 }

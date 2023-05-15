@@ -1,4 +1,7 @@
 export default {
+  'guide': 'Návod',
+  'dashboard': 'Dashboard',
+
   'auth.login': 'Prihlásiť sa',
   'auth.login.success': 'Prihlásenie prebehlo úspešne',
   'auth.login.error': 'Prihlásenie bolo neuspešné',
@@ -28,6 +31,7 @@ export default {
 
   'submissions.task': 'Úloha {number}',
   'submissions.solution': 'Správne riešenie',
+  'submissions.solution.notSubmitted': 'en:No solution submitted yet',
   'submissions.providedSolution': 'Tvoje riešenie',
   'submissions.labels.button.submit': 'Odovzdať',
   'submissions.labels.button.generateExercise': 'Vygenerovať úlohu',
@@ -70,4 +74,7 @@ export default {
 
   'dashboard.labels.button.export.csv': 'Exportovať do CSV',
   'guide.labels.button.export.pdf': 'Exportovať do PDF',
+
+  'error.notFound': 'Nepodarilo sa nájsť stránku',
+  'error.unknown': 'Ups, niečo sa pokazilo',
 }
