@@ -19,7 +19,7 @@ export default {
 
   'navbar.home': 'Domov',
   'navbar.assigning': 'Priraďovanie',
-  'navbar.users': 'Uživateľia',
+  'navbar.users': 'Používatelia',
   'navbar.guide': 'Návod',
   'navbar.logout': 'Odhlásiť sa',
 
@@ -70,7 +70,7 @@ export default {
   'student.assignmentGroup.notSubmitted': 'Neodovzdané',
 
   'admin.table.labels.role': "Rola",
-  'admin.table.labels.userId': "ID užívateľa",
+  'admin.table.labels.userId': "ID používateľa",
 
   'dashboard.labels.button.export.csv': 'Exportovať do CSV',
   'guide.labels.button.export.pdf': 'Exportovať do PDF',
