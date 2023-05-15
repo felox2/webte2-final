@@ -30,6 +30,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import HomeIcon from '@mui/icons-material/Home'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import MenuBookIcon from '@mui/icons-material/MenuBook'
+import UsersIcon from '@mui/icons-material/Person'
 
 const links = [
   {
@@ -43,6 +44,12 @@ const links = [
     href: '/assigning',
     startIcon: <AssignmentIcon />,
     roles: [Roles.Teacher, Roles.Admin],
+  },
+  {
+    label: 'navbar.users',
+    href: '/users',
+    startIcon: <UsersIcon />,
+    roles: [Roles.Admin],
   },
   {
     label: 'navbar.guide',

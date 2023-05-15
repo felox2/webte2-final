@@ -11,6 +11,7 @@ import Assigning from './pages/Assigning'
 import AssignmentGroup from '@/pages/AssignmentGroup'
 import UserGuide from './pages/UserGuide'
 import NotFound from './pages/NotFound'
+import Users from "@/pages/Users";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,13 @@ const router = createBrowserRouter(
             }>
             <Route path='student/:id' element={<Student />} />
             <Route path='assigning' element={<Assigning />} />
+          </Route>
+          //TODO route for Admin only
+          <Route
+            element={
+              <GuardedRoute roles={[Roles.Admin]} redirectRoute={'/'} />
+            }>
+            <Route path='users' element={<Users />} />
           </Route>
 
           <Route path='guide' element={<UserGuide />} />

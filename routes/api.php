@@ -5,6 +5,7 @@ use App\Http\Controllers\DocsController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubmissionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,10 @@ require __DIR__ . '/auth.php';
 Route::group(['prefix' => 'students', 'middleware' => 'auth'], function () {
   Route::get('/', [StudentController::class, 'index']);
   Route::get('/{id}', [StudentController::class, 'show']);
+});
+
+Route::group(['prefix' => 'users', 'middleware' => 'auth'], function () {
+  Route::get('/', [UserController::class, 'index']);
 });
 
 Route::group(['prefix' => 'exercises', 'middleware' => 'auth'], function () {

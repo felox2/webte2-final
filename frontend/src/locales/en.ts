@@ -19,6 +19,7 @@ export default {
 
   'navbar.home': 'Home',
   'navbar.assigning': 'Assigning',
+  'navbar.users': 'Users',
   'navbar.guide': 'Guide',
   'navbar.logout': 'Logout',
 
@@ -66,6 +67,9 @@ export default {
   'student.assignmentGroup.view': 'View',
   'student.assignmentGroup.notGenerated': 'Not generated',
   'student.assignmentGroup.notSubmitted': 'Not submitted',
+
+  'admin.table.labels.role': "Role",
+  'admin.table.labels.userId': "User ID",
 
   'dashboard.labels.button.export.csv': 'Export to CSV',
   'guide.labels.button.export.pdf': 'Export to PDF',
