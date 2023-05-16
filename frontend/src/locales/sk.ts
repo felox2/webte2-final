@@ -16,6 +16,8 @@ export default {
   'auth.register.email': 'E-mail',
   'auth.register.password': 'Heslo',
   'auth.register.passwordRepeat': 'Potvrdenie hesla',
+  'auth.register.success': 'Registrácia prebehla úspešne',
+  'auth.register.fail': 'Registrácia bola neuspešná',
 
   'navbar.home': 'Domov',
   'navbar.assigning': 'Priraďovanie',
@@ -71,6 +73,10 @@ export default {
 
   'admin.table.labels.role': "Rola",
   'admin.table.labels.userId': "ID používateľa",
+  'admin.table.labels.created': "Vytvorené",
+  'admin.table.labels.action': "Akcia",
+  'admin.table.labels.role.teacher': "Učiteľ",
+  'admin.table.labels.role.student': "Študent",
 
   'dashboard.labels.button.export.csv': 'Exportovať do CSV',
   'guide.labels.button.export.pdf': 'Exportovať do PDF',
