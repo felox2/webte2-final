@@ -28,6 +28,8 @@ Route::group(['prefix' => 'students', 'middleware' => 'auth'], function () {
 
 Route::group(['prefix' => 'users', 'middleware' => 'auth'], function () {
   Route::get('/', [UserController::class, 'index']);
+  Route::delete('/', [UserController::class, 'deleteUser']);
+  Route::put('/', [UserController::class, 'changeRole']);
 });
 
 Route::group(['prefix' => 'exercises', 'middleware' => 'auth'], function () {

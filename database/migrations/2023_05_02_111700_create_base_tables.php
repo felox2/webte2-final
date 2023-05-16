@@ -47,7 +47,7 @@ return new class extends Migration {
     Schema::create('submissions', function (Blueprint $table) {
       $table->id();
       $table->foreignId('assignment_id')->constrained();
-      $table->foreignId('student_id')->constrained('users');
+      $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
       $table->foreignId('exercise_id')->nullable()->constrained();
       $table->float('points', 8, 3)->nullable();
       $table->string('provided_solution', 2048)->nullable();

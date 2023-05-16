@@ -7,6 +7,25 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+  public function deleteUser(Request $request)
+  {
+    $qParams = $request->query();
+    $id=$qParams["id"];
+
+    User::where("id",$id)
+            ->delete();
+  }
+  public function changeRole(Request $request)
+  {
+    $qParams = $request->query();
+    $id=$qParams["id"];
+
+    $user = User::find($id);
+    $newRole=$user["role"]=="teacher"? "student":"teacher";
+    User::where("id",$id)
+      ->update(array('role'=>$newRole));
+  }
+
   public function index(Request $request)
   {
     $qParams = $request->query();

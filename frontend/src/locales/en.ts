@@ -72,6 +72,8 @@ export default {
   'admin.table.labels.role': "Role",
   'admin.table.labels.userId': "User ID",
   'admin.table.labels.action': "Action",
+  'admin.table.labels.role.teacher': "Teacher",
+  'admin.table.labels.role.student': "Student",
 
   'dashboard.labels.button.export.csv': 'Export to CSV',
   'guide.labels.button.export.pdf': 'Export to PDF',

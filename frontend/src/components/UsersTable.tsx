@@ -73,6 +73,8 @@ const fetchUsers = async (page: number, rowsPerPage: number, sort: keyof Items, 
   return await response.json()
 }
 
+
+
 export default function UserTable() {
   const navigate = useNavigate()
   const { loading, setLoading } = useLoading()
@@ -101,6 +103,25 @@ export default function UserTable() {
       .then((data) => setData(data))
       .catch((error) => console.error('Fetch error: ', error))
   }
+
+  const deleteUser = async (id: number)=> {
+    const searchParams = {id: id}
+    await ky.delete('users', {searchParams})
+
+    fetchUsers(page, rowsPerPage, orderBy, order)
+      .then((data) => setData(data))
+      .catch((error) => console.error('Fetch error: ', error))
+  }
+
+  const changeUserRole = async (id: number)=> {
+    const searchParams = {id: id}
+    await ky.put('users', {searchParams})
+
+    fetchUsers(page, rowsPerPage, orderBy, order)
+      .then((data) => setData(data))
+      .catch((error) => console.error('Fetch error: ', error))
+  }
+
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -135,12 +156,17 @@ export default function UserTable() {
                   <TableCell>{row.last_name}</TableCell>
                   <TableCell>{row.first_name}</TableCell>
                   <TableCell>{row.email}</TableCell>
-                  <TableCell>{row.role}</TableCell>
+                  <TableCell>{row.role=="student"?
+                    <FormattedMessage id='admin.table.labels.role.student' />:
+                    <FormattedMessage id='admin.table.labels.role.teacher' />}
+                  </TableCell>
                   <TableCell>
                     <DeleteIcon
-                      sx={{ cursor: 'pointer' }}/>
+                      sx={{ cursor: 'pointer' }}
+                      onClick={() => deleteUser(row.id)}/>
                     <RoleIcon
-                      sx={{ cursor: 'pointer' }}/>
+                      sx={{ cursor: 'pointer' }}
+                      onClick={() => changeUserRole(row.id)}/>
                   </TableCell>
 
                 </TableRow>
