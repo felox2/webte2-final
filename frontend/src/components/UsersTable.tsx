@@ -24,6 +24,10 @@ import RoleIcon from '@mui/icons-material/ChangeCircle'
 
 interface Items extends User {
   action:any
+  created:any
+}
+interface UserRow extends User{
+  created_at:any
 }
 
 interface HeadCell {
@@ -32,7 +36,7 @@ interface HeadCell {
   numeric: boolean
 }
 
-type Data = ResponseBody<User>
+type Data = ResponseBody<UserRow>
 
 const headCells: readonly HeadCell[] = [
   {
@@ -59,6 +63,11 @@ const headCells: readonly HeadCell[] = [
     id: 'role',
     numeric: true,
     label: 'admin.table.labels.role',
+  },
+  {
+    id: 'created',
+    numeric: true,
+    label: 'admin.table.labels.created',
   },
   {
     id: 'action',
@@ -159,6 +168,9 @@ export default function UserTable() {
                   <TableCell>{row.role=="student"?
                     <FormattedMessage id='admin.table.labels.role.student' />:
                     <FormattedMessage id='admin.table.labels.role.teacher' />}
+                  </TableCell>
+                  <TableCell>{
+                    new Date(row.created_at).toISOString().slice(0,19).replace("T"," ")}
                   </TableCell>
                   <TableCell>
                     <DeleteIcon

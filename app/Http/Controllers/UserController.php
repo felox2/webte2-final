@@ -52,7 +52,7 @@ class UserController extends Controller
   private function getUsers(array $params)
   {
     $query = User::whereNot("role", "admin")
-      ->select("id", "first_name", "last_name", "email", "role")
+      ->select("id", "first_name", "last_name", "email", "role","created_at")
       ->orderBy($params["sort"], $params["order"]);
 
     $numericColumns = ["id"];
