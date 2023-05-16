@@ -15,6 +15,9 @@ import SnackbarContext from '@/components/SnackbarProvider'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Title } from '@/components/Title'
 
+const redirect = (url:string, asLink = true) =>
+  asLink ? (window.location.href = url) : window.location.replace(url);
+
 export default function SignUp() {
   const intl = useIntl()
   const auth = useContext(AuthContext)
@@ -28,11 +31,12 @@ export default function SignUp() {
     try {
       const res: any = await ky.post('auth/register', { body: data }).json()
       auth.handleLogin(res.access_token)
-      triggerSnackbar('Registered successfully', 'success')
+      triggerSnackbar('auth.register.success', 'success')
+      redirect('/')
     }
     catch (err) {
       console.error(err)
-      triggerSnackbar('Couldn\'t register', 'error')
+      triggerSnackbar('auth.register.fail', 'error')
     }
 
   }

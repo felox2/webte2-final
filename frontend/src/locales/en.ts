@@ -16,6 +16,8 @@ export default {
   'auth.register.email': 'Email',
   'auth.register.password': 'Password',
   'auth.register.passwordRepeat': 'Confirm password',
+  'auth.register.success': 'Registered successfully',
+  'auth.register.fail': 'Couldn\'t register',
 
   'navbar.home': 'Home',
   'navbar.assigning': 'Assigning',
