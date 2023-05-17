@@ -5,8 +5,9 @@ export function Title({ text }: { text?: string }) {
   const { formatMessage } = useIntl()
 
   useEffect(() => {
-    // TODO: change 'appName' to something else
-    document.title = text ? `${formatMessage({ id: text, defaultMessage: text })} | appName` : 'appName'
+    document.title = text
+      ? `${formatMessage({ id: text, defaultMessage: text })} | Pengu`
+      : 'Pengu'
   }, [text])
 
   return null

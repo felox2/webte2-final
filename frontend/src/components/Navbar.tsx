@@ -31,6 +31,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import AssignmentIcon from '@mui/icons-material/Assignment'
 import MenuBookIcon from '@mui/icons-material/MenuBook'
 import UsersIcon from '@mui/icons-material/Person'
+import AutoStoriesIcon from '@mui/icons-material/AutoStories'
 
 const links = [
   {
@@ -56,7 +57,7 @@ const links = [
     href: '/guide',
     startIcon: <MenuBookIcon />,
     roles: [Roles.Student, Roles.Teacher, Roles.Admin],
-  }
+  },
 ]
 
 const settings = [
@@ -92,7 +93,7 @@ export default function Navbar() {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ width: 250 }}>
       <Typography variant='h6' sx={{ m: 2 }}>
-        MUI
+        Pengu
       </Typography>
       <Divider />
       <List>
@@ -126,7 +127,7 @@ export default function Navbar() {
               <MenuIcon />
             </IconButton>
 
-            {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+            <AutoStoriesIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
             <Typography
               variant='h6'
               noWrap
@@ -141,10 +142,10 @@ export default function Navbar() {
                 color: 'inherit',
                 textDecoration: 'none',
               }}>
-              LOGO
+              Pengu
             </Typography>
 
-            {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
+            <AutoStoriesIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
             <Typography
               variant='h5'
               noWrap
@@ -160,7 +161,7 @@ export default function Navbar() {
                 color: 'inherit',
                 textDecoration: 'none',
               }}>
-              LOGO
+              Pengu
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
