@@ -304,6 +304,7 @@ export default function Assigning() {
               </FormLabel>
               <DateTimePicker
                 value={endDate}
+                minDateTime={startDate || undefined}
                 onChange={(newValue) => setEndDate(newValue)}
               />
             </FormControl>
