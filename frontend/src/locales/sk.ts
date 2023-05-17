@@ -26,7 +26,7 @@ export default {
   'navbar.guide': 'Návod',
   'navbar.logout': 'Odhlásiť sa',
 
-  'assignments.due': 'Termín',
+  'assignments.due': 'Termín odovzdania:',
   'assignments.noDueDate': 'Bez termínu odovzdania',
   'assignments.current': 'Aktuálne úlohy',
   'assignments.past': 'Odovzdané úlohy',

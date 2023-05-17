@@ -192,10 +192,10 @@ export default function AssignmentGroup() {
       return 0
     }
 
-    const endDate = new Date(assignmentGroup.end_date)
-    const now = new Date()
+    const endDate = dayjs.utc(assignmentGroup.end_date).local()
+    const now = dayjs()
 
-    return (endDate.valueOf() - now.valueOf()) / 1000
+    return endDate.diff(now, 'second')
   }, [assignmentGroup])
 
   return !loading && assignmentGroup ? (

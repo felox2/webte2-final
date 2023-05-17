@@ -18,11 +18,12 @@ import { ResponseBody } from '@/types/api'
 import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { useLoading } from './LoadingProvider'
 import { User } from '@/components/AuthProvider'
+import { ConfirmationDialog } from './ConfirmationDialog'
+import SnackbarContext from './SnackbarProvider'
+import dayjs from 'dayjs'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import RoleIcon from '@mui/icons-material/ChangeCircle'
-import { ConfirmationDialog } from './ConfirmationDialog'
-import SnackbarContext from './SnackbarProvider'
 
 interface Items extends User {
   action: any
@@ -118,7 +119,15 @@ export default function UserTable() {
   } = {}) => {
     useLoading && setLoading(true)
     fetchUsers(currentPage + 1, currentPerPage, orderBy, order)
-      .then((data) => setData(data))
+      .then((data) =>
+        setData({
+          items: data.items.map((item) => ({
+            ...item,
+            created_at: dayjs.utc(item.created_at).local().valueOf(),
+          })),
+          total: data.total,
+        })
+      )
       .catch((error) => console.error('Fetch error: ', error))
       .finally(() => useLoading && setLoading(false))
   }

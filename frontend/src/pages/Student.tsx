@@ -28,6 +28,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import { usePoints } from '@/hooks/usePoints'
 import { getColorForPoints } from '@/utils'
 import { Title } from '@/components/Title'
+import dayjs from 'dayjs'
 
 interface Data {
   student: Student
@@ -69,7 +70,9 @@ function AssignmentCard({
                 {isCorrect ? <CheckIcon color='success' /> : <CloseIcon color='error' />}
               </Stack>
             ) : (
-              <Typography variant='body1'><FormattedMessage id='student.assignmentGroup.notSubmitted' /></Typography>
+              <Typography variant='body1'>
+                <FormattedMessage id='student.assignmentGroup.notSubmitted' />
+              </Typography>
             )}
             <Button
               variant='contained'
@@ -92,18 +95,18 @@ function AssignmentGroup(assignmentGroup: AssignmentGroup) {
   const intl = useIntl()
 
   const startDate = useMemo(
-    () => new Date(assignmentGroup.start_date),
+    () => dayjs.utc(assignmentGroup.start_date).local().valueOf(),
     [assignmentGroup.start_date]
   )
   const endDate = useMemo(
-    () => (assignmentGroup.end_date ? new Date(assignmentGroup.end_date) : null),
+    () => (assignmentGroup.end_date ? dayjs.utc(assignmentGroup.end_date).local().valueOf() : null),
     [assignmentGroup.end_date]
   )
   const createdDiff = useMemo(() => {
-    const date = new Date(assignmentGroup.created_at)
-    const now = new Date()
+    const date = dayjs.utc(assignmentGroup.created_at)
+    const now = dayjs()
 
-    return (date.valueOf() - now.valueOf()) / 1000
+    return now.diff(date, 'second')
   }, [assignmentGroup.created_at])
 
   const points = useMemo(() => {
@@ -147,7 +150,12 @@ function AssignmentGroup(assignmentGroup: AssignmentGroup) {
               <FormattedMessage id='student.assignmentGroup.active' />
 
               {endDate ? (
-                <FormattedDateTimeRange from={startDate} to={endDate} />
+                <FormattedDateTimeRange
+                  from={startDate}
+                  to={endDate}
+                  dateStyle='medium'
+                  timeStyle='medium'
+                />
               ) : (
                 <>
                   <FormattedDate value={startDate} />

@@ -26,8 +26,8 @@ export default {
   'navbar.guide': 'Guide',
   'navbar.logout': 'Logout',
 
-  'assignments.due': 'Due',
-  'assignments.noDueDate': 'No due date',
+  'assignments.due': 'Deadline:',
+  'assignments.noDueDate': 'Without deadline',
   'assignments.current': 'Current assignments',
   'assignments.past': 'Past assignments',
   'assignments.noCurrentAssignments': 'No current assignments',

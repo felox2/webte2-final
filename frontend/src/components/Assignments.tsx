@@ -19,6 +19,7 @@ import { FormattedMessage, FormattedRelativeTime } from 'react-intl'
 import { AssignmentGroup } from '@/types/api'
 import { stringAvatar } from '@/utils/avatar'
 import { usePoints } from '@/hooks/usePoints'
+import dayjs from 'dayjs'
 
 function AssignmentCard({ assignmentGroup }: { assignmentGroup: AssignmentGroup }) {
   const points = usePoints(assignmentGroup)
@@ -27,10 +28,10 @@ function AssignmentCard({ assignmentGroup }: { assignmentGroup: AssignmentGroup 
       return 0
     }
 
-    const endDate = new Date(assignmentGroup.end_date)
-    const now = new Date()
+    const endDate = dayjs.utc(assignmentGroup.end_date).local()
+    const now = dayjs()
 
-    return (endDate.valueOf() - now.valueOf()) / 1000
+    return endDate.diff(now, 'second')
   }, [assignmentGroup])
 
   return (
