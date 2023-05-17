@@ -2,6 +2,10 @@ export default {
   'guide': 'Guide',
   'dashboard': 'Dashboard',
 
+  'common.no': 'No',
+  'common.yes': 'Yes',
+  'common.confirmation': 'Are you sure?',
+
   'auth.login': 'Sign in',
   'auth.login.success': 'Logged in successfully',
   'auth.login.error': 'Couldn\'t log in',
@@ -77,6 +81,13 @@ export default {
   'admin.table.labels.action': "Action",
   'admin.table.labels.role.teacher': "Teacher",
   'admin.table.labels.role.student': "Student",
+  
+  'admin.confirmation.delete': 'Are you sure you want to delete this user?',
+  'admin.confirmation.delete.success': 'User was successfully deleted',
+  'admin.confirmation.delete.error': 'User deletion failed',
+  'admin.confirmation.changeRole': 'Are you sure you want to change this user\'s role?',
+  'admin.confirmation.changeRole.success': 'User\'s role was successfully changed',
+  'admin.confirmation.changeRole.error': 'User\'s role change failed',
 
   'dashboard.labels.button.export.csv': 'Export to CSV',
   'guide.labels.button.export.pdf': 'Export to PDF',
