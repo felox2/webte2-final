@@ -200,7 +200,7 @@ export default function AssignmentGroup() {
 
   return !loading && assignmentGroup ? (
     <Container sx={{ mb: 8, overflowX: 'hidden' }}>
-      <Title text={assignmentGroup.title} />
+      <Title text={assignmentGroup.title} noTranslate={true} />
       <Card variant='outlined'>
         <CardContent>
           <Typography variant='h4' display='flex' justifyContent='space-between'>
