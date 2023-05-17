@@ -33,7 +33,7 @@ export default {
 
   'submissions.task': 'Úloha {number}',
   'submissions.solution': 'Správne riešenie',
-  'submissions.solution.notSubmitted': 'en:No solution submitted yet',
+  'submissions.solution.notSubmitted': 'Žiadne riešenie nebolo odovzdané',
   'submissions.providedSolution': 'Tvoje riešenie',
   'submissions.labels.button.submit': 'Odovzdať',
   'submissions.labels.button.generateExercise': 'Vygenerovať úlohu',
