@@ -167,7 +167,7 @@ export default function Assigning() {
 
   return (
     <Paper sx={{ marginTop: 4 }}>
-      <Title />
+      <Title text='navbar.assigning' />
       <Stack direction={'column'} spacing={4} padding={4}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}

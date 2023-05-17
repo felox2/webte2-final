@@ -1,7 +1,4 @@
 export default {
-  'guide': 'Guide',
-  'dashboard': 'Dashboard',
-
   'common.no': 'No',
   'common.yes': 'Yes',
   'common.confirmation': 'Are you sure?',
@@ -11,12 +8,12 @@ export default {
   'auth.login.error': 'Couldn\'t log in',
   'auth.login.redirectToRegister': 'Don\'t have an account? Sign Up',
   'auth.login.remember': 'Remember me',
-  'auth.login.email': 'Email',
+  'auth.login.email': 'E-mail',
   'auth.login.password': 'Password',
   'auth.register': 'Sign up',
   'auth.register.redirectToLogin': 'Already have an account? Sign in',
-  'auth.register.firstName': 'First Name',
-  'auth.register.lastName': 'Last Name',
+  'auth.register.firstName': 'First name',
+  'auth.register.lastName': 'Last name',
   'auth.register.email': 'Email',
   'auth.register.password': 'Password',
   'auth.register.passwordRepeat': 'Confirm password',

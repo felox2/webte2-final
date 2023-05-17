@@ -18,7 +18,7 @@ export default function Dashboard() {
 
   return (
     <Container>
-      <Title text='dashboard' />
+      <Title text='navbar.home' />
       <PermissionGate roles={[Roles.Teacher, Roles.Admin]}>
         <Stack
           direction='column'

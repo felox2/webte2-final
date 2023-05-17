@@ -53,7 +53,7 @@ export default function UserGuide() {
 
   return (
     <Container>
-      <Title text='guide' />
+      <Title text='navbar.guide' />
       <Stack
         direction='column'
         spacing={2}

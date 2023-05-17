@@ -1,6 +1,7 @@
 export default {
-  'guide': 'Návod',
-  'dashboard': 'Dashboard',
+  'common.no': 'Nie',
+  'common.yes': 'Áno',
+  'common.confirmation': 'Ste si istý?',
 
   'auth.login': 'Prihlásiť sa',
   'auth.login.success': 'Prihlásenie prebehlo úspešne',
@@ -77,6 +78,13 @@ export default {
   'admin.table.labels.action': "Akcia",
   'admin.table.labels.role.teacher': "Učiteľ",
   'admin.table.labels.role.student': "Študent",
+
+  'admin.confirmation.delete': 'Ste si istý, že chcete zmazať tohto používateľa?',
+  'admin.confirmation.delete.success': 'Používateľ bol úspešne zmazaný',
+  'admin.confirmation.delete.error': 'Používateľa sa nepodarilo zmazať',
+  'admin.confirmation.changeRole': 'Ste si istý, že chcete zmeniť rolu tohto používateľa?',
+  'admin.confirmation.changeRole.success': 'Rola používateľa bola úspešne zmenená',
+  'admin.confirmation.changeRole.error': 'Rolu používateľa sa nepodarilo zmeniť',
 
   'dashboard.labels.button.export.csv': 'Exportovať do CSV',
   'guide.labels.button.export.pdf': 'Exportovať do PDF',

@@ -60,13 +60,6 @@ const links = [
   },
 ]
 
-const settings = [
-  {
-    label: 'Profile',
-    href: '/profile/edit',
-  },
-]
-
 export default function Navbar() {
   const { user, handleLogout } = useContext(AuthContext)
 
