@@ -102,10 +102,11 @@ export default function StudentsTable() {
 
   const handleRequestSort = (_: React.MouseEvent<unknown>, property: keyof Items) => {
     const isAsc = orderBy === property && order === 'asc'
-    setOrder(isAsc ? 'desc' : 'asc')
+    const currentOrder = isAsc ? 'desc' : 'asc'
+    setOrder(currentOrder)
     setOrderBy(property)
 
-    fetchStudents(page, rowsPerPage, orderBy, order)
+    fetchStudents(page, rowsPerPage, orderBy, currentOrder)
       .then((data) => setData(data))
       .catch((error) => console.error('Fetch error: ', error))
   }
