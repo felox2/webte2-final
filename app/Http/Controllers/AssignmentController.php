@@ -24,8 +24,8 @@ class AssignmentController extends Controller
       'teacher_id' => $user->id,
       'title' => $validated['title'],
       'description' => $validated['description'],
-      'start_date' => $validated['start_date'] ?? now()->utc(),
-      'end_date' => $validated['end_date'] ?? null,
+      'start_date' => isset($validated['start_date']) ? str_replace('Z', '', $validated['start_date']) : now()->utc(),
+      'end_date' => isset($validated['end_date']) ? str_replace('Z', '', $validated['end_date']) : null,
       'max_points' => $validated['max_points'],
     ]);
 

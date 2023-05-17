@@ -2,12 +2,12 @@
 version: '3.3'
 services:
   database:
-    image: mariadb:10
+    image: mysql:8-debian
     environment:
-      MARIADB_ROOT_PASSWORD: root
-      MARIADB_DATABASE: final
-      MARIADB_USER: final
-      MARIADB_PASSWORD: final
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: final
+      MYSQL_USER: final
+      MYSQL_PASSWORD: final
 
   web:
     depends_on:

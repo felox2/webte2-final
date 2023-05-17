@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ ! -e './first_start' ]; then
-    sleep 5
+    sleep 15
     touch ./first_start
     php artisan migrate --force
     php artisan db:seed --force
