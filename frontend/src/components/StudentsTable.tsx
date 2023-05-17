@@ -65,8 +65,19 @@ const headCells: readonly HeadCell[] = [
   },
 ]
 
-const fetchStudents = async (page: number, rowsPerPage: number, sort: keyof Items, order: 'asc' | 'desc'): Promise<Data> => {
-  const searchParams = { submissionDetails: true, page: page + 1, size: rowsPerPage, sort, order }
+const fetchStudents = async (
+  page: number,
+  rowsPerPage: number,
+  sort: keyof Items,
+  order: 'asc' | 'desc'
+): Promise<Data> => {
+  const searchParams = {
+    submissionDetails: true,
+    page: page + 1,
+    size: rowsPerPage,
+    sort,
+    order,
+  }
   const response = await ky.get('students', { searchParams })
   return await response.json()
 }
@@ -76,7 +87,7 @@ export default function StudentsTable() {
   const { loading, setLoading } = useLoading()
 
   const [data, setData] = useState<Data>({ items: [], total: 0 })
-  const [order, setOrder] = useState<'asc'|'desc'>('asc')
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc')
   const [orderBy, setOrderBy] = useState<keyof Items>('id')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -89,8 +100,7 @@ export default function StudentsTable() {
       .finally(() => setLoading(false))
   })
 
-
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Items) => {
+  const handleRequestSort = (_: React.MouseEvent<unknown>, property: keyof Items) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
@@ -107,10 +117,10 @@ export default function StudentsTable() {
           <Table>
             <TableHead>
               <TableRow>
-                {headCells.map((headCell) => (
+                {headCells.map((headCell, i) => (
                   <TableCell
                     key={headCell.id}
-                    align={headCell.numeric ? 'right' : 'left'}
+                    align={headCell.numeric && i !== 0 ? 'right' : 'left'}
                     sortDirection={orderBy === headCell.id ? order : false}>
                     <TableSortLabel
                       active={orderBy === headCell.id}
@@ -136,7 +146,9 @@ export default function StudentsTable() {
                   <TableCell>{row.last_name}</TableCell>
                   <TableCell>{row.first_name}</TableCell>
                   <TableCell align='right'>{row.submissions_count}</TableCell>
-                  <TableCell align='right'>{row.submissions_count_provided_solution}</TableCell>
+                  <TableCell align='right'>
+                    {row.submissions_count_provided_solution}
+                  </TableCell>
                   <TableCell align='right'>{row.submissions_points_sum}</TableCell>
                 </TableRow>
               ))}
@@ -149,7 +161,12 @@ export default function StudentsTable() {
           count={data.total}
           rowsPerPage={rowsPerPage}
           labelRowsPerPage={<FormattedMessage id='tables.footers.students.rowsPerPage' />}
-          labelDisplayedRows={({ from, to, count }) => <FormattedMessage id='tables.footers.students.rows' values={{ from, to, count }} />}
+          labelDisplayedRows={({ from, to, count }) => (
+            <FormattedMessage
+              id='tables.footers.students.rows'
+              values={{ from, to, count }}
+            />
+          )}
           page={page}
           onPageChange={(event, newPage: number) => {
             setPage(newPage)
