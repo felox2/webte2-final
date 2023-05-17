@@ -14,13 +14,12 @@ import { ky } from '@/utils/ky'
 import SnackbarContext from '@/components/SnackbarProvider'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Title } from '@/components/Title'
-
-const redirect = (url:string, asLink = true) =>
-  asLink ? (window.location.href = url) : window.location.replace(url);
+import { useNavigate } from 'react-router-dom'
 
 export default function SignUp() {
   const intl = useIntl()
   const auth = useContext(AuthContext)
+  const navigate = useNavigate()
   const { triggerSnackbar } = useContext(SnackbarContext)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -29,16 +28,16 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget)
 
     try {
-      const res: any = await ky.post('auth/register', { body: data }).json()
+      const res: any = await ky
+        .post('auth/register', { body: data, credentials: 'include' })
+        .json()
       auth.handleLogin(res.access_token)
       triggerSnackbar('auth.register.success', 'success')
-      redirect('/')
-    }
-    catch (err) {
+      navigate('/')
+    } catch (err) {
       console.error(err)
       triggerSnackbar('auth.register.fail', 'error')
     }
-
   }
 
   return (
@@ -50,8 +49,7 @@ export default function SignUp() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-        }}
-      >
+        }}>
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
@@ -109,12 +107,7 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
             <FormattedMessage id='auth.register' />
           </Button>
           <Grid container justifyContent='flex-end'>

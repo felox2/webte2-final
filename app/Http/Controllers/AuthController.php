@@ -34,9 +34,17 @@ class AuthController extends Controller
     $validatedData['password'] = bcrypt($request->password);
 
     $user = User::create($validatedData);
+    $user->role = 'student';
     $accessToken = auth()->login($user);
 
-    return $this->respondWithToken($accessToken);
+    $refreshToken = new RefreshToken([
+      'refresh_token' => Str::random(),
+      'expires_at' => now()->addDays($this->refreshTokenExpireDays),
+      'user_id' => auth()->user()->id,
+    ]);
+    $refreshToken->save();
+
+    return $this->respondWithToken($accessToken, $refreshToken->refresh_token);
   }
 
   /**
