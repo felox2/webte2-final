@@ -142,8 +142,8 @@ export default function Assigning() {
       student_ids: studentIds,
       exercise_set_ids: exerciseSetIds,
       max_points: points,
-      start_date: startDate?.toISOString().slice(0, 10),
-      end_date: endDate?.toISOString().slice(0, 10),
+      start_date: startDate?.toISOString(),
+      end_date: endDate?.toISOString(),
     }
 
     ky.post('assignment-groups', { json: body })
