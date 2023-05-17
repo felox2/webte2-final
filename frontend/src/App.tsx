@@ -18,8 +18,10 @@ export const LocaleContext = createContext({
   changeLocale: (locale: keyof typeof messages) => {},
 })
 
+const defaultLocale = localStorage.getItem('locale') as keyof typeof messages
+
 export default function App() {
-  const [locale, setLocale] = useState<keyof typeof messages>('en')
+  const [locale, setLocale] = useState<keyof typeof messages>(defaultLocale || 'en')
   const locales = Object.keys(messages) as Array<keyof typeof messages>
   const currentMessages = useMemo(
     () => ({ ...commonMessages, ...messages[locale] }),
@@ -28,6 +30,7 @@ export default function App() {
 
   function changeLocale(locale: keyof typeof messages) {
     setLocale(locale)
+    localStorage.setItem('locale', locale)
   }
 
   return (
