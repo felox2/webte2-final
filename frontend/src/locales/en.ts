@@ -73,7 +73,7 @@ export default {
 
   'admin.table.labels.role': "Role",
   'admin.table.labels.userId': "User ID",
-  'admin.table.labels.created': "Created At",
+  'admin.table.labels.created': "Created",
   'admin.table.labels.action': "Action",
   'admin.table.labels.role.teacher': "Teacher",
   'admin.table.labels.role.student': "Student",

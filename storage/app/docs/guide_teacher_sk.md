@@ -1,6 +1,18 @@
 # Dokumentácia pre učiteľa na používanie webovej aplikácie:
 
-1. Sekcia zadávania úloh:
+1. Sekcia "Domov":
+
+ V tejto sekcii nájdete prehľad o všetkých študentoch:
+
+- **ID študenta:** Unikátne identifikačné číslo študenta.
+- **Meno:** Meno študenta.
+- **Priezvisko:** Priezvisko študenta.
+- **Počet vygenerovaných príkladov:** Celkový počet príkladov, ktoré si študent vygeneroval.
+- **Počet odovzdaných príkladov:** Celkový počet príkladov, ktoré študent odovzdal.
+- **Celkový počet získaných bodov:** Počet bodov, ktoré študent získal zo všetkých odovzdaných príkladov.
+- Kliknutím na konkrétneho študenta sa zobrazí tretia sekcia.
+
+2. Sekcia zadávania úloh:
 
 Vyplňte nasledujúce polia:
 
@@ -12,18 +24,6 @@ Vyplňte nasledujúce polia:
 - **Koniec:** Nastavte dátum, kedy sa študentom uzavrú zadané sety a nebudú môcť už odovzdať ich riešenia. Ak sa dané pole nevyplní budú zadané sety otvorené donekonečna.
 - **Výber študentov:** Vyberte študentov, ktorí majú byť pridelení na vypracovanie zadaných setov. \*Toto pole je povinné
 - **Tlačidlo Priradiť** : Kontroluje valídnosť vyplnených polí. Ak nie sú validne vyplnené tak vypíše error správu pri zle vyplnenom údaji. Ak sú správne vyplnený priradí vybrané sety vybraným študentom.
-
-2. Sekcia "Domov":
-
- V tejto sekcii nájdete prehľad o všetkých študentoch:
-
-- **ID študenta:** Unikátne identifikačné číslo študenta.
-- **Meno:** Meno študenta.
-- **Priezvisko:** Priezvisko študenta.
-- **Počet vygenerovaných príkladov:** Celkový počet príkladov, ktoré si študent vygeneroval.
-- **Počet odovzdaných príkladov:** Celkový počet príkladov, ktoré študent odovzdal.
-- **Celkový počet získaných bodov:** Počet bodov, ktoré študent získal zo všetkých odovzdaných príkladov.
-- Kliknutím na konkrétneho študenta sa zobrazí tretia sekcia.
 
 3. Sekcia pre konkrétneho študenta:
 
@@ -57,11 +57,3 @@ Po kliknutí na tlačidlo view sa zobrazí:
 - **Získaný počet bodov / maximálny počet bodov** :
 - **Zadanie úlohy**
 - **Tvoje riešenie:** Odovzdané riešenie úlohy.
-
-4. Sekcia "Upload"
-
-V tejto sekcii má učiteľ možnosť uploadnuť sety na vypracovanie.
-
-- **Drag n drop:** Dá sa pretiahnuť súbor na stránku a uploadne sa
-
-**Vybratie súboru:** Dá sa vybrať si cez cestu na počítači, ktorý súbor učiteľ uploadne
