@@ -2,6 +2,7 @@ import { createContext, ReactNode, useState } from 'react'
 import { ky, setDefaults } from '@/utils/ky'
 import { useEffectOnce } from '@/hooks/useEffectOnce'
 import { Roles } from '@/utils/roles'
+import { Box, Typography } from '@mui/material'
 
 export interface AuthContextType {
   user: User | null
@@ -78,8 +79,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {!value.initializing ? (
         children
       ) : (
-        // TODO: Add loading animation?
-        <div>Loading...</div>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            width: '100vw',
+            bgcolor: 'background.default',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+          }}>
+            <Typography color='text.primary'>
+              Loading...
+            </Typography>
+        </Box>
       )}
     </AuthContext.Provider>
   )
