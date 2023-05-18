@@ -25,7 +25,6 @@ import { useLoading } from '@/components/LoadingProvider'
 
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
-import { usePoints } from '@/hooks/usePoints'
 import { getColorForPoints } from '@/utils'
 import { Title } from '@/components/Title'
 import dayjs from 'dayjs'
@@ -106,7 +105,7 @@ function AssignmentGroup(assignmentGroup: AssignmentGroup) {
     const date = dayjs.utc(assignmentGroup.created_at)
     const now = dayjs()
 
-    return now.diff(date, 'second')
+    return date.diff(now, 'second')
   }, [assignmentGroup.created_at])
 
   const points = useMemo(() => {
