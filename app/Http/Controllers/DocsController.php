@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Mpdf\Mpdf;
 use Parsedown;
 
 class DocsController extends Controller
@@ -68,12 +69,9 @@ class DocsController extends Controller
     $markdown = Storage::disk('local')->get($filePath);
     $html = $parsedown->text($markdown);
 
-    $dompdf = new \Dompdf\Dompdf();
-    $dompdf->setPaper('A4', 'portrait');
-    $dompdf->loadHtml($html);
-    $dompdf->render();
-
-    $output = $dompdf->output();
+    $mpdf = new Mpdf();
+    $mpdf->WriteHTML($html);
+    $output = $mpdf->Output('', 'S');
 
     return response($output, 200, [
       'Content-Type' => 'application/pdf',

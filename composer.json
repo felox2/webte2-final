@@ -9,11 +9,11 @@
   "license": "MIT",
   "require": {
     "php": "^8.2",
-    "dompdf/dompdf": "^2.0",
     "erusev/parsedown": "^1.7",
     "guzzlehttp/guzzle": "^7.5",
     "laravel/framework": "^10.0",
     "laravel/tinker": "^2.8",
+    "mpdf/mpdf": "^v8.1.6",
     "tymon/jwt-auth": "^2.0"
   },
   "require-dev": {
