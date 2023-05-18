@@ -21,3 +21,5 @@ services:
         - "sk.stuba.fei.webte.final"
     ports:
       - "8880:80"
+    volumes:
+      - ./storage/app:/var/www/storage/app

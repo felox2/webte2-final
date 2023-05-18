@@ -69,7 +69,9 @@ class DocsController extends Controller
     $markdown = Storage::disk('local')->get($filePath);
     $html = $parsedown->text($markdown);
 
-    $mpdf = new Mpdf();
+    $mpdf = new Mpdf([
+      'tempDir' => storage_path('tmp'),
+    ]);
     $mpdf->WriteHTML($html);
     $output = $mpdf->Output('', 'S');
 

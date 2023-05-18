@@ -24,7 +24,7 @@ FROM composer AS build-backend
 WORKDIR /app
 
 COPY composer.json composer.lock ./
-RUN composer install --prefer-dist --no-scripts --no-dev --no-autoloader && rm -rf /root/.composer
+RUN composer install --prefer-dist --no-scripts --no-dev --no-autoloader --ignore-platform-req=ext-gd && rm -rf /root/.composer
 
 COPY . ./
 RUN rm -rf ./frontend
