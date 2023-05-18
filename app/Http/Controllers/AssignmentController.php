@@ -98,8 +98,9 @@ class AssignmentController extends Controller
       ->where('start_date', '<', now()->utc())
       ->firstOrFail();
 
+    $teacher = auth()->user()->isTeacher();
     $to_load = 'assignments.submissions.exercise:id,task';
-    if ($assignmentGroup->end_date && $assignmentGroup->end_date < now()->utc()) {
+    if ($teacher || ($assignmentGroup->end_date && $assignmentGroup->end_date < now()->utc())) {
       $to_load .= ',solution';
     }
 

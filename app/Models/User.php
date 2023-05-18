@@ -42,6 +42,11 @@ class User extends Authenticatable implements JWTSubject
   protected $casts = [
   ];
 
+  public function isTeacher(): bool
+  {
+    return $this->role === 'teacher' || $this->role === 'admin';
+  }
+
   public function getJWTIdentifier()
   {
     return $this->getKey();
